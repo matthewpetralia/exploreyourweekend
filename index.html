@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Explore your Weekend</title>
+    <link rel="icon" type="image/x-icon" href="SVG/Explore%20your%20Weekend%20Logo.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hubballi&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="code.js">
+    <link rel="stylesheet" href="content.css">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body class="ind">
+<!--    <div id="Status"><img src="SVG/Explore%20your%20Weekend%20Logo.svg"> Explore your Weekend</div>-->
+    <div class="Landing">
+
+    </div>
+    <div class="Nav">
+        <a href="javascript:void(0);" onclick="myFunction()">
+            <span class="material-icons-outlined" id="expand">expand_less</span>
+        </a>
+        <div id="myLinks">
+            <div class="InfoPanel">
+                <h4></h4>
+                <h3>Explore</h3>
+                <div class="tags">
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        const B1 = [
+            'Sp_;Springbrook;National Park;QLD,Gold Coast Region,Rainforest,Lookouts,Waterfalls;Springbrook',
+            'Burl;Burleigh Head;National Park;QLD,Gold Coast Region,Coastal,Rainforest,Lookouts;Burleigh Head',
+        ];
+        let text = " ";
+
+        for (e = 0; e < B1.length; e++) {
+
+
+            const A1 = B1[e].split(";");
+            let ref = "A";
+
+
+
+            document.querySelector(".Landing").innerHTML +=
+                '<div id="' + (A1[1].replace(/\s+/g, '')) + '"> <img src = "Images//' + A1[0] + '.webp"><div class="InfoPanel"><h3>' + A1[1] + '</h3><h4>' + A1[2] + '</h4><div class="tagContent">' + A1[3] + '</div></div><a class="fwd" href="' + (A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, '')) + '.html"></a></div>';
+
+            text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + (A1[1].replace(/\s+/g, '')) + "' onclick='myFunction()'>" + A1[1] + " " + A1[2] + "</a>";
+
+
+        }
+
+        document.querySelector(".Nav .tags").innerHTML = '<a href="index.html"><span class="material-icons-outlined">home</span></a>' + text;
+
+//        document.querySelector(".Landing").innerHTML +=
+//            '<div id="Acknowledgements"><div class="InfoPanel"><h3>Acknowledgements</h3><h4>A big thanks to</h4><div class="tagContent">Me,Myself,I</div></div></div>';
+//        document.querySelector("#myLinks .tags").innerHTML += "<a href='#Acknowledgements' onclick='myFunction()'>Acknowledgements</a>";
+
+
+        for (let j = 0; j < (document.querySelectorAll(".Landing > div")).length; j++) {
+            var allTheData =
+                document.getElementsByClassName('tagContent')[j].textContent.split(',');
+            var separateList = '<div class="tags">';
+            allTheData.forEach(function(value) {
+                separateList += '<div>' + value + '</div>';
+            });
+            separateList += '</div>';
+            document.getElementsByClassName("tagContent")[j].innerHTML = separateList;
+        }
+
+
+
+
+        function myFunction() {
+            var x = document.getElementById("myLinks");
+            if (x.style.display === "block") {
+                x.style.display = "none";
+                document.querySelector(".Nav > a").style.borderRadius = "3vh 3vh 0 0";
+                document.getElementById("expand").innerHTML = "expand_less";
+            } else {
+                x.style.display = "block";
+                document.querySelector(".Nav > a").style.borderRadius = "0px";
+                document.getElementById("expand").innerHTML = "expand_more";
+            }
+        }
+    </script>
+</body></html>
