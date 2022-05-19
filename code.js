@@ -2,10 +2,10 @@
 /*global require*/
 
 document.getElementsByTagName("head")[0].innerHTML += `
-    <link rel="icon" type="image/x-icon" href="SVG/Explore%20your%20Weekend%20Logo.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hubballi&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">`;
+    <link rel="icon" type="image/x-icon" href="/SVG/Explore%20your%20Weekend%20Logo.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/ade3twf.css">
+`;
 
 
 function writeHTML() {
@@ -20,8 +20,6 @@ function writeHTML() {
         </a>
         <div id="myLinks">
             <div class="InfoPanel">
-                <h4></h4>
-                <h3>Explore</h3>
                 <div class="tags">
                 </div>
             </div>
@@ -40,7 +38,7 @@ function writeHTML() {
 
 
         main.children[e].innerHTML =
-            '<img src = "Images//' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + 'Images/IMG_1540.jpg' + "'" + ';"><a class="bwd"></a><a class="fwd"></a><div class="InfoPanel"><h4>' + A1[4] + '</h4><h3>' + A1[1] + '</h3><div class="tagContent">' + A1[2] + '</div><p>' + A1[3] + '</p></div>';
+            '<img src = "/Images//' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + '/Images/IMG_1540.jpg' + "'" + ';"><a class="bwd"></a><a class="fwd"></a><div class="InfoPanel"><h4>' + A1[4] + '</h4><h3>' + A1[1] + '</h3><div class="tagContent">' + A1[2] + '</div><p>' + A1[3] + '</p></div>';
 
 
         text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + (A1[1].replace(/\s+/g, '')) + "' onclick='myFunction()'>" + A1[1] + "</a>";
@@ -48,7 +46,7 @@ function writeHTML() {
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<a href="index.html"><span class="material-icons-outlined">home</span></a>' + text;
+    document.querySelector(".Nav .tags").innerHTML = '<a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg"></a>' + text;
 
     document.getElementsByTagName("title")[0].innerHTML += " | Explore your Weekend";
 
