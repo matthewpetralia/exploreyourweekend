@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="description" content="Explore your Weekend makes finding hikes, drives and beaches easy.">
     <meta name="keywords" content="Beaches, Hikes, Scenic Drives, National Parks, Nature, Outdoors, Travel, Explore, Discover, Adventure">
-    <meta name="author" content="Matthew Petralia">    
+    <meta name="author" content="Matthew Petralia">
     <!--    <link rel="preconnect" href="https://fonts.googleapis.com">-->
     <!--    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>-->
     <!--    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700&family=Hubballi&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">-->
@@ -17,6 +17,20 @@
     <link rel="stylesheet" href="https://use.typekit.net/ade3twf.css">
     <link href="code.js">
     <link rel="stylesheet" href="main.css">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3">
+    </script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-98383758-3');
+
+    </script>
 </head>
 
 <body class="ind">
@@ -30,8 +44,8 @@
         </a>
         <div id="myLinks">
             <div class="InfoPanel">
-<!--                <h4></h4>-->
-<!--                <h3>Explore your Weekend</h3>-->
+                <!--                <h4></h4>-->
+                <!--                <h3>Explore your Weekend</h3>-->
                 <div class="tags">
 
                 </div>
@@ -45,9 +59,9 @@
         const B1 = [
             'Sp_;Springbrook;National Park;QLD,Gold Coast Region,Rainforest,Lookouts,Waterfalls;Springbrook',
             'Burl;Burleigh Head;National Park;QLD,Gold Coast Region,Coastal,Rainforest,Lookouts;Burleigh Head',
-//            'GCBe_Spt;Gold Coast;Best Beaches;QLD,Gold Coast Region,Beaches,Coastal;Gold Coast',
-//            'BrHe;Broken Head;Nature Reserve;NSW,Byron Bay Region,Headland,Rainforest,Lookouts,Coastal;Broken Head',
-//            'NNSWBe;Northern NSW;Best Beaches;NSW,Tweed Heads to Esk,Rainforest,Lookouts,Coastal;Northern NSW',
+            //            'GCBe_Spt;Gold Coast;Best Beaches;QLD,Gold Coast Region,Beaches,Coastal;Gold Coast',
+            //            'BrHe;Broken Head;Nature Reserve;NSW,Byron Bay Region,Headland,Rainforest,Lookouts,Coastal;Broken Head',
+            //            'NNSWBe;Northern NSW;Best Beaches;NSW,Tweed Heads to Esk,Rainforest,Lookouts,Coastal;Northern NSW',
         ];
         let text = " ";
 
@@ -69,9 +83,9 @@
 
         document.querySelector(".Nav .tags").innerHTML = '<a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg"></a>' + text;
 
-//        document.querySelector(".Landing").innerHTML +=
-//            '<div id="Acknowledgements"><div class="InfoPanel"><h3>Acknowledgements</h3><h4>A big thanks to</h4><div class="tagContent">Me,Myself,I</div></div></div>';
-//        document.querySelector("#myLinks .tags").innerHTML += "<a href='#Acknowledgements' onclick='myFunction()'>Acknowledgements</a>";
+        //        document.querySelector(".Landing").innerHTML +=
+        //            '<div id="Acknowledgements"><div class="InfoPanel"><h3>Acknowledgements</h3><h4>A big thanks to</h4><div class="tagContent">Me,Myself,I</div></div></div>';
+        //        document.querySelector("#myLinks .tags").innerHTML += "<a href='#Acknowledgements' onclick='myFunction()'>Acknowledgements</a>";
 
 
         for (let j = 0; j < (document.querySelectorAll(".Landing > div")).length; j++) {
@@ -100,5 +114,8 @@
                 document.getElementById("expand").innerHTML = "expand_more";
             }
         }
+
     </script>
-</body></html>
+</body>
+
+</html>
