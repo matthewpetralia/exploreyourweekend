@@ -7,7 +7,7 @@
 a,
 body {
     color: white;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Lato Light', sans-serif;
     text-decoration: none;
 }
 
@@ -112,15 +112,6 @@ body {
     text-align: left;
 }
 
-.ind .fwd {
-    height: 100%;
-    width: 100%;
-    padding-left: 85vw;
-    font-size: 5vh;
-    color: white;
-    font-family: 'Lato Light', sans-serif;
-
-}
 
 .fwd:hover .bwd:hover {
     font-weight: bolder;
@@ -165,7 +156,7 @@ h3 {
     padding: 2.5%;
     color: var(--Green);
     box-sizing: border-box;
-    font-family: 'Lato', sans-serif;
+    font-family: futura-pt, sans-serif;
     font-size: 130%;
     display: flex;
     align-items: center;
@@ -373,11 +364,6 @@ h3 {
 .ind h3 {
     font-size: 4vh;
     font-weight: 600;
-}
-
-.ind #myLinks h3 {
-    font-size: 3vh;
-    font-weight: 500;
 }
 
 .ind h4 {
