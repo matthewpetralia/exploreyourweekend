@@ -99,7 +99,7 @@ function writeIndex() {
         const A1 = main.children[e].innerHTML.split(";");
 
         main.children[e].innerHTML =
-            '<picture><source srcset="../Images/m/m-' + A1[0] + '.webp" media="(orientation: portrait)"><img src="../Images/' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + '../Images/m/m-Sp_.webp' + "'" + ';" alt="' + A1[1] + ' ' + A1[2] + ' - Explore your Weekend"></picture>' +
+            '<picture><source srcset="Images/m/m-' + A1[0] + '.webp" media="(orientation: portrait)"><img src="Images/' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + 'Images/m/m-Sp_.webp' + "'" + ';" alt="' + A1[1] + ' ' + A1[2] + ' - Explore your Weekend"></picture>' +
             '<a class="fwd" href="'+(A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, ''))+'"></a><div class="InfoPanel"><h3>' + A1[1] + '</h3><h4>' + A1[2] + '</h4><div class="tagContent">' + A1[3] + '</div></div>';
 
 
@@ -108,7 +108,7 @@ function writeIndex() {
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a>' + text;
+    document.querySelector(".Nav .tags").innerHTML = '<a href="/"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a>' + text;
 
     document.getElementsByTagName("title")[0].innerHTML += " | Explore your Weekend";
 

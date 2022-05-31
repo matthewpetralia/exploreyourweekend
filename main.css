@@ -244,7 +244,7 @@ h3 {
     display: flex;
 }
 
-.Nav > a {
+.Nav > a{
     display: flex;
     box-sizing: border-box;
     background-color: var(--Green);
@@ -255,9 +255,13 @@ h3 {
     font-size: 3vh;
 }
 
-.Nav .InfoPanel .tags {
+.Nav .InfoPanel .tags{
     display: grid;
 
+}
+
+#PageNotFound .tags a {
+    width: 100%;
 }
 
 .Nav .InfoPanel .tags a:first-child {
@@ -306,7 +310,7 @@ h3 {
 */
 }
 
-.tags a::after {
+.tags a::after, #PageNotFound .tags a:first-child::after  {
     content: "\00a0\00a0\00a0\276F";
 }
 
