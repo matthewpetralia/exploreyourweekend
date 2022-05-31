@@ -100,7 +100,7 @@ function writeIndex() {
 
         main.children[e].innerHTML =
             '<picture><source srcset="../Images/m/m-' + A1[0] + '.webp" media="(orientation: portrait)"><img src="../Images/' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + '../Images/m/m-Sp_.webp' + "'" + ';" alt="' + A1[1] + ' ' + A1[2] + ' - Explore your Weekend"></picture>' +
-            '<div class="InfoPanel"><h3>' + A1[1] + '</h3><h4>' + A1[2] + '</h4><div class="tagContent">' + A1[3] + '</div></div>';
+            '<a class="fwd" href="'+(A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, ''))+'"></a><div class="InfoPanel"><h3>' + A1[1] + '</h3><h4>' + A1[2] + '</h4><div class="tagContent">' + A1[3] + '</div></div>';
 
 
         text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + (A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, '')) + "' onclick='myFunction()'>" + A1[1] + " " + A1[2] + "</a>";
