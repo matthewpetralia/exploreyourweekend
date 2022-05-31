@@ -128,6 +128,7 @@ function writeIndex() {
         separateList += '</div>';
         document.getElementsByClassName("tagContent")[j].innerHTML = separateList;
     }
+    
 
 
 }

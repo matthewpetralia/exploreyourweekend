@@ -43,13 +43,16 @@ body {
     max-height: 100%;
     max-width: 100%;
 }
+#UltimateGuideSouth-EastQLDandNorthernNSW img{    object-position: 0%;
+}
 
-#RainforestCircuit img, #BurleighBeach img {
+#RainforestCircuit img,
+#BurleighBeach img {
     object-position: 10%;
 }
 
 #LyrebirdRidgeRd img,
-#SpringbrookviaAdvancetown img {
+#SpringbrookviaAdvancetown img{
     object-position: 20%;
 }
 
@@ -116,6 +119,11 @@ body {
 .fwd:hover .bwd:hover {
     font-weight: bolder;
     color: white;
+}
+
+.ind .fwd {
+    width: 100%;
+    padding-left: 82vw;
 }
 
 
@@ -282,7 +290,7 @@ h3 {
     background-color: transparent;
     border-color: var(--Green);
     border-style: solid;
-/*    border-width: .25vh;*/
+    /*    border-width: .25vh;*/
 }
 
 .tags a {
@@ -335,7 +343,7 @@ h3 {
     background-color: rgba(230, 224, 218, .8);
     height: auto;
     width: 100%;
-    border-radius: 20px 20px 0 0;
+    border-radius: 3vh 3vh 0 0;
     padding-bottom: 6vh;
     overflow: hidden;
 }
