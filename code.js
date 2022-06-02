@@ -34,7 +34,7 @@ function writeHTML() {
 
         main.children[e].innerHTML =
             '<picture><source srcset="../Images/m/m-' + A1[0] + '.webp" media="(orientation: portrait)"><img src="../Images/' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + '../Images/m/m-Sp_.webp' + "'" + ';" alt="' + A1[1] + ', ' + A1[4] + ' - Explore your Weekend"></picture>' +
-            '<a class="bwd"></a><a class="fwd"></a><div class="InfoPanel"><h4>' + A1[4] + '</h4><h3>' + A1[1] + '</h3><div class="tagContent">' + A1[2] + '</div><p>' + A1[3] + '</p></div>';
+            '<a class="bwd"></a><a class="fwd"></a><div class="InfoPanel"><h3>' + A1[4] + '</h3><h2>' + A1[1] + '</h2><div class="tagContent">' + A1[2] + '</div><p>' + A1[3] + '</p></div>';
 
 
         text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + (A1[1].replace(/\s+/g, '')) + "' onclick='myFunction()'>" + A1[1] + "</a>";
@@ -42,7 +42,7 @@ function writeHTML() {
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a>' + text;
+    document.querySelector(".Nav .tags").innerHTML = '<h1><a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a></h1>' + text;
 
     document.getElementsByTagName("title")[0].innerHTML += " | Explore your Weekend";
 
@@ -52,7 +52,7 @@ function writeHTML() {
     let nextLast = document.querySelector(".Main").lastElementChild;
     nextLast.querySelector(".fwd").href = "#" + (document.querySelectorAll(".Main > div")[0]).id;
 
-    document.querySelectorAll(".Main > div .bwd")[0].href = "#" + document.querySelectorAll(".Main > div")[(document.querySelectorAll(".Main > div").length) - 1].id;
+    document.querySelectorAll(".Main > div .bwd")[0].href = "/";
 
 
     for (let j = 0; j < (document.querySelectorAll(".Main > div")).length; j++) {
@@ -100,7 +100,7 @@ function writeIndex() {
 
         main.children[e].innerHTML =
             '<picture><source srcset="Images/m/m-' + A1[0] + '.webp" media="(orientation: portrait)"><img src="Images/' + A1[0] + '.webp" onerror="this.onerror=null;this.src=' + "'" + 'Images/m/m-Sp_.webp' + "'" + ';" alt="' + A1[1] + ' ' + A1[2] + ' - Explore your Weekend"></picture>' +
-            '<a class="fwd" href="'+(A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, ''))+'"></a><div class="InfoPanel"><h3>' + A1[1] + '</h3><h4>' + A1[2] + '</h4><div class="tagContent">' + A1[3] + '</div></div>';
+            '<a class="fwd" href="' + (A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, '')) + '"></a><div class="InfoPanel"><h2>' + A1[1] + '</h2><h3>' + A1[2] + '</h3><div class="tagContent">' + A1[3] + '</div></div>';
 
 
         text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + (A1[1].replace(/\s+/g, '')) + (A1[2].replace(/\s+/g, '')) + "' onclick='myFunction()'>" + A1[1] + " " + A1[2] + "</a>";
@@ -108,7 +108,7 @@ function writeIndex() {
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<a href="/"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a>' + text;
+    document.querySelector(".Nav .tags").innerHTML = '<h1><a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a></h1>' + text;
 
     document.getElementsByTagName("title")[0].innerHTML += " | Explore your Weekend";
 
@@ -128,7 +128,7 @@ function writeIndex() {
         separateList += '</div>';
         document.getElementsByClassName("tagContent")[j].innerHTML = separateList;
     }
-    
+
 
 
 }

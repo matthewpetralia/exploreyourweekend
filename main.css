@@ -20,7 +20,7 @@ body {
 }
 
 :root {
-    --Green-Op: rgba(53, 105, 90, .97);
+    --Green-Op: rgba(53, 105, 90, .7);
     --Green: rgba(53, 105, 90, 1);
     --Sand-Op: rgba(230, 224, 218, .8);
     --Sand: rgba(230, 224, 218, 1);
@@ -43,7 +43,9 @@ body {
     max-height: 100%;
     max-width: 100%;
 }
-#UltimateGuideSouth-EastQLDandNorthernNSW img{    object-position: 0%;
+
+#UltimateGuideSouth-EastQLDandNorthernNSW img {
+    object-position: 0%;
 }
 
 #RainforestCircuit img,
@@ -52,7 +54,7 @@ body {
 }
 
 #LyrebirdRidgeRd img,
-#SpringbrookviaAdvancetown img{
+#SpringbrookviaAdvancetown img {
     object-position: 20%;
 }
 
@@ -126,14 +128,21 @@ body {
     padding-left: 82vw;
 }
 
+.Main div:first-of-type .bwd {
+    color: var(--Green);
+}
+
+.Main div:first-of-type .bwd:hover {
+    color: var(--Green-Op);
+}
 
 p,
-h4,
-h3 {
+h3,
+h2 {
     margin: 1vh 0px;
 }
 
-.ind h4 {
+.ind h3 {
     margin: 0;
     margin-top: -1vh;
 }
@@ -143,7 +152,7 @@ p {
 
 }
 
-h4 {
+h3 {
     font-family: 'EB Garamond', serif;
     font-weight: 700;
     font-size: 1.5vh;
@@ -151,7 +160,7 @@ h4 {
     margin-bottom: -1vh;
 }
 
-h3 {
+h2 {
     font-size: 3vh;
     font-family: futura-pt, sans-serif;
     font-weight: 500;
@@ -244,7 +253,7 @@ h3 {
     display: flex;
 }
 
-.Nav > a{
+.Nav > a {
     display: flex;
     box-sizing: border-box;
     background-color: var(--Green);
@@ -255,7 +264,7 @@ h3 {
     font-size: 3vh;
 }
 
-.Nav .InfoPanel .tags{
+.Nav .InfoPanel .tags {
     display: grid;
 
 }
@@ -269,8 +278,12 @@ h3 {
     background: transparent;
 }
 
-.Nav .InfoPanel .tags a:first-child:hover {
+.Nav h1:hover {
     background: var(--Sand-Op);
+}
+
+.Nav h1 {
+    border-radius: 3vh;
 }
 
 .Nav .InfoPanel {
@@ -310,7 +323,8 @@ h3 {
 */
 }
 
-.tags a::after, #PageNotFound .tags a:first-child::after  {
+.tags a::after,
+#PageNotFound .tags a:first-child::after {
     content: "\00a0\00a0\00a0\276F";
 }
 
@@ -375,12 +389,12 @@ h3 {
 
 }
 
-.ind h3 {
+.ind h2 {
     font-size: 4vh;
     font-weight: 600;
 }
 
-.ind h4 {
+.ind h3 {
     font-size: 2vh;
 }
 
@@ -442,11 +456,11 @@ h3 {
 */
 
 @media only screen and (max-height: 750px) {
-    h4 {
+    h3 {
         font-size: 2vh;
     }
 
-    h3 {
+    h2 {
         font-size: 5vh;
     }
 
