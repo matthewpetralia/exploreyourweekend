@@ -27,6 +27,10 @@ body {
     --MainHeight: 100%;
 }
 
+.Landing.Dev > div:nth-child(n+5), .tags.Dev > a:nth-child(n+6) {
+    display: none;
+}
+
 .Main img,
 .Landing img {
     min-height: 100vh;

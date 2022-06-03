@@ -113,9 +113,13 @@ function writeIndex() {
     document.getElementsByTagName("title")[0].innerHTML += " | Explore your Weekend";
 
     document.getElementsByTagName("head")[0].innerHTML +=
-        '<link href="https://use.typekit.net/ade3twf.css" rel="stylesheet">'
+        '<link href="https://use.typekit.net/ade3twf.css" rel="stylesheet">';
 
-
+    var getUrl = window.location;
+    if (getUrl = "https://exploreyourweekend.com/") {
+        document.querySelector(".Landing").className += " Dev";
+        document.querySelector(".Nav .tags").className += " Dev";
+    }
 
 
     for (let j = 0; j < (document.querySelectorAll(".Landing > div")).length; j++) {
