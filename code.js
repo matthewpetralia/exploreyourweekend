@@ -123,7 +123,7 @@ function writeIndex() {
 
     var getUrl = window.location;
     if (getUrl = "https://exploreyourweekend.com/") {
-        document.getElementsByTagName("body").className += " Dev";
+        document.getElementsByTagName("body")[0].className += " Dev";
     }
 
 
