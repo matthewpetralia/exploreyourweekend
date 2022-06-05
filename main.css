@@ -27,7 +27,7 @@ body {
     --MainHeight: 100%;
 }
 
-.Landing.Dev > div:nth-child(n+5), .tags.Dev > a:nth-child(n+6) {
+.Dev > .Landing > div:nth-child(n+5), .Dev > .tags a:nth-child(n+4) {
     display: none;
 }
 
@@ -48,7 +48,7 @@ body {
     max-width: 100%;
 }
 
-#UltimateGuideSouth-EastQLDandNorthernNSW img {
+#UltimateGuide img {
     object-position: 0%;
 }
 
@@ -153,6 +153,12 @@ h2 {
 
 p {
     font-family: 'Lato Light', sans-serif;
+}
+
+h1 {
+    font-size: 2.5vh !important ;
+    font-family: futura-pt, sans-serif;
+    font-weight: 500;
 
 }
 
@@ -172,15 +178,20 @@ h2 {
 }
 
 #Status {
-    height: 5%;
+    height: 10%;
     background: var(--Sand);
     padding: 2.5%;
     color: var(--Green);
     box-sizing: border-box;
     font-family: futura-pt, sans-serif;
-    font-size: 130%;
+    font-size: 1.5vh;
     display: flex;
     align-items: center;
+}
+
+#Status h2{
+    font-size: 1.5vh;
+    margin: 0;
 }
 
 #Status img {
@@ -273,6 +284,14 @@ h2 {
 
 }
 
+.Nav span {
+/*    left: 3vw;*/
+    font-size: 2vh !important;
+    margin-right: 1vw;
+/*    top: 4%;*/
+/*    position: absolute;*/
+}
+
 #PageNotFound .tags a {
     width: 100%;
 }
@@ -282,11 +301,11 @@ h2 {
     background: transparent;
 }
 
-.Nav h1:hover {
+.Nav .InfoPanel h1:hover {
     background: var(--Sand-Op);
 }
 
-.Nav h1 {
+.Nav .InfoPanel h1 {
     border-radius: 3vh;
 }
 
