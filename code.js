@@ -5,20 +5,36 @@ document.getElementsByTagName("head")[0].innerHTML += `
     <html lang = "en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="icon" type="image/x-icon" href="/SVG/Explore%20your%20Weekend%20Logo.svg">
+    <meta property="og:image" content="/Images/m-Ultimate_Guide_.webp" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 `;
-    
+
 //var getDevUrl = window.location;
 //if (getDevUrl = "https://dev.exploreyourweekend.com/") {
 //    alert("You are viewing the DEV version of this page. Please navigate to https://exploreyourweekend.com/ for the published version.")
 //}
 //            <span class="material-icons-outlined" id="expand">expand_less</span>
+function arrows(){
+for (v = 0; v < document.getElementsByClassName("fwd").length; v++) {
+    document.querySelectorAll(".fwd")[v].innerHTML = '<span class="material-symbols-outlined">chevron_right</span>';
+}
+    
+for (v = 0; v < document.getElementsByClassName("bwd").length; v++) {
+    document.querySelectorAll(".bwd")[v].innerHTML = '<span class="material-symbols-outlined">chevron_left</span>';
+}
+    
+for (v = 0; v < document.querySelectorAll(".tags a:not(a[target='_blank'])").length; v++) {
+    document.querySelectorAll(".tags a:not(a[target='_blank'])")[v].innerHTML += '<span class="material-symbols-outlined">chevron_right</span>';
+}
+    
+for (v = 0; v < document.querySelectorAll("a[target='_blank']").length; v++) {
+    document.querySelectorAll("a[target='_blank']")[v].innerHTML += '<span class="material-symbols-outlined">arrow_outward</span>';
+}
+}
 
-function formContent() {
-
-    let main = document.querySelector(".Main");
-
-    let createNav = `
+function createNav() {
+    let navContent = `
         <div class="Nav">
         <a title="Menu" href="javascript:void(0);" onclick="myFunction()">
             <span class="material-icons-outlined" id="expand">expand_less</span>
@@ -27,11 +43,24 @@ function formContent() {
         <div id="myLinks">
             <div class="InfoPanel">
                 <div class="tags">
+                    <h1><a href="../"><img src="/EYW-Extended.svg" alt="Explore your Weekend"></a></h1>
+                    <div>
+                        <a href="/About">About</a>
+                        <a href="https://www.instagram.com/exploreyourweekend/?hl=en" target='_blank'>Instagram</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>`
-    main.insertAdjacentHTML('afterend', createNav)
+    </div>`;
+    document.querySelector(".Main, .Landing").insertAdjacentHTML('afterend', navContent);
+}
+
+
+function formContent() {
+
+    let main = document.querySelector(".Main");
+
+    createNav()
 
     let text = " ";
 
@@ -40,20 +69,28 @@ function formContent() {
 
         let h2 = document.getElementsByTagName("h2");
         let h3 = document.getElementsByTagName("h3");
-        
-        let addImage ='<picture><source srcset="m-' + (h2[e].innerHTML.replace(/\s+/g, '_'))+'('+(h3[e].innerHTML.replace(/\s+/g, '_'))+')' + '.webp" media="(orientation: portrait)"><img src="' +  (h2[e].innerHTML.replace(/\s+/g, '_'))+'('+(h3[e].innerHTML.replace(/\s+/g, '_'))+')' + '.webp" onerror="this.onerror=null;this.src=' + "'" + '../Images/Springbrook_National_Park.webp' + "'" + ';" alt="' + h2[e].innerHTML + ', ' + h3[e].innerHTML + ' - Explore your Weekend"></picture>';
+
+        let addImage = '<picture><source srcset="m-' + (h2[e].innerHTML.replace(/\s+/g, '_')) + '(' + (h3[e].innerHTML.replace(/\s+/g, '_')) + ')' + '.webp" media="(orientation: portrait)" onerror="this.onerror=null;this.src=' + "'" + '../Images/Springbrook_National_Park.webp' + "'" + ';"><img src="' + (h2[e].innerHTML.replace(/\s+/g, '_')) + '(' + (h3[e].innerHTML.replace(/\s+/g, '_')) + ')' + '.webp" onerror="this.onerror=null;this.src=' + "'" + '../Images/Springbrook_National_Park.webp' + "'" + ';" alt="' + h2[e].innerHTML + ', ' + h3[e].innerHTML + ' - Explore your Weekend"></picture>' +
+            '<a class="bwd"></a><a class="fwd"></a>';
 
         document.getElementsByClassName("InfoPanel")[e].insertAdjacentHTML('beforebegin', addImage);
-
-        text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + main.children[e].id + "' onclick='myFunction()'>" + h2[e].innerHTML + "</a>";
-
+        
+        if(main.children[e] > 1){
+        let navLinks = "<a href='#" + main.children[e].id + "' onclick='myFunction()'>" + h2[e].innerHTML + "</a>";
+        }
+        else{
+            navLinks = 0;
+        }
+        
+        document.querySelector("#myLinks .tags").insertAdjacentHTML('beforeend', navLinks);
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<h1><a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a></h1>' + text;
 
     document.getElementsByTagName("head")[0].innerHTML +=
-        '<link href="https://use.typekit.net/ade3twf.css" rel="stylesheet">'
+        '<link href="https://use.typekit.net/ade3twf.css" rel="stylesheet">';
+
+    arrows();
 
     let nextLast = document.querySelector(".Main").lastElementChild;
     nextLast.querySelector(".fwd").href = "#" + (document.querySelectorAll(".Main > div")[0]).id;
@@ -77,6 +114,7 @@ function formContent() {
     }
 
 
+
 }
 
 function writeIndex() {
@@ -84,20 +122,7 @@ function writeIndex() {
 
     let main = document.querySelector(".Landing");
 
-    let createNav = `
-        <div class="Nav">
-        <a title="Menu" href="javascript:void(0);" onclick="myFunction()">
-            <span class="material-icons-outlined" id="expand">expand_less</span>
-            <h1>Explore your Weekend</h1>
-        </a>
-        <div id="myLinks">
-            <div class="InfoPanel">
-                <div class="tags">
-                </div>
-            </div>
-        </div>
-    </div>`
-    main.insertAdjacentHTML('afterend', createNav)
+    createNav();
 
     let text = " ";
 
@@ -106,25 +131,23 @@ function writeIndex() {
 
         let h2 = document.getElementsByTagName("h2");
         let h3 = document.getElementsByTagName("h3");
-        
-        let addImage ='<picture><source srcset="Images/m-' + (h2[e].innerHTML.replace(/\s+/g, '_'))+'_'+(h3[e].innerHTML.replace(/\s+/g, '_'))+ '.webp" media="(orientation: portrait)"><img src="Images/' +  (h2[e].innerHTML.replace(/\s+/g, '_'))+'_'+(h3[e].innerHTML.replace(/\s+/g, '_')) + '.webp" onerror="this.onerror=null;this.src=' + "'" + 'Images/m/m-Sp_.webp' + "'" + ';" alt="' + h2[e].innerHTML + ', ' + h3[e].innerHTML + ' - Explore your Weekend"></picture>';
+
+        let addImage = '<picture><source srcset="Images/m-' + (h2[e].innerHTML.replace(/\s+/g, '_')) + '_' + (h3[e].innerHTML.replace(/\s+/g, '_')) + '.webp" media="(orientation: portrait)"><img src="Images/' + (h2[e].innerHTML.replace(/\s+/g, '_')) + '_' + (h3[e].innerHTML.replace(/\s+/g, '_')) + '.webp" onerror="this.onerror=null;this.src=' + "'" + 'Images/m/m-Sp_.webp' + "'" + ';" alt="' + h2[e].innerHTML + ', ' + h3[e].innerHTML + ' - Explore your Weekend"></picture>';
 
         document.getElementsByClassName("InfoPanel")[e].insertAdjacentHTML('beforebegin', addImage);
 
-        text += document.querySelector("#myLinks .tags").innerHTML = "<a href='#" + main.children[e].id + "' onclick='myFunction()'>" + h2[e].innerHTML +" "+h3[e].innerHTML + "</a>";
+        let navLinks = "<a href='#" + main.children[e].id + "' onclick='myFunction()'>" + h2[e].innerHTML + " " + h3[e].innerHTML + "</a>";
+        document.querySelector("#myLinks .tags").insertAdjacentHTML('beforeend', navLinks);
+
 
 
     }
 
-    document.querySelector(".Nav .tags").innerHTML = '<h1><a href="../"><img src="/SVG/Explore%20your%20Weekend%20Logo.svg" alt="Explore your Weekend"></a></h1>' + text;
 
     document.getElementsByTagName("head")[0].innerHTML +=
         '<link href="https://use.typekit.net/ade3twf.css" rel="stylesheet">'
-
-    var getUrl = window.location;
-    if (getUrl = "https://exploreyourweekend.com/") {
-        document.getElementsByTagName("body")[0].className += " Dev";
-    }
+    
+        arrows();
 
 
     for (let j = 0; j < (document.querySelectorAll(".Landing > div")).length; j++) {
@@ -141,6 +164,8 @@ function writeIndex() {
 
 
 }
+
+
 
 function myFunction() {
     var x = document.getElementById("myLinks");
