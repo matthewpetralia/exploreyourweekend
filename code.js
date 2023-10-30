@@ -4,7 +4,7 @@
 document.getElementsByTagName("head")[0].innerHTML += `
     <html lang = "en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="icon" type="image/x-icon" href="/SVG/Explore%20your%20Weekend%20Logo.svg">
+    <link rel="icon" type="image/x-icon" href="/ExploreYourWeekendLogoGREEN.svg">
     <meta property="og:image" content="/Images/m-Ultimate_Guide_.webp" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
