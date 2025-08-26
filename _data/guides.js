@@ -32,7 +32,7 @@ module.exports = async () => {
       formattedTags: formattedTagsArray, // This is the field your front-end code will use
       linkedLocations: fields.Locations || [],
       url: `/${fields.slug}/`,
-      imagePath: `Images/${fields.slug}.webp`,
+      imagePath: `/Images/${fields.slug}.webp`,
       type: 'page'
     };
   });

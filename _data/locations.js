@@ -49,7 +49,7 @@ module.exports = async () => {
       slug: fields.slug,
       tags: fields.tags || [],
       formattedTags: formattedTagsArray,
-      imagePath: `Images/${fields.slug}.webp`,
+      imagePath: `/Images/${fields.slug}.webp`,
       guideURL: fields.guideURL,
       formattedDistance: fields.formattedDistance || '',
       formattedDuration: fields.formattedDuration || '',
