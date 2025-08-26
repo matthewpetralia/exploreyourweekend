@@ -1,0 +1,55 @@
+---
+pagination:
+  data: locations
+  size: 1
+  alias: location
+permalink: "locations/{{ location.slug }}/index.html"
+---
+
+<!DOCTYPE html>
+<html lang="en">
+
+  {% include 'head.liquid' %}
+
+  <body>
+    {% include 'nav.liquid' %}
+
+    <main class="location-page" id="horizontal">
+      <article
+        itemscope
+        itemtype='https://schema.org/CreativeWork'
+        id='{{ location.slug }}'>
+        <picture>
+          <source
+            srcset='{{ location.imagePath }}'
+            media='(max-width: 768px), (orientation: portrait)'
+            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
+          <img
+            src='{{ location.imagePath }}'
+            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'
+            alt='{{ location.altTag }}'
+            itemprop='image'>
+        </picture>
+        <div class='InfoPanel'>
+          <h3>{{ location.formattedGuide }}</h3>
+          <h1 itemprop='headline'>{{ location.title }}</h1>
+          <div class='tags' itemprop='keywords'>
+            <div class="tag">{{ location.formattedDistance }}</div>
+            <div class="tag">{{ location.formattedDuration }}</div>
+            {% for tag in location.formattedTags %}
+              <div class="tag">{{ tag }}</div>
+            {% endfor %}
+          </div>
+          <p itemprop='description'>{{ location.description }}</p>
+          {% if location.googleMapsLink %}
+            <a
+              href='{{ location.googleMapsLink }}'
+              target='_blank'
+              itemprop='url'>{{ location.title }} on Google Maps</a>
+          {% endif %}
+        </div>
+      </article>
+
+    </main>
+  </body>
+</html>

@@ -1,0 +1,218 @@
+---
+permalink: /
+---
+<!doctype html>
+<html lang="en">
+  {% include 'head.liquid' %}
+  <body class="ind">
+    {% include 'nav.liquid' %}
+    <main id="vertical">
+      <article id="Intro">
+        <div class="InfoPanel">
+          <h1>Explore Your Weekend</h1>
+          <p>Find hikes, lookouts, scenic drives, and breathtaking beaches with ease.</p>
+          <div class="search">
+            <div class="search-container">
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Search your weekend..." />
+              <button class="clear-search-button">
+                <span class="material-symbols-outlined">
+                  close
+                </span>
+              </button>
+            </div>
+            <div class="tag-database">
+              <div class="filters"></div>
+            </div>
+            <div class="active-tags-container active-tags"></div>
+          </div>
+        </div>
+      </article>
+
+      <div id="all-content-cards" class="card-grid">
+        {% for guide in collections.guides %}
+          <article
+            class="guide-card"
+            id="{{ guide.slug }}"
+            itemscope
+            itemtype="https://schema.org/CreativeWork">
+            <picture>
+              <source srcset="{{guide.imagePath}}" media="(min-width: 768px), (orientation: landscape)" />
+              <img
+                src="{{guide.imagePath}}"
+                alt="{{ guide.title }}"
+                itemprop="image" />
+            </picture>
+            <a
+              class="fwd"
+              href="/guides/{{ guide.slug }}/"
+              itemprop="url">&nbsp;</a>
+            <div class="InfoPanel">
+              <h2 itemprop="headline">{{ guide.title }}</h2>
+              <div class="tags" itemprop="keywords">
+                {% for tag in guide.formattedTags %}
+                  <div class="tag">{{ tag }}</div>
+                {% endfor %}
+              </div>
+              <p itemprop="description">{{ guide.description }}</p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+
+      <div id="search-results-container" style="display: none;"></div>
+    </main>
+
+    <script src="/assets/js/lunr.js"></script>
+    <script>
+          (async () => {
+        const allContent = document.getElementById('all-content-cards');
+        const searchResultsContainer = document.getElementById('search-results-container');
+        const searchInput = document.querySelector('.search-input');
+        const clearButton = document.querySelector('.clear-search-button');
+        const tagsContainer = document.querySelector('.tag-database');
+        const activeTagsContainer = document.querySelector('.active-tags-container');
+      
+        const searchData = await fetch('/search.json').then(response => response.json());
+        const searchIndex = lunr.Index.load(searchData.index);
+      
+        const searchStore = searchData.store;
+        
+        const updateUrl = (query, tags) => {
+            const url = new URL(window.location.href);
+            if (query) {
+                url.searchParams.set('q', query);
+            } else {
+                url.searchParams.delete('q');
+            }
+            if (tags.length > 0) {
+                url.searchParams.set('tags', tags.join(','));
+            } else {
+                url.searchParams.delete('tags');
+            }
+            history.pushState({}, '', url);
+        };
+      
+        const renderResults = (results) => {
+            searchResultsContainer.innerHTML = '';
+            if (results.length === 0) {
+                searchResultsContainer.innerHTML = '<p>No results found.</p>';
+            } else {
+                results.forEach(item => {
+                    const card = document.createElement('article');
+                    card.className = 'search-result-card';
+                    
+                    const tagsHtml = (item.formattedTags || [])
+                        .map(tag => `<div class="tag">${tag}</div>`)
+                        .join('');
+                        
+                    card.innerHTML = `
+                        <a href="${item.url}">
+                            <img src="${item.image}" alt="${item.title}">
+                            <div class="InfoPanel">
+                                <h2>${item.title}</h2>
+                                <p>${item.description}</p>
+                                <div class="tags">
+                                    ${tagsHtml}
+                                </div>
+                                <p class="meta">
+                                    ${item.type === 'section' && item.distanceKm ? `<strong>Distance:</strong> ${item.distanceKm}km` : ''}
+                                    ${item.type === 'section' && item.durationHrs ? `<strong>Duration:</strong> ${item.durationHrs}hrs` : ''}
+                                </p>
+                            </div>
+                        </a>
+                    `;
+                    searchResultsContainer.appendChild(card);
+                });
+            }
+        };
+        
+        const renderActiveTags = (tags) => {
+            activeTagsContainer.innerHTML = '';
+            tags.forEach(tag => {
+                const tagEl = document.createElement('span');
+                tagEl.className = 'active-tag-item';
+                tagEl.innerHTML = `${tag}<button class="remove-tag-button"><span class="material-symbols-outlined">close</span></button>`;
+                activeTagsContainer.appendChild(tagEl);
+                tagEl.querySelector('.remove-tag-button').addEventListener('click', () => {
+                    let currentTags = new URLSearchParams(window.location.search).get('tags') || '';
+                    let newTags = currentTags.split(',').filter(t => t !== tag);
+                    updateUrl(searchInput.value, newTags);
+                    searchAndFilter();
+                });
+            });
+        };
+      
+        const searchAndFilter = () => {
+            let query = searchInput.value;
+            if (query && !query.endsWith('*')) {
+                query += '*';
+            }
+      
+            const urlParams = new URLSearchParams(window.location.search);
+            const activeTags = urlParams.get('tags') ? urlParams.get('tags').split(',').filter(t => t) : [];
+      
+            // This is the key change. If there is no query and no active tags, we show the original content.
+            if (!query && activeTags.length === 0) {
+                allContent.style.display = 'grid';
+                searchResultsContainer.style.display = 'none';
+                return;
+            }
+      
+            allContent.style.display = 'none';
+            searchResultsContainer.style.display = 'grid';
+            
+            let searchResults = searchIndex.search(query);
+            
+            let flattenedResults = searchResults.flatMap(result => searchStore[result.ref]);
+      
+            if (activeTags.length > 0) {
+                flattenedResults = flattenedResults.filter(item => 
+                    item.formattedTags && activeTags.every(tag => item.formattedTags.includes(tag))
+                );
+            }
+      
+            renderResults(flattenedResults);
+            renderActiveTags(activeTags);
+        };
+      
+        searchInput.addEventListener('input', searchAndFilter);
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            updateUrl('', []);
+            searchAndFilter();
+        });
+      
+        tagsContainer.addEventListener('click', (e) => {
+            const tagLink = e.target.closest('.tag-link');
+            if (tagLink) {
+                e.preventDefault();
+                const tag = tagLink.textContent;
+                let currentTags = new URLSearchParams(window.location.search).get('tags') || '';
+                let newTags = currentTags.split(',').filter(t => t);
+                if (!newTags.includes(tag)) {
+                    newTags.push(tag);
+                }
+                updateUrl(searchInput.value, newTags);
+                searchAndFilter();
+            }
+        });
+      
+        const initialQuery = new URLSearchParams(window.location.search).get('q');
+        const initialTags = new URLSearchParams(window.location.search).get('tags');
+      
+        if (initialQuery || initialTags) {
+            if (initialQuery) {
+              searchInput.value = initialQuery;
+            }
+            searchAndFilter();
+        } else {
+            allContent.style.display = 'grid';
+            searchResultsContainer.style.display = 'none';
+        }
+          })();
+    </script>
+  </body>
+</html>

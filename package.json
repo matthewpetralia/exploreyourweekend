@@ -1,0 +1,21 @@
+{
+  "name": "explore-your-weekend",
+  "version": "1.0.0",
+  "description": "A website built with Eleventy and Airtable.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env npx @11ty/eleventy --serve",
+    "dev-log": "cross-env npx @11ty/eleventy --serve > eleventy-log.txt"
+  },
+  "keywords": [],
+  "author": "petra",
+  "license": "ISC",
+  "dependencies": {
+    "airtable": "^0.12.2",
+    "dotenv": "^16.0.3",
+    "lunr": "^2.3.9"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0"
+  }
+}

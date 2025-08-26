@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+
+# Eleventy build output
+_site/
+
+# Log files
+*.log
+eleventy-log.txt
+
+# Environment variables
+.env
+
+# Build-time artifacts
+_data/search.json
+
+# Environment-specific files
+CNAME
+robots.txt
