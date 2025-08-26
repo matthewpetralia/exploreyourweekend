@@ -36,10 +36,10 @@ module.exports = async () => {
       }
     }
 
-    const formattedTagsArray = (fields.formattedTags || '')
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag);
+const formattedTagsArray = (fields.formattedTags || '')
+      .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+      .map(tag => tag.trim().replace(/^"|"$/g, ''))
+      .filter(tag => tag);
 
     return {
       id: record.id,

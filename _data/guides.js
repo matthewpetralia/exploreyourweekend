@@ -17,10 +17,10 @@ module.exports = async () => {
         formattedTagsArray = fields.formattedTags.filter(tag => tag);
       } else if (typeof fields.formattedTags === 'string') {
         // If it's a string, split it and trim whitespace
-        formattedTagsArray = fields.formattedTags
-          .split(',')
-          .map(tag => tag.trim())
-          .filter(tag => tag);
+const formattedTagsArray = (fields.formattedTags || '')
+      .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+      .map(tag => tag.trim().replace(/^"|"$/g, ''))
+      .filter(tag => tag);
       }
     }
 
