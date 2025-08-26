@@ -145,38 +145,40 @@ permalink: /
             });
         };
       
-        const searchAndFilter = () => {
-            let query = searchInput.value;
-            if (query && !query.endsWith('*')) {
-                query += '*';
-            }
+      const searchAndFilter = () => {
+        let query = searchInput.value;
+        if (query && !query.endsWith('*')) {
+          query += '*';
+        }
       
-            const urlParams = new URLSearchParams(window.location.search);
-            const activeTags = urlParams.get('tags') ? urlParams.get('tags').split(',').filter(t => t) : [];
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTags = urlParams.get('tags') ? urlParams.get('tags').split(',').filter(t => t) : [];
       
-            // This is the key change. If there is no query and no active tags, we show the original content.
-            if (!query && activeTags.length === 0) {
-                allContent.style.display = 'grid';
-                searchResultsContainer.style.display = 'none';
-                return;
-            }
+        // Corrected: Update the URL BEFORE the early return
+        updateUrl(searchInput.value, activeTags);
       
-            allContent.style.display = 'none';
-            searchResultsContainer.style.display = 'grid';
-            
-            let searchResults = searchIndex.search(query);
-            
-            let flattenedResults = searchResults.flatMap(result => searchStore[result.ref]);
+        if (!query && activeTags.length === 0) {
+          allContent.style.display = 'grid';
+          searchResultsContainer.style.display = 'none';
+          return;
+        }
       
-            if (activeTags.length > 0) {
-                flattenedResults = flattenedResults.filter(item => 
-                    item.formattedTags && activeTags.every(tag => item.formattedTags.includes(tag))
-                );
-            }
+        allContent.style.display = 'none';
+        searchResultsContainer.style.display = 'grid';
       
-            renderResults(flattenedResults);
-            renderActiveTags(activeTags);
-        };
+        let searchResults = searchIndex.search(query);
+      
+        let flattenedResults = searchResults.flatMap(result => searchStore[result.ref]);
+      
+        if (activeTags.length > 0) {
+          flattenedResults = flattenedResults.filter(item => 
+      item.formattedTags && activeTags.every(tag => item.formattedTags.includes(tag))
+          );
+        }
+      
+        renderResults(flattenedResults);
+        renderActiveTags(activeTags);
+      };
       
         searchInput.addEventListener('input', searchAndFilter);
         clearButton.addEventListener('click', () => {
