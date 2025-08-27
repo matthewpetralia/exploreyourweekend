@@ -51,12 +51,12 @@ permalink: /
               itemprop="url">&nbsp;</a>
             <div class="InfoPanel">
               <h2 itemprop="headline">{{ guide.title }}</h2>
+              <p itemprop="description">{{ guide.description }}</p>
               <div class="tags" itemprop="keywords">
                 {% for tag in guide.formattedTags %}
                   <div class="tag">{{ tag }}</div>
                 {% endfor %}
               </div>
-              <p itemprop="description">{{ guide.description }}</p>
             </div>
           </article>
         {% endfor %}
@@ -68,151 +68,138 @@ permalink: /
     <script src="/assets/js/lunr.js"></script>
     <script>
           (async () => {
-        const allContent = document.getElementById('all-content-cards');
+        // --- DOM Elements ---
+        const allContentContainer = document.getElementById('all-content-cards');
         const searchResultsContainer = document.getElementById('search-results-container');
         const searchInput = document.querySelector('.search-input');
         const clearButton = document.querySelector('.clear-search-button');
-        const tagsContainer = document.querySelector('.tag-database');
-        const activeTagsContainer = document.querySelector('.active-tags-container');
-      
+        
+        // --- Fetch Search Data and Initialize Lunr ---
         const searchData = await fetch('/search.json').then(response => response.json());
         const searchIndex = lunr.Index.load(searchData.index);
-      
         const searchStore = searchData.store;
-        
-        const updateUrl = (query, tags) => {
+      
+        // --- Helper Functions ---
+      
+        /**
+         * --- NEW: Formats a duration in hours into a readable string like "1hr 30mins". ---
+         * @param {number} totalHours - The duration in hours (e.g., 2.5).
+         * @returns {string} The formatted string.
+         */
+        const formatDuration = (totalHours) => {
+            if (totalHours === null || typeof totalHours === 'undefined') {
+                return '';
+            }
+            const hours = Math.floor(totalHours);
+            const minutes = Math.round((totalHours - hours) * 60);
+            
+            let parts = [];
+            if (hours > 0) {
+                parts.push(`${hours}hr${hours > 1 ? 's' : ''}`);
+            }
+            if (minutes > 0) {
+                parts.push(`${minutes}min${minutes > 1 ? 's' : ''}`);
+            }
+            return parts.join(' ');
+        };
+      
+        const updateUrl = (query) => {
             const url = new URL(window.location.href);
-            if (query) {
-                url.searchParams.set('q', query);
-            } else {
-                url.searchParams.delete('q');
-            }
-            if (tags.length > 0) {
-                url.searchParams.set('tags', tags.join(','));
-            } else {
-                url.searchParams.delete('tags');
-            }
+            if (query) url.searchParams.set('q', query);
+            else url.searchParams.delete('q');
             history.pushState({}, '', url);
         };
       
         const renderResults = (results) => {
             searchResultsContainer.innerHTML = '';
-            if (results.length === 0) {
+            if (!results || results.length === 0) {
                 searchResultsContainer.innerHTML = '<p>No results found.</p>';
-            } else {
-                results.forEach(item => {
-                    const card = document.createElement('article');
-                    card.className = 'search-result-card';
-                    
-                    const tagsHtml = (item.formattedTags || [])
-                        .map(tag => `<div class="tag">${tag}</div>`)
-                        .join('');
-                        
-                    card.innerHTML = `
-                        <a href="${item.url}">
-                            <img src="${item.image}" alt="${item.title}">
-                            <div class="InfoPanel">
-                                <h2>${item.title}</h2>
-                                <p>${item.description}</p>
-                                <div class="tags">
-                                    ${tagsHtml}
-                                </div>
-                                <p class="meta">
-                                    ${item.type === 'section' && item.distanceKm ? `<strong>Distance:</strong> ${item.distanceKm}km` : ''}
-                                    ${item.type === 'section' && item.durationHrs ? `<strong>Duration:</strong> ${item.durationHrs}hrs` : ''}
-                                </p>
-                            </div>
-                        </a>
-                    `;
-                    searchResultsContainer.appendChild(card);
-                });
+                return;
             }
-        };
-        
-        const renderActiveTags = (tags) => {
-            activeTagsContainer.innerHTML = '';
-            tags.forEach(tag => {
-                const tagEl = document.createElement('span');
-                tagEl.className = 'active-tag-item';
-                tagEl.innerHTML = `${tag}<button class="remove-tag-button"><span class="material-symbols-outlined">close</span></button>`;
-                activeTagsContainer.appendChild(tagEl);
-                tagEl.querySelector('.remove-tag-button').addEventListener('click', () => {
-                    let currentTags = new URLSearchParams(window.location.search).get('tags') || '';
-                    let newTags = currentTags.split(',').filter(t => t !== tag);
-                    updateUrl(searchInput.value, newTags);
-                    searchAndFilter();
-                });
+      
+            results.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'search-result-card';
+                
+                const tagsHtml = (item.formattedTags || []).map(tag => `<div class="tag">${tag}</div>`).join('');
+                
+                // --- FIX: Use the new formatDuration function and the correct data ---
+                const distanceHtml = item.distanceKm ? `<strong>Distance:</strong> ${item.distanceKm}km` : '';
+                const durationHtml = item.durationHrs ? `<strong>Duration:</strong> ${formatDuration(item.durationHrs)}` : '';
+                const metaSpacer = distanceHtml && durationHtml ? ' ' : '';
+      
+                card.innerHTML = `
+                    <a href="${item.url}">
+                        <img src="${item.image}" alt="${item.title}">
+                        <div class="InfoPanel">
+                            <h2>${item.title}</h2>
+                            <p>${item.description}</p>
+                            <div class="tags">${tagsHtml}</div>
+                            <p class="meta">${distanceHtml}${metaSpacer}${durationHtml}</p>
+                        </div>
+                    </a>
+                `;
+                searchResultsContainer.appendChild(card);
             });
         };
       
-      const searchAndFilter = () => {
-        let query = searchInput.value;
-        if (query && !query.endsWith('*')) {
-          query += '*';
-        }
+        /**
+         * --- The main search and filter function with the new HYBRID logic ---
+         */
+        const searchAndFilter = () => {
+            const query = searchInput.value.trim();
       
-        const urlParams = new URLSearchParams(window.location.search);
-        const activeTags = urlParams.get('tags') ? urlParams.get('tags').split(',').filter(t => t) : [];
+            if (!query) {
+                allContentContainer.style.display = 'grid';
+                searchResultsContainer.style.display = 'none';
+                return;
+            }
       
-        // Corrected: Update the URL BEFORE the early return
-        updateUrl(searchInput.value, activeTags);
+            // --- FIX: Hybrid search query logic ---
+            let lunrQuery = '';
+            const queryWords = query.split(/\s+/).filter(Boolean);
       
-        if (!query && activeTags.length === 0) {
-          allContent.style.display = 'grid';
-          searchResultsContainer.style.display = 'none';
-          return;
-        }
+            if (queryWords.length > 0) {
+                // 1. Fuzzy match part: For "type-ahead" feel (e.g., "rainf" matches "rainforest")
+                const fuzzyQuery = queryWords.map(word => `${word}*`).join(' ');
+                
+                // 2. Exact match part (for single words): Boosts exact word matches
+                const exactQuery = queryWords.map(word => `${word}`).join(' ');
       
-        allContent.style.display = 'none';
-        searchResultsContainer.style.display = 'grid';
+                // 3. Phrase match part: Searches for the special concatenated phrase token
+                const phraseQuery = `tags:${queryWords.join('')}`;
       
-        let searchResults = searchIndex.search(query);
+                // Combine them, boosting the phrase and exact matches significantly
+                lunrQuery = `${fuzzyQuery} ${exactQuery}^10 ${phraseQuery}^50`;
+            }
       
-        let flattenedResults = searchResults.flatMap(result => searchStore[result.ref]);
+            let results = [];
+            if (lunrQuery) {
+                results = searchIndex.search(lunrQuery).map(result => searchStore[result.ref]);
+            }
       
-        if (activeTags.length > 0) {
-          flattenedResults = flattenedResults.filter(item => 
-      item.formattedTags && activeTags.every(tag => item.formattedTags.includes(tag))
-          );
-        }
+            allContentContainer.style.display = 'none';
+            searchResultsContainer.style.display = 'grid';
+            renderResults(results);
+        };
       
-        renderResults(flattenedResults);
-        renderActiveTags(activeTags);
-      };
+        // --- Event Listeners ---
+        searchInput.addEventListener('input', () => {
+            updateUrl(searchInput.value);
+            searchAndFilter();
+        });
       
-        searchInput.addEventListener('input', searchAndFilter);
         clearButton.addEventListener('click', () => {
             searchInput.value = '';
-            updateUrl('', []);
+            updateUrl('');
             searchAndFilter();
         });
       
-        tagsContainer.addEventListener('click', (e) => {
-            const tagLink = e.target.closest('.tag-link');
-            if (tagLink) {
-                e.preventDefault();
-                const tag = tagLink.textContent;
-                let currentTags = new URLSearchParams(window.location.search).get('tags') || '';
-                let newTags = currentTags.split(',').filter(t => t);
-                if (!newTags.includes(tag)) {
-                    newTags.push(tag);
-                }
-                updateUrl(searchInput.value, newTags);
-                searchAndFilter();
-            }
-        });
-      
+        // --- Initial Load ---
         const initialQuery = new URLSearchParams(window.location.search).get('q');
-        const initialTags = new URLSearchParams(window.location.search).get('tags');
-      
-        if (initialQuery || initialTags) {
-            if (initialQuery) {
-              searchInput.value = initialQuery;
-            }
+        if (initialQuery) {
+            searchInput.value = initialQuery;
             searchAndFilter();
-        } else {
-            allContent.style.display = 'grid';
-            searchResultsContainer.style.display = 'none';
         }
           })();
     </script>

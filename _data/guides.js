@@ -29,7 +29,7 @@ const formattedTagsArray = (fields.formattedTags || '')
       title: fields.title,
       description: fields.description,
       slug: fields.slug,
-      formattedTags: formattedTagsArray, // This is the field your front-end code will use
+      formattedTags: formattedTagsArray,
       linkedLocations: fields.Locations || [],
       url: `/${fields.slug}/`,
       imagePath: `/Images/${fields.slug}.webp`,

@@ -1,0 +1,67 @@
+{% comment %} ---
+  layout: "base.liquid"
+  pagination:
+      data: guides
+      size: 1
+      alias: guide
+  permalink: "/guides/{{ guide.slug }}/"
+  eleventyExcludeFromCollections: false
+  ---
+  
+  <main id="guide">
+    <article class="guide-intro">
+      <header>
+        <div class="header-content">
+          <a href="/" class="back-button">
+            <span class="material-symbols-outlined">chevron_left</span>
+            Home
+          </a>
+          <h1>{{ guide.title }}</h1>
+          <p>{{ guide.description }}</p>
+        </div>
+        <figure class="featured-image-container">
+          <img
+            src="{{ guide.imagePath }}"
+            alt="{{ guide.title }}"
+            class="featured-image">
+        </figure>
+      </header>
+    </article>
+  
+    {% for section in guide.sections %}
+      <section class="location-section" id="{{ section.slug }}">
+        <div class="content">
+          <h2 class="section-title">{{ section.title }}</h2>
+          <p>{{ section.description }}</p>
+          <figure>
+            <img src="{{ section.imagePath }}" alt="{{ section.title }}">
+          </figure>
+  
+          <div class="details">
+            {% if section.distanceKm %}
+              <p>
+                <strong>Distance:</strong>
+                {{ section.distanceKm }}km</p>
+            {% endif %}
+            {% if section.durationHrs %}
+              <p>
+                <strong>Duration:</strong>
+                {{ section.durationHrs }}hrs</p>
+            {% endif %}
+            {% if section.formattedFAQs and section.formattedFAQs.length > 0 %}
+              <div class="faqs">
+                <h3>FAQs</h3>
+                {% for faq in section.formattedFAQs %}
+                  <details>
+                    <summary>{{ faq.question }}</summary>
+                    <p>{{ faq.answer }}</p>
+                  </details>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endfor %}
+  
+</main> {% endcomment %}

@@ -1,61 +1,61 @@
 const Airtable = require("airtable");
 
 const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY
+  apiKey: process.env.AIRTABLE_API_KEY,
 }).base(process.env.AIRTABLE_BASE_ID);
 
-function parseEffort(tag) {
-  const distanceMatch = tag.match(/(\d+\.?\d*)\s*k?m/i);
-  const timeMatch = tag.match(/(\d+\.?\d*)\s*hr?s?/i);
-  let distance_km = null;
-  let duration_min = null;
-
-  if (distanceMatch) {
-    distance_km = parseFloat(distanceMatch[1]);
+/**
+ * Parses a time string (like "7:30" or "0:45") into a total number of hours.
+ * @param {string} timeString - The time string to parse.
+ * @returns {number|null} The total hours as a decimal, or null if invalid.
+ */
+function parseDurationToHours(timeString) {
+  if (!timeString || typeof timeString !== 'string') {
+    return null;
   }
-  if (timeMatch) {
-    duration_min = parseFloat(timeMatch[1]) * 60;
+  const parts = timeString.split(':');
+  if (parts.length !== 2) {
+    return null;
   }
-
-  return { distance_km, duration_min };
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
+  if (isNaN(hours) || isNaN(minutes)) {
+    return null;
+  }
+  return hours + minutes / 60;
 }
 
 module.exports = async () => {
-  const records = await base('Locations').select({ view: 'Grid view' }).all();
-  return records.map(record => {
+  const records = await base("Locations").select({ view: "Grid view" }).all();
+  
+  return records.map((record) => {
     const fields = record.fields;
-    let distance = null;
-    let duration = null;
 
-    if (fields.tags) {
-      const effortTag = fields.tags.find(tag => tag.match(/(\d+\.?\d*)\s*(km|hr|hrs|m)/i));
-      if (effortTag) {
-        const parsed = parseEffort(effortTag);
-        distance = parsed.distance_km;
-        duration = parsed.duration_min;
-      }
-    }
-
-const formattedTagsArray = (fields.formattedTags || '')
+    const formattedTagsArray = (fields.formattedTags || "")
       .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-      .map(tag => tag.trim().replace(/^"|"$/g, ''))
-      .filter(tag => tag);
+      .map((tag) => tag.trim().replace(/^"|"$/g, ""))
+      .filter((tag) => tag);
+
+    // --- FIX: Correctly parse duration and use direct data fields ---
+    const durationInHours = parseDurationToHours(fields.durationHrs);
 
     return {
       id: record.id,
       title: fields.title,
       description: fields.description,
-      shortDescription: fields.shortDescription,
       slug: fields.slug,
-      tags: fields.tags || [],
       formattedTags: formattedTagsArray,
       imagePath: `/Images/${fields.slug}.webp`,
       guideURL: fields.guideURL,
-      formattedDistance: fields.formattedDistance || '',
+      
+      // Use the direct value from the 'distanceKm' field.
+      distanceKm: fields.distanceKm || null,
+      
+      // Pass the numeric value (in hours) for filtering and the formatted string for display.
+      durationHrs: durationInHours,
       formattedDuration: fields.formattedDuration || '',
-      distanceKm: distance,
-      durationHrs: duration ? duration / 60 : null,
-      type: 'section'
+      
+      type: "section",
     };
   });
 };
