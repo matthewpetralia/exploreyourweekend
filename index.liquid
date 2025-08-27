@@ -130,7 +130,13 @@ permalink: /
       
                 card.innerHTML = `
                     <a href="${item.url}">
+                      <picture>
+          <source
+            srcset='${item.image}'
+            media='(max-width: 768px), (orientation: portrait)'
+            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
                         <img src="${item.image}" alt="${item.title}">
+                        </picture>
                         <div class="InfoPanel">
                             <h2>${item.title}</h2>
                             <p>${item.description}</p>
