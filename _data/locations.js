@@ -47,6 +47,7 @@ module.exports = async () => {
       formattedTags: formattedTagsArray,
       imagePath: `/Images/${fields.slug}.webp`,
       guideURL: fields.guideURL,
+      canonURL: `/locations/${fields.slug}/`,
       
       // Use the direct value from the 'distanceKm' field.
       distanceKm: fields.distanceKm || null,

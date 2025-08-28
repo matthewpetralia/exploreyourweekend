@@ -1,67 +1,201 @@
-{% comment %} ---
-  layout: "base.liquid"
-  pagination:
-      data: guides
-      size: 1
-      alias: guide
-  permalink: "/guides/{{ guide.slug }}/"
-  eleventyExcludeFromCollections: false
-  ---
-  
-  <main id="guide">
-    <article class="guide-intro">
-      <header>
-        <div class="header-content">
-          <a href="/" class="back-button">
-            <span class="material-symbols-outlined">chevron_left</span>
-            Home
-          </a>
+---
+pagination:
+  data: guides
+  size: 1
+  alias: guide
+permalink: "guides/{{ guide.slug }}/"
+---
+<!DOCTYPE html>
+<html lang="en">
+
+  {% include 'head.liquid' %}
+
+  <body>
+    {% include 'nav.liquid' %}
+
+    <main id="horizontal">
+      <article id="Intro" data-nav-id="Intro">
+        <div class="InfoPanel">
+          <h3>Explore Your Weekend</h3>
           <h1>{{ guide.title }}</h1>
           <p>{{ guide.description }}</p>
-        </div>
-        <figure class="featured-image-container">
-          <img
-            src="{{ guide.imagePath }}"
-            alt="{{ guide.title }}"
-            class="featured-image">
-        </figure>
-      </header>
-    </article>
-  
-    {% for section in guide.sections %}
-      <section class="location-section" id="{{ section.slug }}">
-        <div class="content">
-          <h2 class="section-title">{{ section.title }}</h2>
-          <p>{{ section.description }}</p>
-          <figure>
-            <img src="{{ section.imagePath }}" alt="{{ section.title }}">
-          </figure>
-  
-          <div class="details">
-            {% if section.distanceKm %}
-              <p>
-                <strong>Distance:</strong>
-                {{ section.distanceKm }}km</p>
-            {% endif %}
-            {% if section.durationHrs %}
-              <p>
-                <strong>Duration:</strong>
-                {{ section.durationHrs }}hrs</p>
-            {% endif %}
-            {% if section.formattedFAQs and section.formattedFAQs.length > 0 %}
-              <div class="faqs">
-                <h3>FAQs</h3>
-                {% for faq in section.formattedFAQs %}
-                  <details>
-                    <summary>{{ faq.question }}</summary>
-                    <p>{{ faq.answer }}</p>
-                  </details>
-                {% endfor %}
-              </div>
-            {% endif %}
+
+          <div id="onthispage">
+            <h3>On this Page</h3>
+            <div class="tags">
+              {% for location in guide.sections %}
+                <a href="#{{ location.slug }}">{{ location.title }}<span class="material-symbols-outlined">chevron_right</span>
+                </a>
+              {% endfor %}
+              <a href="#FAQ">Frequently Asked Questions<span class="material-symbols-outlined">chevron_right</span>
+              </a>
+            </div>
           </div>
         </div>
-      </section>
-    {% endfor %}
-  
-</main> {% endcomment %}
+        <a class="bwd" href="/">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </a>
+        <a class="fwd" href="#{{ guide.sections[0].slug }}">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </a>
+      </article>
+
+      {% for location in guide.sections %}
+        <article id="{{ location.slug }}">
+          <picture>
+            <source srcset="/Images/{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
+            <img
+              src="/Images/{{ location.slug }}.webp"
+              alt="{{ location.title }}"
+              itemprop="image">
+          </picture>
+
+          <a
+            class="bwd"
+            href="#"
+            data-nav="bwd">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </a>
+
+          <a
+            class="fwd"
+            href="#"
+            data-nav="fwd">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </a>
+
+          <div class="InfoPanel">
+            <h3 itemprop="headline">{{ guide.title }}</h3>
+            <h2>{{ location.title }}</h2>
+            <p itemprop="description">{{ location.description }}</p>
+          </div>
+        </article>
+      {% endfor %}
+
+      <article id="FAQ">
+        <div class="InfoPanel">
+          <h3>{{ guide.title }} Guide</h3>
+          <h2>FAQ</h2>
+        </div>
+      </article>
+    </main>
+
+    <div class="scroll-indicator"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll("main#horizontal > article");
+        const indicator = document.querySelector(".scroll-indicator");
+        const intro = document.querySelector("#Intro");
+      
+        // Fwd/Bwd Button Logic
+        sections.forEach((article, index) => {
+          const bwdButton = article.querySelector('[data-nav="bwd"]');
+          const fwdButton = article.querySelector('[data-nav="fwd"]');
+        
+          if (bwdButton) {
+            if (index === 1) { // The first location article is at index 1
+              bwdButton.href = '#Intro';
+            } else if (index > 1) {
+              bwdButton.href = '#' + sections[index - 1].id;
+            } else {
+               bwdButton.style.display = 'none';
+            }
+          }
+        
+          if (fwdButton) {
+            if (index === sections.length - 2) { // The last location article is the second to last element
+              fwdButton.href = '#FAQ';
+            } else if (index < sections.length - 2) {
+              fwdButton.href = '#' + sections[index + 1].id;
+            } else {
+              fwdButton.style.display = 'none';
+            }
+          }
+        });
+      
+        // Scroll Indicator Logic
+        if (!sections.length || !indicator || !intro) {
+          console.log("Sections, scroll indicator, or #Intro not found.");
+          return;
+        }
+      
+        // Initially hide the indicator
+        indicator.style.display = "none";
+      
+        // IntersectionObserver for showing/hiding the indicator
+        const introObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                // If #Intro is visible, hide the indicator
+                indicator.style.display = "none";
+              } else {
+                // If #Intro is not visible, show the indicator
+                indicator.style.display = "flex";
+              }
+            });
+          },
+          {
+            threshold: 0.1 // Trigger when a small part of #Intro is visible
+          }
+        );
+      
+        // Observe #Intro
+        introObserver.observe(intro);
+      
+        // Generate the segments dynamically
+        sections.forEach((section) => {
+          const segment = document.createElement("div");
+          segment.classList.add("segment");
+          
+          // Get h1 or h2 content for tooltip
+          const h1 = section.querySelector("h1");
+          const h2 = section.querySelector("h2");
+          const tooltipText = h1 ? h1.textContent : h2 ? h2.textContent : "Section";
+      
+          // Create and append the tooltip
+          const tooltip = document.createElement("span");
+          tooltip.classList.add("tooltip");
+          tooltip.textContent = tooltipText.trim();
+          segment.appendChild(tooltip);
+      
+          // Add click-to-scroll functionality
+          segment.addEventListener("click", () => {
+            section.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+      
+          indicator.appendChild(segment);
+        });
+      
+        // Update the active segment based on scroll
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const activeIndex = [...sections].indexOf(entry.target);
+                const segments = document.querySelectorAll(".scroll-indicator .segment");
+                
+                // Highlight the correct segment
+                segments.forEach((seg, index) => {
+                  if (index === activeIndex) {
+                    seg.classList.add("active");
+                  } else {
+                    seg.classList.remove("active");
+                  }
+                });
+              }
+            });
+          },
+          {
+            threshold: 0.6 // Adjusts how much of a section must be visible to trigger
+          }
+        );
+      
+        // Observe each section
+        sections.forEach((section) => observer.observe(section));
+      });
+    </script>
+
+  </body>
+</html>

@@ -679,91 +679,91 @@ document.querySelectorAll(".tab-button").forEach((button) => {
     });
 });
 
-function splitTagsIntoDivs() {
-    document.querySelectorAll(".tagContent").forEach((tagContainer) => {
-        // Ensure this container hasn't already been transformed
-        if (!tagContainer.classList.contains("transformed")) {
-            console.log("Original textContent:", tagContainer.textContent); // Debugging
+// function splitTagsIntoDivs() {
+//     document.querySelectorAll(".tagContent").forEach((tagContainer) => {
+//         // Ensure this container hasn't already been transformed
+//         if (!tagContainer.classList.contains("transformed")) {
+//             console.log("Original textContent:", tagContainer.textContent); // Debugging
 
-            // Extract and split tags only when the comma is not followed by a space
-            const tags = tagContainer.textContent
-                .split(/,(?! )/) // Split on commas not followed by a space
-                .map((tag) => tag.trim()); // Trim spaces around each tag
+//             // Extract and split tags only when the comma is not followed by a space
+//             const tags = tagContainer.textContent
+//                 .split(/,(?! )/) // Split on commas not followed by a space
+//                 .map((tag) => tag.trim()); // Trim spaces around each tag
 
-            console.log("Split tags:", tags); // Debugging
+//             console.log("Split tags:", tags); // Debugging
 
-            // Create a new container with the class "tags"
-            const tagsContainer = document.createElement("div");
-            tagsContainer.classList.add("tags");
+//             // Create a new container with the class "tags"
+//             const tagsContainer = document.createElement("div");
+//             tagsContainer.classList.add("tags");
 
-            // Create individual divs for each tag and append them to the new container
-            tags.forEach((tag) => {
-                const tagDiv = document.createElement("div");
-                tagDiv.textContent = tag;
-                tagsContainer.appendChild(tagDiv);
-            });
+//             // Create individual divs for each tag and append them to the new container
+//             tags.forEach((tag) => {
+//                 const tagDiv = document.createElement("div");
+//                 tagDiv.textContent = tag;
+//                 tagsContainer.appendChild(tagDiv);
+//             });
 
-            // Replace the old tagContent container with the new tags container
-            tagContainer.replaceWith(tagsContainer);
+//             // Replace the old tagContent container with the new tags container
+//             tagContainer.replaceWith(tagsContainer);
 
-            // Add the 'transformed' class to prevent re-processing
-            tagsContainer.classList.add("transformed");
-        }
-    });
-}
+//             // Add the 'transformed' class to prevent re-processing
+//             tagsContainer.classList.add("transformed");
+//         }
+//     });
+// }
 
-document.addEventListener("DOMContentLoaded", () => {
-    // splitTagsIntoDivs(); // Apply to static content
+// document.addEventListener("DOMContentLoaded", () => {
+//     // splitTagsIntoDivs(); // Apply to static content
 
-    const mainHorizontal = document.querySelector("main#horizontal");
-    const mainSections = mainHorizontal ? mainHorizontal.querySelectorAll("article") : [];
-    const landingSections = document.querySelectorAll("main#vertical > article");
+//     const mainHorizontal = document.querySelector("main#horizontal");
+//     const mainSections = mainHorizontal ? mainHorizontal.querySelectorAll("article") : [];
+//     const landingSections = document.querySelectorAll("main#vertical > article");
 
-    // Only add arrows if main#horizontal has more than one child
-    if (mainSections.length > 1) {
-        mainSections.forEach((section) => {
-            const firstChild = section.firstElementChild;
-            if (firstChild) {
-                firstChild.insertAdjacentHTML(
-                    "afterend",
-                    '<a class="bwd"><span class="material-symbols-outlined">chevron_left</span></a>' +
-                        '<a class="fwd"><span class="material-symbols-outlined">chevron_right</span></a>'
-                );
-            }
-        });
+//     // Only add arrows if main#horizontal has more than one child
+//     if (mainSections.length > 1) {
+//         mainSections.forEach((section) => {
+//             const firstChild = section.firstElementChild;
+//             if (firstChild) {
+//                 firstChild.insertAdjacentHTML(
+//                     "afterend",
+//                     '<a class="bwd"><span class="material-symbols-outlined">chevron_left</span></a>' +
+//                         '<a class="fwd"><span class="material-symbols-outlined">chevron_right</span></a>'
+//                 );
+//             }
+//         });
 
-        // Set up forward and backward links for each section
-        mainSections.forEach((section, index) => {
-            let fwdButton = section.querySelector(".fwd");
-            let bwdButton = section.querySelector(".bwd");
+//         // Set up forward and backward links for each section
+//         mainSections.forEach((section, index) => {
+//             let fwdButton = section.querySelector(".fwd");
+//             let bwdButton = section.querySelector(".bwd");
 
-            if (fwdButton && mainSections[index + 1]) {
-                fwdButton.href = `#${mainSections[index + 1].id}`;
-            }
-            if (bwdButton && index > 0) {
-                bwdButton.href = `#${mainSections[index - 1].id}`;
-            }
-        });
+//             if (fwdButton && mainSections[index + 1]) {
+//                 fwdButton.href = `#${mainSections[index + 1].id}`;
+//             }
+//             if (bwdButton && index > 0) {
+//                 bwdButton.href = `#${mainSections[index - 1].id}`;
+//             }
+//         });
 
-        // Loop to connect first and last sections
-        const lastSection = mainSections[mainSections.length - 1];
-        if (lastSection) {
-            lastSection.querySelector(".fwd").href = `#${mainSections[0].id}`;
-            mainSections[0].querySelector(".bwd").href = "/";
-        }
-    }
+//         // Loop to connect first and last sections
+//         const lastSection = mainSections[mainSections.length - 1];
+//         if (lastSection) {
+//             lastSection.querySelector(".fwd").href = `#${mainSections[0].id}`;
+//             mainSections[0].querySelector(".bwd").href = "/";
+//         }
+//     }
 
-    // Process landing sections
-    landingSections.forEach((section) => {
-        const firstChild = section.firstElementChild;
-        if (firstChild) {
-            firstChild.insertAdjacentHTML(
-                "afterend",
-                '<a class="fwd"><span class="material-symbols-outlined">chevron_right</span></a>'
-            );
-        }
-    });
-});
+//     // Process landing sections
+//     landingSections.forEach((section) => {
+//         const firstChild = section.firstElementChild;
+//         if (firstChild) {
+//             firstChild.insertAdjacentHTML(
+//                 "afterend",
+//                 '<a class="fwd"><span class="material-symbols-outlined">chevron_right</span></a>'
+//             );
+//         }
+//     });
+// });
 
 // NAV MENU TOGGLE
 function myFunction() {
@@ -774,92 +774,92 @@ function myFunction() {
 //
 //
 //Scroll Indicator
-document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll("main#horizontal > article");
-    const indicator = document.querySelector(".scroll-indicator");
-    const intro = document.querySelector("#Intro");
+// document.addEventListener("DOMContentLoaded", function () {
+//     const sections = document.querySelectorAll("main#horizontal > article");
+//     const indicator = document.querySelector(".scroll-indicator");
+//     const intro = document.querySelector("#Intro");
 
-    // Ensure we have sections, the indicator, and #Intro
-    if (!sections.length || !indicator || !intro) {
-        console.log("Sections, scroll indicator, or #Intro not found.");
-        return;
-    }
+//     // Ensure we have sections, the indicator, and #Intro
+//     if (!sections.length || !indicator || !intro) {
+//         console.log("Sections, scroll indicator, or #Intro not found.");
+//         return;
+//     }
 
-    // Initially hide the indicator
-    indicator.style.display = "none";
+//     // Initially hide the indicator
+//     indicator.style.display = "none";
 
-    // IntersectionObserver for showing/hiding the indicator
-    const introObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    // If #Intro is visible, hide the indicator
-                    indicator.style.display = "none";
-                } else {
-                    // If #Intro is not visible, show the indicator
-                    indicator.style.display = "flex";
-                }
-            });
-        },
-        {
-            threshold: 0.1 // Trigger when even a small part of #Intro is visible
-        }
-    );
+//     // IntersectionObserver for showing/hiding the indicator
+//     const introObserver = new IntersectionObserver(
+//         (entries) => {
+//             entries.forEach((entry) => {
+//                 if (entry.isIntersecting) {
+//                     // If #Intro is visible, hide the indicator
+//                     indicator.style.display = "none";
+//                 } else {
+//                     // If #Intro is not visible, show the indicator
+//                     indicator.style.display = "flex";
+//                 }
+//             });
+//         },
+//         {
+//             threshold: 0.1 // Trigger when even a small part of #Intro is visible
+//         }
+//     );
 
-    // Observe #Intro
-    introObserver.observe(intro);
+//     // Observe #Intro
+//     introObserver.observe(intro);
 
-    // Generate the segments dynamically
-    sections.forEach((section) => {
-        const segment = document.createElement("div");
-        segment.classList.add("segment");
+//     // Generate the segments dynamically
+//     sections.forEach((section) => {
+//         const segment = document.createElement("div");
+//         segment.classList.add("segment");
 
-        // Get h1 or h2 content for tooltip
-        const h1 = section.querySelector("h1");
-        const h2 = section.querySelector("h2");
-        const tooltipText = h1 ? h1.textContent : h2 ? h2.textContent : "Section";
+//         // Get h1 or h2 content for tooltip
+//         const h1 = section.querySelector("h1");
+//         const h2 = section.querySelector("h2");
+//         const tooltipText = h1 ? h1.textContent : h2 ? h2.textContent : "Section";
 
-        // Create and append the tooltip
-        const tooltip = document.createElement("span");
-        tooltip.classList.add("tooltip");
-        tooltip.textContent = tooltipText.trim(); // Use the text content
-        segment.appendChild(tooltip);
+//         // Create and append the tooltip
+//         const tooltip = document.createElement("span");
+//         tooltip.classList.add("tooltip");
+//         tooltip.textContent = tooltipText.trim(); // Use the text content
+//         segment.appendChild(tooltip);
 
-        // Add click-to-scroll functionality
-        segment.addEventListener("click", () => {
-            section.scrollIntoView({ behavior: "smooth", block: "start" });
-        });
+//         // Add click-to-scroll functionality
+//         segment.addEventListener("click", () => {
+//             section.scrollIntoView({ behavior: "smooth", block: "start" });
+//         });
 
-        indicator.appendChild(segment);
-    });
+//         indicator.appendChild(segment);
+//     });
 
-    // Update the active segment based on scroll
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const activeIndex = [...sections].indexOf(entry.target);
-                    const segments = document.querySelectorAll(".scroll-indicator .segment");
+//     // Update the active segment based on scroll
+//     const observer = new IntersectionObserver(
+//         (entries) => {
+//             entries.forEach((entry) => {
+//                 if (entry.isIntersecting) {
+//                     const activeIndex = [...sections].indexOf(entry.target);
+//                     const segments = document.querySelectorAll(".scroll-indicator .segment");
 
-                    // Highlight the correct segment
-                    segments.forEach((seg, index) => {
-                        if (index === activeIndex) {
-                            seg.classList.add("active");
-                        } else {
-                            seg.classList.remove("active");
-                        }
-                    });
-                }
-            });
-        },
-        {
-            threshold: 0.6 // Adjusts how much of a section must be visible to trigger
-        }
-    );
+//                     // Highlight the correct segment
+//                     segments.forEach((seg, index) => {
+//                         if (index === activeIndex) {
+//                             seg.classList.add("active");
+//                         } else {
+//                             seg.classList.remove("active");
+//                         }
+//                     });
+//                 }
+//             });
+//         },
+//         {
+//             threshold: 0.6 // Adjusts how much of a section must be visible to trigger
+//         }
+//     );
 
-    // Observe each section
-    sections.forEach((section) => observer.observe(section));
-});
+//     // Observe each section
+//     sections.forEach((section) => observer.observe(section));
+// });
 
 document.addEventListener("DOMContentLoaded", function () {
     // Setup scroll handler for main container

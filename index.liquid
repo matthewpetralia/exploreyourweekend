@@ -38,26 +38,24 @@ permalink: /
             id="{{ guide.slug }}"
             itemscope
             itemtype="https://schema.org/CreativeWork">
-            <picture>
-              <source srcset="{{guide.imagePath}}" media="(min-width: 768px), (orientation: landscape)" />
-              <img
-                src="{{guide.imagePath}}"
-                alt="{{ guide.title }}"
-                itemprop="image" />
-            </picture>
-            <a
-              class="fwd"
-              href="/guides/{{ guide.slug }}/"
-              itemprop="url">&nbsp;</a>
-            <div class="InfoPanel">
-              <h2 itemprop="headline">{{ guide.title }}</h2>
-              <p itemprop="description">{{ guide.description }}</p>
-              <div class="tags" itemprop="keywords">
-                {% for tag in guide.formattedTags %}
-                  <div class="tag">{{ tag }}</div>
-                {% endfor %}
+            <a href="/guides/{{ guide.slug }}/" itemprop="url">
+              <picture>
+                <source srcset="{{guide.imagePath}}" media="(min-width: 768px), (orientation: landscape)" />
+                <img
+                  src="{{guide.imagePath}}"
+                  alt="{{ guide.title }}"
+                  itemprop="image" />
+              </picture>
+              <div class="InfoPanel">
+                <h2 itemprop="headline">{{ guide.title }}</h2>
+                <p itemprop="description">{{ guide.description }}</p>
+                <div class="tags" itemprop="keywords">
+                  {% for tag in guide.formattedTags %}
+                    <div class="tag">{{ tag }}</div>
+                  {% endfor %}
+                </div>
               </div>
-            </div>
+            </a>
           </article>
         {% endfor %}
       </div>

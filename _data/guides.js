@@ -1,39 +1,61 @@
 const Airtable = require("airtable");
 
 const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY
+  apiKey: process.env.AIRTABLE_API_KEY
 }).base(process.env.AIRTABLE_BASE_ID);
 
 module.exports = async () => {
-  const records = await base('Guides').select({ view: 'Grid view' }).all();
-  return records.map(record => {
-    const fields = record.fields;
+  try {
+    // Fetch all records from the Guides table
+    const guideRecords = await base('Guides').select({ 
+      view: 'Grid view' 
+    }).all();
 
-    // A robust way to handle the formattedTags field
-    let formattedTagsArray = [];
-    if (fields.formattedTags) {
-      if (Array.isArray(fields.formattedTags)) {
-        // If it's already an array, use it directly
-        formattedTagsArray = fields.formattedTags.filter(tag => tag);
-      } else if (typeof fields.formattedTags === 'string') {
-        // If it's a string, split it and trim whitespace
-const formattedTagsArray = (fields.formattedTags || '')
-      .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-      .map(tag => tag.trim().replace(/^"|"$/g, ''))
-      .filter(tag => tag);
-      }
-    }
+    // Fetch all records from the Locations table
+    const locationRecords = await base('Locations').select({ 
+      view: 'Grid view' 
+    }).all();
 
-    return {
-      id: record.id,
-      title: fields.title,
-      description: fields.description,
-      slug: fields.slug,
-      formattedTags: formattedTagsArray,
-      linkedLocations: fields.Locations || [],
-      url: `/${fields.slug}/`,
-      imagePath: `/Images/${fields.slug}.webp`,
-      type: 'page'
-    };
-  });
+    // Create a mapping of location IDs to their full record data for quick lookup
+    const locationMap = {};
+    locationRecords.forEach(locationRecord => {
+      locationMap[locationRecord.id] = locationRecord.fields;
+    });
+
+    // Process each guide record and link the locations
+    return guideRecords.map(guideRecord => {
+      const guideFields = guideRecord.fields;
+      
+      // Get the list of linked location IDs
+      const linkedLocationIds = guideFields.Locations || [];
+      
+      // Build the sections array using the locationMap
+      const sectionsData = linkedLocationIds.map(locationId => {
+        const locationFields = locationMap[locationId];
+        return {
+              title: locationFields.title,
+              description: locationFields.description,
+              slug: locationFields.slug,
+              canonURL: `/locations/${locationFields.slug}/`,
+              imagePath: `/Images/${locationFields.slug}.webp`,
+            };
+          });
+
+      return {
+        id: guideRecord.id,
+        title: guideFields.title,
+        description: guideFields.description,
+        slug: guideFields.slug,
+        formattedTags: guideFields.formattedTags,
+        sections: sectionsData,
+        url: `/${guideFields.slug}/`,
+        canonURL: `/guides/${guideFields.slug}/`,
+        imagePath: `/Images/${guideFields.slug}.webp`,
+        type: 'page'
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching data from Airtable:", error);
+    return [];
+  }
 };
