@@ -65,147 +65,115 @@ permalink: /
 
     <script src="/assets/js/lunr.js"></script>
     <script>
-          (async () => {
-        // --- DOM Elements ---
-        const allContentContainer = document.getElementById('all-content-cards');
-        const searchResultsContainer = document.getElementById('search-results-container');
-        const searchInput = document.querySelector('.search-input');
-        const clearButton = document.querySelector('.clear-search-button');
-        
-        // --- Fetch Search Data and Initialize Lunr ---
-        const searchData = await fetch('/search.json').then(response => response.json());
-        const searchIndex = lunr.Index.load(searchData.index);
-        const searchStore = searchData.store;
-      
-        // --- Helper Functions ---
-      
-        /**
-         * --- NEW: Formats a duration in hours into a readable string like "1hr 30mins". ---
-         * @param {number} totalHours - The duration in hours (e.g., 2.5).
-         * @returns {string} The formatted string.
-         */
-        const formatDuration = (totalHours) => {
-            if (totalHours === null || typeof totalHours === 'undefined') {
-                return '';
-            }
-            const hours = Math.floor(totalHours);
-            const minutes = Math.round((totalHours - hours) * 60);
-            
-            let parts = [];
-            if (hours > 0) {
-                parts.push(`${hours}hr${hours > 1 ? 's' : ''}`);
-            }
-            if (minutes > 0) {
-                parts.push(`${minutes}min${minutes > 1 ? 's' : ''}`);
-            }
-            return parts.join(' ');
-        };
-      
-        const updateUrl = (query) => {
-            const url = new URL(window.location.href);
-            if (query) url.searchParams.set('q', query);
-            else url.searchParams.delete('q');
-            history.pushState({}, '', url);
-        };
-      
-        const renderResults = (results) => {
-            searchResultsContainer.innerHTML = '';
-            if (!results || results.length === 0) {
-                searchResultsContainer.innerHTML = '<p>No results found.</p>';
-                return;
-            }
-      
-            results.forEach(item => {
-                const card = document.createElement('article');
-                card.className = 'search-result-card';
-                
-                const tagsHtml = (item.formattedTags || []).map(tag => `<div class="tag">${tag}</div>`).join('');
-                
-                // --- FIX: Use the new formatDuration function and the correct data ---
-                const distanceHtml = item.distanceKm ? `<strong>Distance:</strong> ${item.distanceKm}km` : '';
-                const durationHtml = item.durationHrs ? `<strong>Duration:</strong> ${formatDuration(item.durationHrs)}` : '';
-                const metaSpacer = distanceHtml && durationHtml ? ' ' : '';
-      
-                card.innerHTML = `
-                    <a href="${item.url}">
-                      <picture>
-          <source
-            srcset='${item.image}'
-            media='(max-width: 768px), (orientation: portrait)'
-            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
-                        <img src="${item.image}" alt="${item.title}">
-                        </picture>
-                        <div class="InfoPanel">
-                            <h2>${item.title}</h2>
-                            <p>${item.description}</p>
-                            <div class="tags">${tagsHtml}</div>
-                            <p class="meta">${distanceHtml}${metaSpacer}${durationHtml}</p>
-                        </div>
-                    </a>
-                `;
-                searchResultsContainer.appendChild(card);
-            });
-        };
-      
-        /**
-         * --- The main search and filter function with the new HYBRID logic ---
-         */
-        const searchAndFilter = () => {
-            const query = searchInput.value.trim();
-      
-            if (!query) {
-                allContentContainer.style.display = 'grid';
-                searchResultsContainer.style.display = 'none';
-                return;
-            }
-      
-            // --- FIX: Hybrid search query logic ---
-            let lunrQuery = '';
-            const queryWords = query.split(/\s+/).filter(Boolean);
-      
-            if (queryWords.length > 0) {
-                // 1. Fuzzy match part: For "type-ahead" feel (e.g., "rainf" matches "rainforest")
-                const fuzzyQuery = queryWords.map(word => `${word}*`).join(' ');
-                
-                // 2. Exact match part (for single words): Boosts exact word matches
-                const exactQuery = queryWords.map(word => `${word}`).join(' ');
-      
-                // 3. Phrase match part: Searches for the special concatenated phrase token
-                const phraseQuery = `tags:${queryWords.join('')}`;
-      
-                // Combine them, boosting the phrase and exact matches significantly
-                lunrQuery = `${fuzzyQuery} ${exactQuery}^10 ${phraseQuery}^50`;
-            }
-      
-            let results = [];
-            if (lunrQuery) {
-                results = searchIndex.search(lunrQuery).map(result => searchStore[result.ref]);
-            }
-      
-            allContentContainer.style.display = 'none';
-            searchResultsContainer.style.display = 'grid';
-            renderResults(results);
-        };
-      
-        // --- Event Listeners ---
-        searchInput.addEventListener('input', () => {
-            updateUrl(searchInput.value);
-            searchAndFilter();
-        });
-      
-        clearButton.addEventListener('click', () => {
-            searchInput.value = '';
-            updateUrl('');
-            searchAndFilter();
-        });
-      
-        // --- Initial Load ---
-        const initialQuery = new URLSearchParams(window.location.search).get('q');
-        if (initialQuery) {
-            searchInput.value = initialQuery;
-            searchAndFilter();
-        }
-          })();
+            (async () => {
+              const allContentContainer = document.getElementById('all-content-cards');
+              const searchResultsContainer = document.getElementById('search-results-container');
+              const searchInput = document.querySelector('.search-input');
+              const clearButton = document.querySelector('.clear-search-button');
+              
+              const searchData = await fetch('/search.json').then(response => response.json());
+              const searchIndex = lunr.Index.load(searchData.index);
+              const searchStore = searchData.store;
+            
+              const updateUrl = (query) => {
+                  const url = new URL(window.location.href);
+                  if (query) url.searchParams.set('q', query);
+                  else url.searchParams.delete('q');
+                  history.pushState({}, '', url);
+              };
+            
+              const renderResults = (results) => {
+                  searchResultsContainer.innerHTML = '';
+                  if (!results || results.length === 0) {
+                      searchResultsContainer.innerHTML = '<p>No results found.</p>';
+                      return;
+                  }
+            
+                  results.forEach(item => {
+                      const card = document.createElement('article');
+                      card.className = 'search-result-card';
+                      
+                      const tagsHtml = (item.formattedTags || []).map(tag => `<div class="tag">${tag}</div>`).join('');
+            
+                      let distanceTag = '';
+                      if (item.formattedDistance) {
+                        distanceTag = `<div class="tag">${item.formattedDistance}</div>`;
+                      }
+            
+                      let durationTag = '';
+                      if (item.formattedDuration) {
+                        durationTag = `<div class="tag">${item.formattedDuration}</div>`;
+                      }
+            
+                      const combinedTagsHtml = distanceTag + durationTag + tagsHtml;
+            
+                      card.innerHTML = `
+      <a href="${item.canonicalURL || item.url}">
+      <picture>
+      <source
+      srcset='${item.image}'
+      media='(max-width: 768px), (orientation: portrait)'
+      onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
+      <img src="${item.image}" alt="${item.title}">
+      </picture>
+      <div class="InfoPanel">
+      <h2>${item.title}</h2>
+      <p>${item.description}</p>
+      <div class="tags">${combinedTagsHtml}</div>
+      </div>
+      </a>
+      `;
+                      searchResultsContainer.appendChild(card);
+                  });
+              };
+            
+              const searchAndFilter = () => {
+                  const query = searchInput.value.trim();
+            
+                  if (!query) {
+                      allContentContainer.style.display = 'grid';
+                      searchResultsContainer.style.display = 'none';
+                      return;
+                  }
+            
+                  let lunrQuery = '';
+                  const queryWords = query.split(/\s+/).filter(Boolean);
+            
+                  if (queryWords.length > 0) {
+                      const fuzzyQuery = queryWords.map(word => `${word}*`).join(' ');
+                      const exactQuery = queryWords.map(word => `${word}`).join(' ');
+                      const phraseQuery = `tags:${queryWords.join('')}`;
+            
+                      lunrQuery = `${fuzzyQuery} ${exactQuery}^10 ${phraseQuery}^50`;
+                  }
+            
+                  let results = [];
+                  if (lunrQuery) {
+                      results = searchIndex.search(lunrQuery).map(result => searchStore[result.ref]);
+                  }
+            
+                  allContentContainer.style.display = 'none';
+                  searchResultsContainer.style.display = 'grid';
+                  renderResults(results);
+              };
+            
+              searchInput.addEventListener('input', () => {
+                  updateUrl(searchInput.value);
+                  searchAndFilter();
+              });
+            
+              clearButton.addEventListener('click', () => {
+                  searchInput.value = '';
+                  updateUrl('');
+                  searchAndFilter();
+              });
+            
+              const initialQuery = new URLSearchParams(window.location.search).get('q');
+              if (initialQuery) {
+                  searchInput.value = initialQuery;
+                  searchAndFilter();
+              }
+            })();
     </script>
   </body>
 </html>

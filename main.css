@@ -35,6 +35,7 @@ main img {
 
 main#vertical > article > a,
 main#vertical #all-content-cards > article > a,
+main#vertical #search-results-container > article > a,
 nav #search-results > article > a {
     height: 100%;
 }

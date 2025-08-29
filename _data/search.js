@@ -6,14 +6,12 @@ module.exports = async () => {
   const allContent = [...(await locations()), ...(await guides())];
 
   const idx = lunr(function () {
-    // Keep the default pipeline for fuzzy matching on single words
     this.ref('id');
     this.field('title', { boost: 10 });
     this.field('description');
     this.field('tags', { boost: 20 });
 
     allContent.forEach(item => {
-      // Defensive coding to ensure item is valid
       if (item.title && typeof item.title === 'string' && item.title.trim().length > 0) {
         const doc = {
           id: item.id,
@@ -22,15 +20,11 @@ module.exports = async () => {
           tags: ''
         };
 
-        // --- FIX: Create special phrase tokens for multi-word tags ---
         if (item.formattedTags && Array.isArray(item.formattedTags)) {
           const tagsWithPhrases = item.formattedTags.map(tag => {
-            // If the tag has spaces, create a concatenated version for exact phrase matching
-            // e.g., "New South Wales" -> "NewSouthWales"
             return tag.includes(' ') ? tag.replace(/\s+/g, '') : tag;
           });
           
-          // Join original tags and new phrase tokens into one searchable string
           doc.tags = item.formattedTags.join(' ') + ' ' + tagsWithPhrases.join(' ');
         }
         this.add(doc);
@@ -41,15 +35,16 @@ module.exports = async () => {
   const store = {};
   allContent.forEach(item => {
     store[item.id] = {
-      url: item.guideURL || item.url,
+      url: item.canonicalURL || item.url,
+      canonicalURL: item.canonicalURL || null,
       image: item.imagePath,
       title: item.title,
       description: item.description,
       type: item.type,
-      // Pass both the numeric and formatted versions
       distanceKm: item.distanceKm,
       durationHrs: item.durationHrs,
       formattedDuration: item.formattedDuration,
+      formattedDistance: item.formattedDistance, // <-- This was missing
       formattedTags: item.formattedTags,
     };
   });

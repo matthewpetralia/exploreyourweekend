@@ -36,7 +36,7 @@ module.exports = async () => {
               title: locationFields.title,
               description: locationFields.description,
               slug: locationFields.slug,
-              canonURL: `/locations/${locationFields.slug}/`,
+              canonicalURL: `/locations/${locationFields.slug}/`,
               imagePath: `/Images/${locationFields.slug}.webp`,
             };
           });
@@ -49,7 +49,7 @@ module.exports = async () => {
         formattedTags: guideFields.formattedTags,
         sections: sectionsData,
         url: `/${guideFields.slug}/`,
-        canonURL: `/guides/${guideFields.slug}/`,
+        canonicalURL: `/guides/${guideFields.slug}/`,
         imagePath: `/Images/${guideFields.slug}.webp`,
         type: 'page'
       };

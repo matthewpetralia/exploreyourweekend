@@ -5,24 +5,51 @@ const base = new Airtable({
 }).base(process.env.AIRTABLE_BASE_ID);
 
 /**
- * Parses a time string (like "7:30" or "0:45") into a total number of hours.
- * @param {string} timeString - The time string to parse.
- * @returns {number|null} The total hours as a decimal, or null if invalid.
+ * Formats a duration in seconds into a readable string.
+ * @param {number} totalSeconds - The duration in seconds.
+ * @returns {string|null} The formatted string, or null if 0 or less.
  */
-function parseDurationToHours(timeString) {
-  if (!timeString || typeof timeString !== 'string') {
+function formatDuration(totalSeconds) {
+  if (totalSeconds === null || typeof totalSeconds !== 'number' || totalSeconds <= 0) {
     return null;
   }
-  const parts = timeString.split(':');
-  if (parts.length !== 2) {
+  
+  const totalMinutes = Math.round(totalSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  
+  let parts = [];
+  if (hours > 0) {
+    parts.push(`${hours}hr${hours > 1 ? 's' : ''}`);
+  }
+  if (minutes > 0) {
+    parts.push(`${minutes}min${minutes > 1 ? 's' : ''}`);
+  }
+  
+  return parts.join(' ');
+}
+
+/**
+ * Formats a distance in kilometers into a readable string.
+ * @param {number} distanceKm - The distance in kilometers.
+ * @returns {string|null} The formatted string, or null if 0 or less.
+ */
+function formatDistance(distanceKm) {
+  if (distanceKm === null || typeof distanceKm === 'undefined' || distanceKm <= 0) {
     return null;
   }
-  const hours = parseInt(parts[0], 10);
-  const minutes = parseInt(parts[1], 10);
-  if (isNaN(hours) || isNaN(minutes)) {
-    return null;
+
+  if (distanceKm % 1 === 0) {
+    return `${distanceKm}km`;
   }
-  return hours + minutes / 60;
+  
+  if (distanceKm < 1) {
+    const meters = Math.round(distanceKm * 1000);
+    if (meters === 0) return null;
+    return `${meters}m`;
+  }
+  
+  return `${distanceKm.toFixed(1)}km`;
 }
 
 module.exports = async () => {
@@ -36,8 +63,8 @@ module.exports = async () => {
       .map((tag) => tag.trim().replace(/^"|"$/g, ""))
       .filter((tag) => tag);
 
-    // --- FIX: Correctly parse duration and use direct data fields ---
-    const durationInHours = parseDurationToHours(fields.durationHrs);
+    const formattedDurationString = formatDuration(fields.durationHrs);
+    const formattedDistanceString = formatDistance(fields.distanceKm);
 
     return {
       id: record.id,
@@ -47,14 +74,13 @@ module.exports = async () => {
       formattedTags: formattedTagsArray,
       imagePath: `/Images/${fields.slug}.webp`,
       guideURL: fields.guideURL,
-      canonURL: `/locations/${fields.slug}/`,
+      canonicalURL: `/locations/${fields.slug}/`,
       
-      // Use the direct value from the 'distanceKm' field.
       distanceKm: fields.distanceKm || null,
+      durationHrs: fields.durationHrs,
       
-      // Pass the numeric value (in hours) for filtering and the formatted string for display.
-      durationHrs: durationInHours,
-      formattedDuration: fields.formattedDuration || '',
+      formattedDuration: formattedDurationString,
+      formattedDistance: formattedDistanceString,
       
       type: "section",
     };

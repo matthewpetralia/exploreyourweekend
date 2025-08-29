@@ -22,7 +22,14 @@
   <meta name="description" content="{{ page_description }}">
   <meta name="author" content="Matthew Petralia">
 
-  <link rel="canonical" href="https://exploreyourweekend.com{{ page_url }}">
+  {% if guide.canonicalUrl %}
+    <link rel="canonical" href="https://exploreyourweekend.com{{ guide.canonicalUrl }}" />
+  {% elsif location.canonicalUrl %}
+    <link rel="canonical" href="https://exploreyourweekend.com{{ location.canonicalUrl }}" />
+  {% else %}
+    <link rel="canonical" href="https://exploreyourweekend.com{{ permalink }}" />
+  {% endif %}
+
   <meta property="og:title" content="{{ page_title }}">
   <meta property="og:description" content="{{ page_description }}">
   <meta property="og:url" content="https://exploreyourweekend.com{{ page_url }}">
