@@ -114,13 +114,38 @@ const tagMappings = {
         });
 
         // Define a function to categorize a single tag
-        const getTagGroup = (tag) => {
-            if (tag.includes("National Park") || tag.includes("Nature Reserve")) return "National Parks";
-            if (tag.includes("New South Wales") || tag.includes("Queensland")) return "Location";
-            if (tag.includes("hr") || tag.includes("min")) return "Time";
-            if (tag.includes("km") || tag.includes("m")) return "Distance";
-            return "Other";
-        };
+        // Define a function to categorize a single tag
+const getTagGroup = (tag) => {
+    const lowerTag = tag.toLowerCase();
+
+    // Check for specific National Park sections first
+    if (lowerTag.includes("binna burra section") || lowerTag.includes("green mountains section")) {
+        return "National Parks";
+    }
+
+    // Then check for the more general National Park tags
+    if (lowerTag.includes("national park") || lowerTag.includes("nature reserve")) {
+        return "National Parks";
+    }
+
+    // Check for locations
+    if (lowerTag.includes("new south wales") || lowerTag.includes("queensland")) {
+        return "Location";
+    }
+
+    // Check for time tags
+    if (lowerTag.includes("hr") || lowerTag.includes("min")) {
+        return "Time";
+    }
+
+    // Check for distance tags
+    if (lowerTag.includes("km") || lowerTag.includes("m")) {
+        return "Distance";
+    }
+    
+    // Default to Other
+    return "Other";
+};
         
         const groupedTags = {
             "National Parks": [],
