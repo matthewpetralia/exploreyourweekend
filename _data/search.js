@@ -37,14 +37,14 @@ module.exports = async () => {
     store[item.id] = {
       url: item.canonicalURL || item.url,
       canonicalURL: item.canonicalURL || null,
-      image: item.imagePath,
+      imagePath: item.imagePath,
       title: item.title,
       description: item.description,
       type: item.type,
       distanceKm: item.distanceKm,
       durationHrs: item.durationHrs,
       formattedDuration: item.formattedDuration,
-      formattedDistance: item.formattedDistance, // <-- This was missing
+      formattedDistance: item.formattedDistance,
       formattedTags: item.formattedTags,
     };
   });
