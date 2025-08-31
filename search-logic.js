@@ -1,81 +1,18 @@
 /*eslint-env es6*/
 
-// This file replaces the entire inline script in index.liquid.
-// It is designed to be self-contained and handles all search and tag filtering logic.
-
-// Shared helpers for search
 const SearchHelpers = {
-    normaliseTag(tag) {
-        if (!tag || typeof tag !== 'string') {
-            return null;
-        }
-
-        const lowerTag = tag.toLowerCase();
-
-        // Prioritize specific string tags first
-        if (lowerTag.includes("new south wales")) return "New South Wales";
-        if (lowerTag.includes("queensland")) return "Queensland";
-        if (lowerTag.includes("national park")) return "National Park";
-        if (lowerTag.includes("nature reserve")) return "Nature Reserve";
-        if (lowerTag.includes("binna burra section")) return "Binna Burra Section";
-        if (lowerTag.includes("green mountains section")) return "Green Mountains Section";
-        if (lowerTag === "beaches" || lowerTag === "beach") return "Beach";
-        if (lowerTag.includes("drive")) return "Scenic Drive";
-        
-        // Handle numeric tags (distance and duration) next
-        if (/\d+/.test(tag)) {
-            const value = parseFloat(tag);
-            const isKm = lowerTag.includes("km");
-            const isM = lowerTag.includes("m");
-            const isHrs = lowerTag.includes("hr");
-            const isMins = lowerTag.includes("min");
-
-            if (isM && !isKm) {
-                return "less than 1km";
-            }
-            if (isKm) {
-                if (value < 1) return "less than 1km";
-                if (value <= 5) return "1-5km";
-                if (value <= 10) return "5-10km";
-                if (value <= 20) return "10-20km";
-                return "20+km";
-            }
-            if (isHrs) {
-                if (value < 2) return "less than 2hrs";
-                if (value <= 4) return "2-4hrs";
-                return "4+hrs";
-            }
-            if (isMins) {
-                const totalHours = value / 60;
-                if (totalHours < 2) return "less than 2hrs";
-                return "2+hrs";
-            }
-        }
-        
-        // Handle plurals as a final check
-        if (tag.endsWith("s") && !tag.endsWith("ss")) {
-            const exceptions = ["beaches", "classes", "grass"];
-            if (!exceptions.some(exception => exception.toLowerCase() === lowerTag)) {
-                return tag.slice(0, -1);
-            }
-        }
-
-        return tag;
-    },
-    processTags(tags) {
-        if (!Array.isArray(tags)) return [];
-        return [...new Set(tags.map(this.normaliseTag).filter(t => t))];
-    },
     sortTags(tags) {
         const distanceOrder = ["less than 1km", "1-5km", "5-10km", "10-20km", "20+km"];
         const timeOrder = ["less than 2hrs", "2-4hrs", "4+hrs"];
-        const distanceTags = tags.filter(tag => distanceOrder.includes(tag));
-        const timeTags = tags.filter(tag => timeOrder.includes(tag));
-        const otherTags = tags.filter(tag => !distanceOrder.includes(tag) && !timeOrder.includes(tag));
+        
+        const distanceTags = tags.filter(tag => tag.group === "Distance" && distanceOrder.includes(tag.name));
+        const timeTags = tags.filter(tag => tag.group === "Time" && timeOrder.includes(tag.name));
+        const otherTags = tags.filter(tag => tag.group !== "Distance" && tag.group !== "Time");
+        
         return [
-            ...distanceOrder.filter(tag => distanceTags.includes(tag)),
-            ...timeOrder.filter(tag => timeTags.includes(tag)),
-            ...otherTags.sort()
+            ...distanceOrder.map(name => distanceTags.find(tag => tag.name === name)).filter(Boolean),
+            ...timeOrder.map(name => timeTags.find(tag => tag.name === name)).filter(Boolean),
+            ...otherTags.sort((a, b) => a.name.localeCompare(b.name))
         ];
     }
 };
@@ -93,11 +30,18 @@ const contexts = {
 };
 
 let searchIndex, searchStore;
-const tagMappings = {
-    Coastal: ["Beach"]
-};
 
-// Main function to run everything
+function checkTagGroups(groupedTags) {
+    console.log("Checking Tag Groups...");
+    for (const group in groupedTags) {
+        console.log(`- Group: ${group}`);
+        groupedTags[group].forEach(tag => {
+            console.log(`  - Tag: ${tag.name} (Group: ${tag.group})`);
+        });
+    }
+    console.log("Check complete.");
+}
+
 (async () => {
     try {
         const response = await fetch('/search.json');
@@ -105,85 +49,31 @@ const tagMappings = {
         searchIndex = lunr.Index.load(searchData.index);
         searchStore = searchData.store;
 
-        const allTags = [];
+        const allUniqueTags = new Map();
+        const groupedTags = {};
+
         Object.values(searchStore).forEach(item => {
-            const allItemTags = item.formattedTags || [];
-            if (item.formattedDistance) allItemTags.push(item.formattedDistance);
-            if (item.formattedDuration) allItemTags.push(item.formattedDuration);
-            allTags.push(...SearchHelpers.processTags(allItemTags));
-        });
-
-        // Define a function to categorize a single tag
-        // Define a function to categorize a single tag
-const getTagGroup = (tag) => {
-    const lowerTag = tag.toLowerCase();
-
-    // Check for specific National Park sections first
-    if (lowerTag.includes("binna burra section") || lowerTag.includes("green mountains section")) {
-        return "National Parks";
-    }
-
-    // Then check for the more general National Park tags
-    if (lowerTag.includes("national park") || lowerTag.includes("nature reserve")) {
-        return "National Parks";
-    }
-
-    // Check for locations
-    if (lowerTag.includes("new south wales") || lowerTag.includes("queensland")) {
-        return "Location";
-    }
-
-    // Check for time tags
-    if (lowerTag.includes("hr") || lowerTag.includes("min")) {
-        return "Time";
-    }
-
-    // Check for distance tags
-    if (lowerTag.includes("km") || lowerTag.includes("m")) {
-        return "Distance";
-    }
-    
-    // Default to Other
-    return "Other";
-};
-        
-        const groupedTags = {
-            "National Parks": [],
-            "Location": [],
-            "Distance": [],
-            "Time": [],
-            "Other": []
-        };
-
-        // Group the tags based on the new logic
-        const uniqueTags = [...new Set(allTags)];
-        uniqueTags.forEach(tag => {
-            const groupName = getTagGroup(tag);
-            groupedTags[groupName].push(tag);
+            if (item.formattedTags) {
+                item.formattedTags.forEach(tag => {
+                    const tagKey = `${tag.name}-${tag.group}`;
+                    if (!allUniqueTags.has(tagKey)) {
+                        allUniqueTags.set(tagKey, tag);
+                        if (!groupedTags[tag.group]) {
+                            groupedTags[tag.group] = [];
+                        }
+                        groupedTags[tag.group].push(tag);
+                    }
+                });
+            }
         });
         
-        // Sort each group
         Object.keys(groupedTags).forEach(key => {
             groupedTags[key] = SearchHelpers.sortTags(groupedTags[key]);
         });
-
-        renderTags(groupedTags, contexts.homepage);
-
-        // Define and expose the debugging function
-        window.checkTagGroups = () => {
-            console.log("--- Tag Grouping Analysis ---");
-            Object.entries(groupedTags).forEach(([groupName, tags]) => {
-                console.log(`\n** ${groupName} **`);
-                if (tags.length > 0) {
-                    tags.forEach(tag => console.log(`- ${tag}`));
-                } else {
-                    console.log("  (no tags in this group)");
-                }
-            });
-            console.log("\n----------------------------");
-        };
         
-        // Handle URL parameters on page load
+        renderTags(groupedTags, contexts.homepage);
+        checkTagGroups(groupedTags);
+        
         const initialQuery = new URLSearchParams(window.location.search).get('q');
         const initialTags = new URLSearchParams(window.location.search).get('tags');
         if (initialQuery) {
@@ -204,8 +94,6 @@ const getTagGroup = (tag) => {
         console.error("Error loading search data:", error);
     }
 })();
-
-// --- Event Listeners and Functions ---
 
 contexts.homepage.input.addEventListener('input', () => {
     updateURL();
@@ -247,15 +135,15 @@ function renderTags(tagGroups, context) {
         groupContent.classList.add("tag-group-content", "hidden");
         tags.forEach(tag => {
             const tagLink = document.createElement("a");
-            tagLink.href = `#tag-${encodeURIComponent(tag)}`;
-            tagLink.textContent = tag;
+            tagLink.href = `#tag-${encodeURIComponent(tag.name)}`;
+            tagLink.textContent = tag.name;
             tagLink.classList.add("tag-link");
-            if (context.activeTags.includes(tag)) {
+            if (context.activeTags.includes(tag.name)) {
                 tagLink.classList.add("popup-active-tag");
             }
             tagLink.addEventListener("click", event => {
                 event.preventDefault();
-                toggleTag(tag);
+                toggleTag(tag.name);
                 groupContent.classList.add("hidden");
             });
             groupContent.appendChild(tagLink);
@@ -314,7 +202,6 @@ function applyFilters(contextKey) {
     const query = context.input.value.trim().toLowerCase();
     const activeTags = context.activeTags;
     
-    // Check for a single '*' or empty query to display all content
     if (query === '' && activeTags.length === 0) {
       context.allContentContainer.style.display = 'grid';
       context.searchResultsContainer.style.display = 'none';
@@ -328,29 +215,20 @@ function applyFilters(contextKey) {
       return;
     }
 
-    // Lunr search for text
     let lunrResults = [];
     if (query) {
-        // Build the Lunr query string with wildcards for partial matches and boosting for relevance
         const queryWords = query.split(/\s+/).filter(Boolean);
         const lunrQuery = queryWords.map(word => `${word}*^10 ${word}~1`).join(' ');
         lunrResults = searchIndex.search(lunrQuery);
     } else {
-        // If no text query, get all documents from the search store to be filtered by tags
         lunrResults = Object.keys(searchStore).map(ref => ({ ref }));
     }
 
-    // Manual filtering for tags
     let filteredItems = lunrResults.map(result => searchStore[result.ref]);
     if (activeTags.length > 0) {
         filteredItems = filteredItems.filter(item => {
-            const itemTags = SearchHelpers.processTags(item.formattedTags);
-            if (item.formattedDistance) itemTags.push(item.formattedDistance);
-            if (item.formattedDuration) itemTags.push(item.formattedDuration);
-            
-            // Check if all active tags are present in the item's tags
-            const expandedActiveTags = [...new Set(activeTags.flatMap(tag => tagMappings[tag] || [tag]))];
-            return expandedActiveTags.every(activeTag => itemTags.includes(activeTag));
+            const itemTagNames = (item.formattedTags || []).map(tag => tag.name);
+            return activeTags.every(activeTag => itemTagNames.includes(activeTag));
         });
     }
 
@@ -372,19 +250,27 @@ function renderResults(results, context) {
         const card = document.createElement('article');
         card.className = 'search-result-card';
         
-        // Correctly assemble the tags to avoid duplication
-        const tags = [];
-        if (item.formattedDistance) {
-            tags.push(item.formattedDistance);
-        }
-        if (item.formattedDuration) {
-            tags.push(item.formattedDuration);
-        }
-        if (item.formattedTags) {
-            tags.push(...item.formattedTags);
+        // Sort all the tags correctly
+        const sortedTags = SearchHelpers.sortTags(item.formattedTags || []);
+
+        let combinedTagsHtml = '';
+        
+        // Add the formatted distance and duration tags if they exist and are for locations
+        if (item.type === 'section') {
+            if (item.formattedDistance && item.formattedDistance !== '0m') {
+                combinedTagsHtml += `<div class="tag">${item.formattedDistance}</div>`;
+            }
+            if (item.formattedDuration && item.formattedDuration !== '0min') {
+                combinedTagsHtml += `<div class="tag">${item.formattedDuration}</div>`;
+            }
         }
         
-        const combinedTagsHtml = [...new Set(tags)].map(tag => `<div class="tag">${tag}</div>`).join('');
+        // Add other tags, excluding the distance and duration group names
+        sortedTags.forEach(tag => {
+            if (tag.group !== "Distance" && tag.group !== "Time") {
+                combinedTagsHtml += `<div class="tag">${tag.name}</div>`;
+            }
+        });
 
         card.innerHTML = `
             <a href="${item.canonicalURL || item.url}">

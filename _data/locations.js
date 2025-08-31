@@ -1,32 +1,34 @@
 const Airtable = require("airtable");
 
 const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY,
+  apiKey: process.env.AIRTABLE_API_KEY,
 }).base(process.env.AIRTABLE_BASE_ID);
 
 /**
  * Formats a duration in seconds into a readable string.
- * @param {number} totalSeconds - The duration in seconds.
- * @returns {string|null} The formatted string, or null if 0 or less.
+ * @param {string} durationString - The duration in 'H:MM' or 'HH:MM' format.
+ * @returns {string|null} The formatted string, or null if invalid.
  */
-function formatDuration(totalSeconds) {
-  if (totalSeconds === null || typeof totalSeconds !== 'number' || totalSeconds <= 0) {
+function formatDuration(durationString) {
+  if (!durationString || typeof durationString !== 'string') {
     return null;
   }
+  const parts = durationString.split(':');
+  if (parts.length < 2) {
+    return null;
+  }
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
   
-  const totalMinutes = Math.round(totalSeconds / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  
-  let parts = [];
+  let formattedParts = [];
   if (hours > 0) {
-    parts.push(`${hours}hr${hours > 1 ? 's' : ''}`);
+    formattedParts.push(`${hours}hr`);
   }
   if (minutes > 0) {
-    parts.push(`${minutes}min${minutes > 1 ? 's' : ''}`);
+    formattedParts.push(`${minutes}min`);
   }
   
-  return parts.join(' ');
+  return formattedParts.length > 0 ? formattedParts.join(' ') : null;
 }
 
 /**
@@ -53,36 +55,66 @@ function formatDistance(distanceKm) {
 }
 
 module.exports = async () => {
-  const records = await base("Locations").select({ view: "Grid view" }).all();
-  
-  return records.map((record) => {
-    const fields = record.fields;
+  try {
+    const locationRecords = await base("Locations").select({ view: "Grid view" }).all();
+    const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
 
-    const formattedTagsArray = (fields.formattedTags || "")
-      .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-      .map((tag) => tag.trim().replace(/^"|"$/g, ""))
-      .filter((tag) => tag);
+    const tagMap = new Map();
+    tagRecords.forEach(record => {
+      tagMap.set(record.fields['Tag Name'], record.fields.tagGroup || "Other");
+    });
 
-    const formattedDurationString = formatDuration(fields.durationHrs);
-    const formattedDistanceString = formatDistance(fields.distanceKm);
+    return locationRecords.map((record) => {
+      const fields = record.fields;
 
-    return {
-      id: record.id,
-      title: fields.title,
-      description: fields.description,
-      slug: fields.slug,
-      formattedTags: formattedTagsArray,
-      imagePath: `/Images/${fields.slug}.webp`,
-      guideURL: fields.guideURL,
-      canonicalURL: `/locations/${fields.slug}/`,
+      const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
+        .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
+        .map((tagName) => {
+          const trimmedTag = tagName.trim().replace(/^"|"$/g, "");
+          const tagGroup = tagMap.get(trimmedTag) || "Other";
+          return {
+            name: trimmedTag,
+            group: tagGroup
+          };
+        })
+        .filter((tag) => tag.name);
       
-      distanceKm: fields.distanceKm || null,
-      durationHrs: fields.durationHrs,
-      
-      formattedDuration: formattedDurationString,
-      formattedDistance: formattedDistanceString,
-      
-      type: "section",
-    };
-  });
+      // Add distance and duration groups for searching
+      if (fields.durationGroup) {
+        formattedTags.push({
+          name: fields.durationGroup,
+          group: "Time"
+        });
+      }
+
+      if (fields.distanceGroup) {
+        formattedTags.push({
+          name: fields.distanceGroup,
+          group: "Distance"
+        });
+      }
+
+      return {
+        id: record.id,
+        title: fields.title,
+        description: fields.description,
+        slug: fields.slug,
+        formattedTags: formattedTags,
+        imagePath: `/Images/${fields.slug}.webp`,
+        guideURL: fields.guideURL,
+        canonicalURL: `/locations/${fields.slug}/`,
+        
+        distanceKm: fields.distanceKm || null,
+        durationHrs: fields.durationHrs || null,
+        
+        formattedDuration: fields.formattedDuration,
+        formattedDistance: fields.formattedDistance,
+        
+        type: "section",
+      };
+    });
+  } catch (error) {
+    console.error("Error fetching data from Airtable:", error);
+    return [];
+  }
 };

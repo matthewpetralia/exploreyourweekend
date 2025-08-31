@@ -10,6 +10,7 @@ module.exports = async () => {
     this.field('title', { boost: 10 });
     this.field('description');
     this.field('tags', { boost: 20 });
+    this.field('groups');
 
     allContent.forEach(item => {
       if (item.title && typeof item.title === 'string' && item.title.trim().length > 0) {
@@ -17,16 +18,21 @@ module.exports = async () => {
           id: item.id,
           title: item.title,
           description: typeof item.description === 'string' ? item.description : '',
-          tags: ''
+          tags: '',
+          groups: ''
         };
 
         if (item.formattedTags && Array.isArray(item.formattedTags)) {
-          const tagsWithPhrases = item.formattedTags.map(tag => {
-            return tag.includes(' ') ? tag.replace(/\s+/g, '') : tag;
-          });
-          
-          doc.tags = item.formattedTags.join(' ') + ' ' + tagsWithPhrases.join(' ');
+          const tagsForIndexing = item.formattedTags.map(tag => tag.name).join(' ');
+          doc.tags = tagsForIndexing;
+          const groupsForIndexing = item.formattedTags.map(tag => tag.group).join(' ');
+          doc.groups = groupsForIndexing;
         }
+
+        if (item.type) {
+            doc.tags += ` ${item.type}`;
+        }
+
         this.add(doc);
       }
     });
@@ -43,9 +49,9 @@ module.exports = async () => {
       type: item.type,
       distanceKm: item.distanceKm,
       durationHrs: item.durationHrs,
-      formattedDuration: item.formattedDuration,
-      formattedDistance: item.formattedDistance,
       formattedTags: item.formattedTags,
+      formattedDuration: item.formattedDuration,
+      formattedDistance: item.formattedDistance
     };
   });
 

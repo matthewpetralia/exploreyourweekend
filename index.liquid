@@ -51,7 +51,7 @@ permalink: /
                 <p itemprop="description">{{ guide.description }}</p>
                 <div class="tags" itemprop="keywords">
                   {% for tag in guide.formattedTags %}
-                    <div class="tag">{{ tag }}</div>
+                    <div class="tag">{{ tag.name }}</div>
                   {% endfor %}
                 </div>
               </div>
