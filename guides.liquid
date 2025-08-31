@@ -66,8 +66,27 @@ permalink: "guides/{{ guide.slug }}/"
 
           <div class="InfoPanel">
             <h3 itemprop="headline">{{ guide.title }}</h3>
-            <h2>{{ location.title }}</h2>
+            <a
+              href='/locations/{{ location.slug }}/'
+              target='_blank'
+              itemprop='url'>
+              <h2>{{ location.title }}</h2>
+            </a>
             <p itemprop="description">{{ location.description }}</p>
+
+            <div class="tags" itemprop="keywords">
+              {% if location.formattedDistance and location.formattedDistance != '0m' %}
+                <div class="tag">{{ location.formattedDistance }}</div>
+              {% endif %}
+              {% if location.formattedDuration and location.formattedDuration != '0min' %}
+                <div class="tag">{{ location.formattedDuration }}</div>
+              {% endif %}
+
+              {% for tag in location.formattedTags %}
+                <div class="tag">{{ tag.name }}</div>
+              {% endfor %}
+            </div>
+
           </div>
         </article>
       {% endfor %}
@@ -99,7 +118,7 @@ permalink: "guides/{{ guide.slug }}/"
             } else if (index > 1) {
               bwdButton.href = '#' + sections[index - 1].id;
             } else {
-               bwdButton.style.display = 'none';
+                bwdButton.style.display = 'none';
             }
           }
         

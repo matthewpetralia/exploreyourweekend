@@ -99,6 +99,7 @@ module.exports = async () => {
         title: fields.title,
         description: fields.description,
         slug: fields.slug,
+        googleMapsLink: fields.googleMapsLink,
         formattedTags: formattedTags,
         imagePath: `/Images/${fields.slug}.webp`,
         guideURL: fields.guideURL,

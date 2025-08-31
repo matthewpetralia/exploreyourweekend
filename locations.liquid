@@ -31,14 +31,21 @@ permalink: "locations/{{ location.slug }}/index.html"
             itemprop='image'>
         </picture>
         <div class='InfoPanel'>
-          <h3>{{ location.formattedGuide }}</h3>
+          <a
+            href='{{ location.guideURL }}'
+            target='_blank'
+            itemprop='url'>
+            <h3>{{ location.title }}</h3>
+          </a>
           <h1 itemprop='headline'>{{ location.title }}</h1>
           <div class='tags' itemprop='keywords'>
             <div class="tag">{{ location.formattedDistance }}</div>
             <div class="tag">{{ location.formattedDuration }}</div>
+
             {% for tag in location.formattedTags %}
-              <div class="tag">{{ tag }}</div>
+              <div class="tag">{{ tag.name }}</div>
             {% endfor %}
+
           </div>
           <p itemprop='description'>{{ location.description }}</p>
           {% if location.googleMapsLink %}

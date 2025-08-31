@@ -77,6 +77,9 @@ module.exports = async () => {
           slug: location.slug,
           canonicalURL: `/locations/${location.slug}/`,
           imagePath: `/Images/${location.slug}.webp`,
+        formattedTags: location.formattedTags,
+        formattedDistance: location.formattedDistance,
+        formattedDuration: location.formattedDuration,
         };
       });
 
