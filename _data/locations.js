@@ -83,7 +83,7 @@ module.exports = async () => {
       if (fields.durationGroup) {
         formattedTags.push({
           name: fields.durationGroup,
-          group: "Time"
+          group: "Duration"
         });
       }
 

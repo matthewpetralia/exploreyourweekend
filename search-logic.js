@@ -6,8 +6,8 @@ const SearchHelpers = {
         const timeOrder = ["less than 2hrs", "2-4hrs", "4+hrs"];
         
         const distanceTags = tags.filter(tag => tag.group === "Distance" && distanceOrder.includes(tag.name));
-        const timeTags = tags.filter(tag => tag.group === "Time" && timeOrder.includes(tag.name));
-        const otherTags = tags.filter(tag => tag.group !== "Distance" && tag.group !== "Time");
+        const timeTags = tags.filter(tag => tag.group === "Duration" && timeOrder.includes(tag.name));
+        const otherTags = tags.filter(tag => tag.group !== "Distance" && tag.group !== "Duration");
         
         return [
             ...distanceOrder.map(name => distanceTags.find(tag => tag.name === name)).filter(Boolean),
@@ -267,7 +267,7 @@ function renderResults(results, context) {
         
         // Add other tags, excluding the distance and duration group names
         sortedTags.forEach(tag => {
-            if (tag.group !== "Distance" && tag.group !== "Time") {
+            if (tag.group !== "Distance" && tag.group !== "Duration") {
                 combinedTagsHtml += `<div class="tag">${tag.name}</div>`;
             }
         });

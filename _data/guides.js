@@ -65,8 +65,8 @@ module.exports = async () => {
         const location = locationMap[locationId];
         if (location && location.formattedTags) {
           location.formattedTags.forEach(tag => {
-            // Only add tags that are not from the "Distance" or "Time" groups
-            if (tag.group !== "Distance" && tag.group !== "Time") {
+            // Only add tags that are not from the "Distance" or "Duration" groups
+            if (tag.group !== "Distance" && tag.group !== "Duration") {
               combinedTags.set(tag.name, tag);
             }
           });
