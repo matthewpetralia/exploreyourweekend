@@ -66,12 +66,21 @@ permalink: "guides/{{ guide.slug }}/"
 
           <div class="InfoPanel">
             <h3 itemprop="headline">{{ guide.title }}</h3>
-            <a
-              href='/locations/{{ location.slug }}/'
-              target='_blank'
-              itemprop='url'>
-              <h2>{{ location.title }}</h2>
-            </a>
+
+            {%- assign page_href = "/locations/" | append: location.slug | append: "/" -%}
+
+            {% include "components/link.liquid"
+              , href: page_href
+              , text: location.title
+              , tag: 'h2'
+            %}
+
+            {% comment %} <a
+                                          href='/locations/{{ location.slug }}/'
+                                          target='_blank'
+                                          itemprop='url'>
+                                          <h2>{{ location.title }}</h2>
+                                    </a> {% endcomment %}
             <p itemprop="description">{{ location.description }}</p>
 
             <div class="tags" itemprop="keywords">

@@ -250,17 +250,17 @@ main #horizontal article:first-of-type .bwd span:hover {
 
 h2 {
     margin: 0;
-    margin-bottom: 0.5em;
+    /* margin-bottom: 0.5em; */
 }
 
 h3 {
     margin: 0;
-    margin-bottom: 0.1em;
+    /* margin-bottom: 0.1em; */
 }
 
 p,
 h1 {
-    margin: 1.25vh 0 2vh 0;
+    margin: 0 0 2vh 0;
 }
 
 .ind h3 {
@@ -530,6 +530,7 @@ main p + a {
 
 main p + a span {
     padding-left: 0.1em;
+    color: White;
 }
 
 #About-Page .fwd {
@@ -566,6 +567,21 @@ main p + a:hover {
 
 .InfoPanel p a:hover {
     opacity: 90%;
+}
+
+a > h2,
+a > h3 {
+    color: var(--Green);
+}
+
+.link-with-icon > h3 + span, .link-with-icon > h2 + span {
+    color: var(--Green);
+}
+
+.link-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .tabs {

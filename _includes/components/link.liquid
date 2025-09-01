@@ -1,0 +1,20 @@
+{%- assign tag_type = tag | default: 'span' -%}
+
+<a
+  href="{{ href }}"
+  class="link-with-icon"
+  {% if href contains "http" %}
+  target="_blank"
+  rel="noopener noreferrer"
+  {% endif %}>
+
+  <{{ tag_type }}>
+    {{ text }}
+    </{{ tag_type }}>
+
+    {% if href contains "http" %}
+      <span class="material-symbols-outlined">arrow_outward</span>
+    {% else %}
+      <span class="material-symbols-outlined">chevron_right</span>
+    {% endif %}
+  </a>

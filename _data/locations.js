@@ -97,6 +97,7 @@ module.exports = async () => {
       return {
         id: record.id,
         title: fields.title,
+        formattedGuide: fields.formattedGuide,
         description: fields.description,
         slug: fields.slug,
         googleMapsLink: fields.googleMapsLink,
