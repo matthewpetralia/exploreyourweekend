@@ -19,17 +19,43 @@ permalink: "locations/{{ location.slug }}/index.html"
         itemscope
         itemtype='https://schema.org/CreativeWork'
         id='{{ location.slug }}'>
-        <picture>
-          <source
-            srcset='{{ location.imagePath }}'
-            media='(max-width: 768px), (orientation: portrait)'
-            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
-          <img
-            src='{{ location.imagePath }}'
-            onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'
-            alt='{{ location.altTag }}'
-            itemprop='image'>
-        </picture>
+
+        <div>
+          <picture>
+            <source
+              srcset='{{ location.imagePath }}.webp'
+              media='(max-width: 768px), (orientation: portrait)'
+              onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
+            <img
+              src='{{ location.imagePath }}.webp'
+              onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'
+              alt='{{ location.altTag }}'
+              itemprop='image'>
+          </picture>
+
+          {% if location.imageCount > 1 %}
+            {% assign additional_images_count = location.imageCount | minus: 1 %}
+            {% for i in (1..additional_images_count) %}
+              {%- assign image_url_base = location.imagePath | append: '-' | append: i -%}
+              {%- assign image_url = image_url_base | append: '.webp' -%}
+
+              <picture>
+                <source
+                  srcset='{{ image_url }}'
+                  media='(max-width: 768px), (orientation: portrait)'
+                  onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'>
+                <img
+                  src='{{ image_url }}'
+                  onerror='this.onerror=null;this.src="/Images/Springbrook_National_Park.webp";'
+                  alt='{{ location.altTag }} - Image {{ i | plus: 1 }}'
+                  itemprop='image'>
+              </picture>
+
+            {% endfor %}
+          {% endif %}
+        </div>
+
+
         <div class='InfoPanel'>
 
           {% include "components/link.liquid"
@@ -65,6 +91,40 @@ permalink: "locations/{{ location.slug }}/index.html"
               , text: link_text
             %}
 
+          {% endif %}
+
+          {% if location.parking %}
+            <div>
+              <h3>Parking</h3>
+              <p>{{ location.parking }}</p>
+            </div>
+          {% endif %}
+
+          {% if location.amenities %}
+            <div>
+              <h3>Amenities</h3>
+              <p>{{ location.amenities }}</p>
+            </div>
+          {% endif %}
+
+          {% if location.difficulty %}
+            <div>
+              <h3>Difficulty</h3>
+              <p>{{ location.difficulty }}</p>
+            </div>
+          {% endif %}
+
+          {% if location.bestTimeToVisit %}
+            <div>
+              <h3>Best Time to Visit</h3>
+              <p>{{ location.bestTimeToVisit }}</p>
+            </div>
+          {% endif %}
+          {% if location.nearby %}
+            <div>
+              <h3>Nearby</h3>
+              <p>{{ location.nearby }}</p>
+            </div>
           {% endif %}
         </div>
       </article>

@@ -528,6 +528,10 @@ main p + a {
     border-color: var(--Green);
 }
 
+.location-page p + a {
+    margin-bottom: 2em;;
+}
+
 main p + a span {
     padding-left: 0.1em;
     color: White;
@@ -543,6 +547,10 @@ main p + a:hover {
     color: var(--Green);
     border-color: transparent;
     font-weight: 400;
+}
+
+.location-page .InfoPanel, .location-page article {
+    overflow-y: auto;
 }
 
 .InfoPanel {
