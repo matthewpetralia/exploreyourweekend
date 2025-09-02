@@ -56,20 +56,29 @@ function formatDistance(distanceKm) {
 
 module.exports = async () => {
   try {
-    const locationRecords = await base("Locations").select({ view: "Grid view" }).all();
+    const allLocationRecords = await base("Locations").select({ view: "Grid view" }).all();
     const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
     
+    // Create a map of all locations for easy lookup by ID
+    const locationMap = new Map();
+    allLocationRecords.forEach(record => {
+      locationMap.set(record.id, {
+        slug: record.fields.slug,
+        title: record.fields.title
+      });
+    });
+
     const tagMap = new Map();
     tagRecords.forEach(record => {
       tagMap.set(record.fields['Tag Name'], record.fields.tagGroup || "Other");
     });
 
-    return locationRecords.map((record) => {
+    return allLocationRecords.map((record) => {
       const fields = record.fields;
       
+      // Process FAQs
       const faqs = [];
       const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
-
       const faqQuestions = (fields.faqQuestion1 || "").split(regex).map(q => q.trim());
       const faqAnswers = (fields.faqAnswer1 || "").split(regex).map(a => a.trim().replace(/^"|"$/g, ""));
       
@@ -84,6 +93,24 @@ module.exports = async () => {
         }
       }
 
+      // Process Nearby Locations
+      const nearbyLocations = [];
+      const nearbyIds = Array.isArray(fields.nearby) && fields.nearby.length > 0
+        ? fields.nearby
+        : (Array.isArray(fields['nearbyByGuide']) ? fields['nearbyByGuide'] : []);
+
+      nearbyIds.forEach(id => {
+        const linkedLocation = locationMap.get(id);
+        if (linkedLocation) {
+          nearbyLocations.push({
+            title: linkedLocation.title,
+            url: `/locations/${linkedLocation.slug}/`
+          });
+        }
+      });
+
+
+      // Process Formatted Tags
       const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
         .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
         .map((tagName) => {
@@ -120,7 +147,7 @@ module.exports = async () => {
         parking: fields.parking,
         amenities: fields.amenities,
         bestTimeToVisit: fields.bestTimeToVisit,
-        nearby: fields.nearby,
+        nearby: nearbyLocations, // This is the new array of linked locations
         faqs: faqs,
         slug: fields.slug,
         googleMapsLink: fields.googleMapsLink,
@@ -136,6 +163,7 @@ module.exports = async () => {
         formattedDistance: fields.formattedDistance,
         
         type: "section",
+        __rawFields: fields // Added for debugging purposes
       };
     });
   } catch (error) {
