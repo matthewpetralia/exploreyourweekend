@@ -1093,7 +1093,7 @@ nav #search-results .tags div {
         flex-direction: row !important;
     }
     main#horizontal picture {
-        width: 50%;
+        /* width: 50%; */
     }
     main#horizontal .InfoPanel:not(#Intro .InfoPanel, #FAQ .InfoPanel) {
         width: 50%;

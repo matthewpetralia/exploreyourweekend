@@ -126,6 +126,24 @@ permalink: "locations/{{ location.slug }}/index.html"
               <p>{{ location.nearby }}</p>
             </div>
           {% endif %}
+
+          {% comment %} <pre>
+  <h2>Debugging Data</h2>
+  <code>
+    {{ location.__rawFields | json }}
+  </code>
+</pre> {% endcomment %}
+
+
+{% for faq in location.faqs %}
+            <div class="faq-item">
+              <h3 class="faq-question" aria-controls="faq-answer-{{ forloop.index0 }}">{{ faq.question }}</h3>
+              <p class="faq-answer" id="faq-answer-{{ forloop.index0 }}" hidden>{{ faq.answer }}</p>
+            </div>
+          {% endfor %}
+
+            </div>
+            
         </div>
       </article>
 

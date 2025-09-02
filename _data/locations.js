@@ -1,7 +1,7 @@
 const Airtable = require("airtable");
 
 const base = new Airtable({
-  apiKey: process.env.AIRTABLE_API_KEY,
+  apiKey: process.env.AIRTABLE_API_KEY,
 }).base(process.env.AIRTABLE_BASE_ID);
 
 /**
@@ -55,10 +55,10 @@ function formatDistance(distanceKm) {
 }
 
 module.exports = async () => {
-  try {
+  try {
     const locationRecords = await base("Locations").select({ view: "Grid view" }).all();
     const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
-
+    
     const tagMap = new Map();
     tagRecords.forEach(record => {
       tagMap.set(record.fields['Tag Name'], record.fields.tagGroup || "Other");
@@ -66,6 +66,23 @@ module.exports = async () => {
 
     return locationRecords.map((record) => {
       const fields = record.fields;
+      
+      const faqs = [];
+      const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
+
+      const faqQuestions = (fields.faqQuestion1 || "").split(regex).map(q => q.trim());
+      const faqAnswers = (fields.faqAnswer1 || "").split(regex).map(a => a.trim().replace(/^"|"$/g, ""));
+      
+      if (faqQuestions.length === faqAnswers.length) {
+        for (let i = 0; i < faqQuestions.length; i++) {
+          if (faqQuestions[i] && faqAnswers[i]) {
+            faqs.push({
+              question: faqQuestions[i],
+              answer: faqAnswers[i]
+            });
+          }
+        }
+      }
 
       const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
         .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
@@ -79,7 +96,6 @@ module.exports = async () => {
         })
         .filter((tag) => tag.name);
       
-      // Add distance and duration groups for searching
       if (fields.durationGroup) {
         formattedTags.push({
           name: fields.durationGroup,
@@ -105,6 +121,7 @@ module.exports = async () => {
         amenities: fields.amenities,
         bestTimeToVisit: fields.bestTimeToVisit,
         nearby: fields.nearby,
+        faqs: faqs,
         slug: fields.slug,
         googleMapsLink: fields.googleMapsLink,
         formattedTags: formattedTags,
@@ -121,7 +138,7 @@ module.exports = async () => {
         type: "section",
       };
     });
-  } catch (error) {
+  } catch (error) {
     console.error("Error fetching data from Airtable:", error);
     return [];
   }
