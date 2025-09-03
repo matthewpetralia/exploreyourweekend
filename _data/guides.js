@@ -76,7 +76,7 @@ module.exports = async () => {
           description: location.description,
           slug: location.slug,
           canonicalURL: `/locations/${location.slug}/`,
-          imagePath: `/Images/${location.slug}.webp`,
+          imagePath: `/Images/${location.slug}`,
         formattedTags: location.formattedTags,
         formattedDistance: location.formattedDistance,
         formattedDuration: location.formattedDuration,
@@ -92,7 +92,7 @@ module.exports = async () => {
         sections: sectionsData,
         url: `/${guideFields.slug}/`,
         canonicalURL: `/guides/${guideFields.slug}/`,
-        imagePath: `/Images/${guideFields.slug}.webp`,
+        imagePath: `/Images/${guideFields.slug}`,
         type: 'page'
       };
     });

@@ -276,10 +276,10 @@ function renderResults(results, context) {
             <a href="${item.canonicalURL || item.url}">
                 <picture>
                     <source
-                        srcset='${item.imagePath}'
+                        srcset='${item.imagePath}.webp'
                         media='(min-width: 768px), (orientation: landscape)'
                         onerror='this.onerror=null;this.src="/Images/Placeholder.webp";'>
-                    <img src="${item.imagePath}" alt="${item.title}">
+                    <img src="${item.imagePath}.webp" alt="${item.title}">
                 </picture>
                 <div class="InfoPanel">
                     <h2>${item.title}</h2>

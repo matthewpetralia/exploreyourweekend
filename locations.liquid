@@ -15,10 +15,7 @@ permalink: "locations/{{ location.slug }}/index.html"
     {% include 'nav.liquid' %}
 
     <main class="location-page" id="horizontal">
-      <article
-        itemscope
-        itemtype='https://schema.org/CreativeWork'
-        id='{{ location.slug }}'>
+      <article itemscope itemtype='https://schema.org/CreativeWork' id='{{ location.slug }}'>
 
         <div class="multiImage">
           <picture>
@@ -104,6 +101,9 @@ permalink: "locations/{{ location.slug }}/index.html"
             <div>
               <h3>Amenities</h3>
               <p>{{ location.amenities }}</p>
+                        {% if location.amenitiesInfo %}
+                          <p>{{ location.amenitiesInfo }}</p>
+                        {% endif %}
             </div>
           {% endif %}
 
@@ -125,12 +125,12 @@ permalink: "locations/{{ location.slug }}/index.html"
             <div>
               <h3>Nearby</h3>
               <p>
-  {% for nearbyLocation in location.nearby %}
-  <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>{% unless forloop.last %}, {% endunless %}
-  {% endfor %}
-  </p>
-  </div>
-  {% endif %}
+                {% for nearbyLocation in location.nearby %}
+                <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>{% unless forloop.last %}, {% endunless %}
+                {% endfor %}
+                </p>
+                </div>
+              {% endif %}
 
 {% comment %} <pre>
   <h2>Debugging Data</h2>
@@ -140,9 +140,10 @@ permalink: "locations/{{ location.slug }}/index.html"
 </pre> {% endcomment %}
 
 
+<h3>FAQs</h3>
 {% for faq in location.faqs %}
             <div class="faq-item">
-              <h3 class="faq-question" aria-controls="faq-answer-{{ forloop.index0 }}">{{ faq.question }}</h3>
+              <h4 class="faq-question" aria-controls="faq-answer-{{ forloop.index0 }}">{{ faq.question }}</h4>
               <p class="faq-answer" id="faq-answer-{{ forloop.index0 }}" hidden>{{ faq.answer }}</p>
             </div>
           {% endfor %}

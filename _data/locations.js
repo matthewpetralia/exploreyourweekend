@@ -145,9 +145,11 @@ module.exports = async () => {
         imageCount: fields.imageCount || 0,
         difficulty: fields.difficulty,
         parking: fields.parking,
+        parkingInfo: fields.parkingInfo,
         amenities: fields.amenities,
+        amenitiesInfo: fields.amenitiesInfo,
         bestTimeToVisit: fields.bestTimeToVisit,
-        nearby: nearbyLocations, // This is the new array of linked locations
+        nearby: nearbyLocations,
         faqs: faqs,
         slug: fields.slug,
         googleMapsLink: fields.googleMapsLink,

@@ -75,12 +75,6 @@ permalink: "guides/{{ guide.slug }}/"
               , tag: 'h2'
             %}
 
-            {% comment %} <a
-                                          href='/locations/{{ location.slug }}/'
-                                          target='_blank'
-                                          itemprop='url'>
-                                          <h2>{{ location.title }}</h2>
-                                    </a> {% endcomment %}
             <p itemprop="description">{{ location.description }}</p>
 
             <div class="tags" itemprop="keywords">
@@ -100,12 +94,12 @@ permalink: "guides/{{ guide.slug }}/"
         </article>
       {% endfor %}
 
-      <article id="FAQ">
-        <div class="InfoPanel">
-          <h3>{{ guide.title }} Guide</h3>
-          <h2>FAQ</h2>
-        </div>
-      </article>
+    {% comment %} <article id="FAQ">
+                    <div class="InfoPanel">
+                      <h3>{{ guide.title }} Guide</h3>
+                      <h2>FAQ</h2>
+                    </div>
+              </article> {% endcomment %}
     </main>
 
     <div class="scroll-indicator"></div>
