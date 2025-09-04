@@ -55,10 +55,12 @@ permalink: "locations/{{ location.slug }}/index.html"
 
         <div class='InfoPanel'>
 
-          {% include "components/link.liquid"
-            , href: location.guideURL
-            , text: location.formattedGuide
-            , tag: 'h3' %}
+          {% for guide in location.guides %}
+<a href="{{ guide.url }}" class="link-with-icon">
+<h3>{{ guide.title }}</h3>
+<span class="material-symbols-outlined">chevron_right</span>
+</a>
+{% endfor %}
 
           <h1 itemprop='headline'>{{ location.title }}</h1>
           <div class='tags' itemprop='keywords'>

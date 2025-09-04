@@ -58,7 +58,17 @@ module.exports = async () => {
   try {
     const allLocationRecords = await base("Locations").select({ view: "Grid view" }).all();
     const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
+    const guideRecords = await base("Guides").select({ view: "Grid view" }).all();
     
+    // Create a map of all guides for easy lookup by ID
+    const guideMap = new Map();
+    guideRecords.forEach(record => {
+      guideMap.set(record.id, {
+        slug: record.fields.slug,
+        title: record.fields.title
+      });
+    });
+
     // Create a map of all locations for easy lookup by ID
     const locationMap = new Map();
     allLocationRecords.forEach(record => {
@@ -97,7 +107,7 @@ module.exports = async () => {
       const nearbyLocations = [];
       const nearbyIds = Array.isArray(fields.nearby) && fields.nearby.length > 0
         ? fields.nearby
-        : (Array.isArray(fields['nearbyByGuide']) ? fields['nearbyByGuide'] : []);
+        : (Array.isArray(fields.nearbyByGuide) ? fields.nearbyByGuide : []);
 
       nearbyIds.forEach(id => {
         const linkedLocation = locationMap.get(id);
@@ -108,7 +118,20 @@ module.exports = async () => {
           });
         }
       });
-
+      
+      // Process Guide Link
+      const linkedGuides = [];
+      if (Array.isArray(fields.guide) && fields.guide.length > 0) {
+        fields.guide.forEach(guideId => {
+          const linkedGuide = guideMap.get(guideId);
+          if (linkedGuide) {
+            linkedGuides.push({
+              title: linkedGuide.title,
+              url: `/guides/${linkedGuide.slug}/`
+            });
+          }
+        });
+      }
 
       // Process Formatted Tags
       const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
@@ -140,13 +163,13 @@ module.exports = async () => {
       return {
         id: record.id,
         title: fields.title,
-        formattedGuide: fields.formattedGuide,
+        guides: linkedGuides, // Now an array of guide objects
         description: fields.description,
         imageCount: fields.imageCount || 0,
         difficulty: fields.difficulty,
         parking: fields.parking,
         parkingInfo: fields.parkingInfo,
-        amenities: fields.amenities,
+        amenities: fields.formattedAmenities,
         amenitiesInfo: fields.amenitiesInfo,
         bestTimeToVisit: fields.bestTimeToVisit,
         nearby: nearbyLocations,
@@ -155,7 +178,6 @@ module.exports = async () => {
         googleMapsLink: fields.googleMapsLink,
         formattedTags: formattedTags,
         imagePath: `/Images/${fields.slug}`,
-        guideURL: fields.guideURL,
         canonicalURL: `/locations/${fields.slug}/`,
         
         distanceKm: fields.distanceKm || null,
@@ -165,7 +187,7 @@ module.exports = async () => {
         formattedDistance: fields.formattedDistance,
         
         type: "section",
-        __rawFields: fields // Added for debugging purposes
+        __rawFields: fields
       };
     });
   } catch (error) {
