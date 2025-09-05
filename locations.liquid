@@ -15,7 +15,10 @@ permalink: "locations/{{ location.slug }}/index.html"
     {% include 'nav.liquid' %}
 
     <main class="location-page" id="horizontal">
-      <article itemscope itemtype='https://schema.org/CreativeWork' id='{{ location.slug }}'>
+      <article
+        itemscope
+        itemtype='https://schema.org/CreativeWork'
+        id='{{ location.slug }}'>
 
         <div class="multiImage">
           <picture>
@@ -56,11 +59,14 @@ permalink: "locations/{{ location.slug }}/index.html"
         <div class='InfoPanel'>
 
           {% for guide in location.guides %}
-<a href="{{ guide.url }}" class="link-with-icon">
-<h3>{{ guide.title }}</h3>
-<span class="material-symbols-outlined">chevron_right</span>
-</a>
-{% endfor %}
+            {%- assign link_href = guide.url | append: "#" | append: location.slug -%}
+
+            {% include "components/link.liquid"
+              , href: link_href
+              , text: guide.title
+              , tag: 'h3'
+            %}
+          {% endfor %}
 
           <h1 itemprop='headline'>{{ location.title }}</h1>
           <div class='tags' itemprop='keywords'>
@@ -103,9 +109,9 @@ permalink: "locations/{{ location.slug }}/index.html"
             <div>
               <h3>Amenities</h3>
               <p>{{ location.amenities }}</p>
-                        {% if location.amenitiesInfo %}
-                          <p>{{ location.amenitiesInfo }}</p>
-                        {% endif %}
+              {% if location.amenitiesInfo %}
+                <p>{{ location.amenitiesInfo }}</p>
+              {% endif %}
             </div>
           {% endif %}
 
@@ -128,33 +134,38 @@ permalink: "locations/{{ location.slug }}/index.html"
               <h3>Nearby</h3>
               <p>
                 {% for nearbyLocation in location.nearby %}
-                <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>{% unless forloop.last %}, {% endunless %}
+                  <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>
+                  {%- unless forloop.last -%},{%- endunless -%}
                 {% endfor %}
-                </p>
-                </div>
-              {% endif %}
-
-{% comment %} <pre>
-  <h2>Debugging Data</h2>
-  <code>
-    {{ location.__rawFields | json }}
-  </code>
-</pre> {% endcomment %}
-
-
-<h3>FAQs</h3>
-{% for faq in location.faqs %}
-            <div class="faq-item">
-              <h4 class="faq-question" aria-controls="faq-answer-{{ forloop.index0 }}">{{ faq.question }}</h4>
-              <p class="faq-answer" id="faq-answer-{{ forloop.index0 }}" hidden>{{ faq.answer }}</p>
+              </p>
             </div>
-          {% endfor %}
+          {% endif %}
 
-            </div>
-            
+          {% comment %} <pre>
+                                                                                                                                                  <h2>Debugging Data</h2>
+                                                                                                                                                  <code>
+                                                                                                                                                    {{ location.__rawFields | json }}
+                                                                                                                                                  </code>
+                                                                                                                        </pre> {% endcomment %}
+
+          {% if location.faqs and location.faqs.size > 0 %}
+            <h3>FAQs</h3>
+            {% for faq in location.faqs %}
+              <div class="faq-item">
+                <h4 class="faq-question" aria-controls="faq-answer-{{ forloop.index0 }}">{{ faq.question }}</h4>
+                <p
+                  class="faq-answer"
+                  id="faq-answer-{{ forloop.index0 }}"
+                  hidden>{{ faq.answer }}</p>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+
         </div>
       </article>
 
     </main>
+
   </body>
 </html>
