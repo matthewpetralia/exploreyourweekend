@@ -17,3 +17,5 @@ _data/search.json
 # Environment-specific files
 CNAME
 robots.txt
+
+.vscode/
