@@ -79,10 +79,10 @@ permalink: "guides/{{ guide.slug }}/"
 
             <div class="tags" itemprop="keywords">
               {% if location.formattedDistance and location.formattedDistance != '0m' %}
-                <div class="tag">{{ location.formattedDistance }}</div>
+                <div class="tag">{{ location.formattedDistance }} Distance</div>
               {% endif %}
               {% if location.formattedDuration and location.formattedDuration != '0min' %}
-                <div class="tag">{{ location.formattedDuration }}</div>
+                <div class="tag">{{ location.formattedDuration }} Duration</div>
               {% endif %}
 
               {% for tag in location.formattedTags %}
@@ -90,16 +90,24 @@ permalink: "guides/{{ guide.slug }}/"
               {% endfor %}
             </div>
 
+            {%- assign page_href = "/locations/" | append: location.slug | append: "/" -%}
+
+            {% include "components/link.liquid"
+              , href: page_href
+              , text: "More details"
+              , button: true
+            %}
+
           </div>
         </article>
       {% endfor %}
 
     {% comment %} <article id="FAQ">
-                    <div class="InfoPanel">
-                      <h3>{{ guide.title }} Guide</h3>
-                      <h2>FAQ</h2>
-                    </div>
-              </article> {% endcomment %}
+                                                  <div class="InfoPanel">
+                                                    <h3>{{ guide.title }} Guide</h3>
+                                                    <h2>FAQ</h2>
+                                                  </div>
+                                  </article> {% endcomment %}
     </main>
 
     <div class="scroll-indicator"></div>

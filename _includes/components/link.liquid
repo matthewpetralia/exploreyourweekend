@@ -2,7 +2,7 @@
 
 <a
   href="{{ href }}"
-  class="link-with-icon"
+  class="link-with-icon {% if button %}button{% endif %}"
   {% if href contains "http" %}
   target="_blank"
   rel="noopener noreferrer"

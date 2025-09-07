@@ -163,8 +163,9 @@ module.exports = async () => {
       return {
         id: record.id,
         title: fields.title,
-        guides: linkedGuides, // Now an array of guide objects
+        guides: linkedGuides,
         description: fields.description,
+        detailedDescription: fields.detailedDescription.value,
         imageCount: fields.imageCount || 0,
         difficulty: fields.difficulty,
         parking: fields.parking,

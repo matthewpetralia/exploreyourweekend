@@ -5,6 +5,10 @@
     font-family: "futura-pt", sans-serif;
 }
 
+html {
+    font-size: 100%;
+}
+
 a,
 body {
     color: White;
@@ -289,28 +293,25 @@ p {
     font-family: futura-pt, sans-serif;
     font-weight: 300;
     font-style: normal;
-    font-size: 2.3vh;
-    /* margin: 2vh 0; */
+    font-size: 1.25rem; /* ~20px */
 }
 
 h3 {
     font-family: "EB Garamond", serif;
     font-weight: 700;
-    font-size: 1.8vh;
+    font-size: 1rem; /* ~16px */
     text-transform: uppercase;
-    /*margin-bottom: -1vh;*/
 }
 
-h4{
+h4 {
     font-weight: normal;
-    /* margin: 0.2em 0 0.5rem 0; */
     margin: 0.1em 0 0.2rem 0;
-
+    font-size: 1.25rem; /* ~20px */
 }
 
 h1,
 h2 {
-    font-size: 3vh;
+    font-size: 1.875rem; /* ~30px */
     font-family: futura-pt, sans-serif;
     font-weight: 500;
     font-style: normal;
@@ -564,8 +565,36 @@ main p + a span {
 .tags a:hover,
 main p + a:hover {
     background-color: var(--Sand);
+    color: var(--Green) !important;
+    border-color: var(--Green);
+    font-weight: 400;
+}
+
+main p + a:hover * {
     color: var(--Green);
-    border-color: transparent;
+    font-weight: bolder;
+}
+
+.button{
+    padding: 0.3em 0.5em;
+    border-radius: 3vh;
+    font-size: 1em;
+    border-style: solid;
+    border-width: 1px;
+    font-family: futura-pt, sans-serif;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    background-color: var(--Green);
+    color: White !important;
+    border-color: var(--Green);
+    width: auto;
+}
+
+.button:hover {
+    background-color: var(--Sand);
+    color: var(--Green) !important;
+    border-color: var(--Green);
     font-weight: 400;
 }
 
@@ -588,9 +617,18 @@ main p + a:hover {
     flex-shrink: 0;
 }
 
-.InfoPanel p a {
+.InfoPanel p a:not(.InfoPanel #nearby p a) {
     color: var(--Green);
     font-weight: bolder;
+}
+
+#nearby *{
+    color: var(--Green);
+}
+
+#nearby a:hover{
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
 }
 
 .InfoPanel p a:hover {
@@ -1082,6 +1120,7 @@ nav #search-results .tags div {
 #vertical .tags {
     /*margin-top: 1em;*/
 }
+
 
 @media only screen and (max-height: 600px) {
     h3 {

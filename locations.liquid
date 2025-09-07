@@ -72,11 +72,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           <div class='tags' itemprop='keywords'>
 
             {% if location.formattedDistance and location.formattedDistance != '0m' %}
-              <div class="tag">{{ location.formattedDistance }}</div>
+              <div class="tag">{{ location.formattedDistance }} Distance</div>
             {% endif %}
 
             {% if location.formattedDuration and location.formattedDuration != '0min' %}
-              <div class="tag">{{ location.formattedDuration }}</div>
+              <div class="tag">{{ location.formattedDuration }} Duration</div>
             {% endif %}
 
             {% for tag in location.formattedTags %}
@@ -86,7 +86,14 @@ permalink: "locations/{{ location.slug }}/index.html"
             {% endfor %}
 
           </div>
-          <p itemprop='description'>{{ location.description }}</p>
+
+          {% if location.detailedDescription %}
+            <p itemprop='description'>{{ location.detailedDescription | newline_to_br }}</p>
+          {% else %}
+            <p itemprop='description'>{{ location.description | newline_to_br }}</p>
+          {% endif %}
+
+
           {% if location.googleMapsLink %}
 
             {%- assign link_text = location.title | append: " on Google Maps" -%}
@@ -99,14 +106,17 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% if location.parking %}
-            <div>
+            <div id="parking">
               <h3>Parking</h3>
               <p>{{ location.parking }}</p>
+              {% if location.parkingInfo %}
+                <p>{{ location.parkingInfo }}</p>
+              {% endif %}
             </div>
           {% endif %}
 
           {% if location.amenities %}
-            <div>
+            <div id="amenities">
               <h3>Amenities</h3>
               <p>{{ location.amenities }}</p>
               {% if location.amenitiesInfo %}
@@ -116,21 +126,21 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% if location.difficulty %}
-            <div>
+            <div id="difficulty">
               <h3>Difficulty</h3>
               <p>{{ location.difficulty }}</p>
             </div>
           {% endif %}
 
           {% if location.bestTimeToVisit %}
-            <div>
+            <div id="bestTimeToVisit">
               <h3>Best Time to Visit</h3>
               <p>{{ location.bestTimeToVisit }}</p>
             </div>
           {% endif %}
 
           {% if location.nearby and location.nearby.size > 0 %}
-            <div>
+            <div id="nearby">
               <h3>Nearby</h3>
               <p>
                 {% for nearbyLocation in location.nearby %}
@@ -142,11 +152,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                  <h2>Debugging Data</h2>
-                                                                                                                                                  <code>
-                                                                                                                                                    {{ location.__rawFields | json }}
-                                                                                                                                                  </code>
-                                                                                                                        </pre> {% endcomment %}
+                                                                                                                        <h2>Debugging Data</h2>
+                                                                                                                        <code>
+                                                                                                                        {{ location.__rawFields | json }}
+                                                                                                                        </code>
+                                                                                                    </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>
@@ -160,7 +170,6 @@ permalink: "locations/{{ location.slug }}/index.html"
               </div>
             {% endfor %}
           {% endif %}
-
 
         </div>
       </article>
