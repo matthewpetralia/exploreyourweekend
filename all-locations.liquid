@@ -1,0 +1,50 @@
+---
+permalink: /locations/
+title: All Locations
+description: Explore a full list of all locations on Explore Your Weekend.
+---
+<!doctype html>
+<html lang="en">
+  {% include 'head.liquid' %}
+  <body class="locations-list">
+    {% include 'nav.liquid' %}
+    <main id="vertical">
+      <article id="Intro">
+        <div class="InfoPanel">
+          <h1>All Locations</h1>
+          <p>Discover every location on Explore Your Weekend, from hidden gems to popular spots.</p>
+        </div>
+      </article>
+
+      <div class="locations-grid">
+        {% for guide in collections.guides %}
+          {% for location in guide.sections %}
+            <article
+              id="{{ location.slug }}"
+              itemscope
+              itemtype="https://schema.org/CreativeWork">
+              <a href="/locations/{{ location.slug }}/" class="location-card">
+                <picture>
+                  {% if location.imagePath %}
+                    <img
+                      src="/images/m-{{ location.slug }}.webp"
+                      alt="{{ location.title }}"
+                      itemprop="image" />
+                  {% endif %}
+                </picture>
+                <div class="card-content InfoPanel">
+                  <h2 itemprop="headline">{{ location.title }}</h2>
+                  <div class="tags" itemprop="keywords">
+                    {% for tag in location.formattedTags %}
+                      <div class="tag">{{ tag.name }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </a>
+            </article>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </main>
+  </body>
+</html>

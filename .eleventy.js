@@ -14,7 +14,7 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addPassthroughCopy("main.css");
     eleventyConfig.addPassthroughCopy("code.js");
     eleventyConfig.addPassthroughCopy("search-logic.js");
-    eleventyConfig.addPassthroughCopy("Images");
+    eleventyConfig.addPassthroughCopy("images");
     eleventyConfig.addPassthroughCopy("sitemap.xml");
     eleventyConfig.addPassthroughCopy(".eslintrc.js");
     eleventyConfig.addPassthroughCopy("CNAME");

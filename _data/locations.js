@@ -178,7 +178,7 @@ module.exports = async () => {
         slug: fields.slug,
         googleMapsLink: fields.googleMapsLink,
         formattedTags: formattedTags,
-        imagePath: `/Images/${fields.slug}`,
+        imagePath: `/images/${fields.slug}`,
         canonicalURL: `/locations/${fields.slug}/`,
         
         distanceKm: fields.distanceKm || null,

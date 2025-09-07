@@ -1,0 +1,49 @@
+---
+permalink: /guides/
+title: All Guides
+description: Explore a full list of all guides on Explore Your Weekend.
+---
+<!doctype html>
+<html lang="en">
+  {% include 'head.liquid' %}
+  <body class="locations-list">
+    {% include 'nav.liquid' %}
+    <main id="vertical">
+      <article id="Intro">
+        <div class="InfoPanel">
+          <h1>All Guides</h1>
+          <p>Discover our curated guides, each a complete weekend itinerary.</p>
+        </div>
+      </article>
+
+      <div class="locations-grid">
+        {% for guide in collections.guides %}
+          <article
+            id="{{ guide.slug }}"
+            itemscope
+            itemtype="https://schema.org/CreativeWork">
+            <a href="/guides/{{ guide.url }}" class="location-card">
+              <picture>
+                {% if guide.imagePath %}
+                  <img
+                    src="/images/m-{{ guide.slug }}.webp"
+                    alt="{{ guide.title }}"
+                    itemprop="image" />
+                {% endif %}
+              </picture>
+              <div class="card-content InfoPanel">
+                <h2 itemprop="headline">{{ guide.title }}</h2>
+                <p itemprop="description">{{ guide.description }}</p>
+              {% comment %} <div class="tags" itemprop="keywords">
+                                                                                  {% for tag in guide.formattedTags %}
+                                                                                    <div class="tag">{{ tag.name }}</div>
+                                                                                  {% endfor %}
+                                                                        </div> {% endcomment %}
+              </div>
+            </a>
+          </article>
+        {% endfor %}
+      </div>
+    </main>
+  </body>
+</html>

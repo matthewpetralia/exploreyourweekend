@@ -27,8 +27,8 @@ permalink: "guides/{{ guide.slug }}/"
                 <a href="#{{ location.slug }}">{{ location.title }}<span class="material-symbols-outlined">chevron_right</span>
                 </a>
               {% endfor %}
-              <a href="#FAQ">Frequently Asked Questions<span class="material-symbols-outlined">chevron_right</span>
-              </a>
+            {% comment %} <a href="#FAQ">Frequently Asked Questions<span class="material-symbols-outlined">chevron_right</span>
+                          </a> {% endcomment %}
             </div>
           </div>
         </div>
@@ -43,9 +43,9 @@ permalink: "guides/{{ guide.slug }}/"
       {% for location in guide.sections %}
         <article id="{{ location.slug }}">
           <picture>
-            <source srcset="/Images/{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
+            <source srcset="/images/{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
             <img
-              src="/Images/{{ location.slug }}.webp"
+              src="/images/{{ location.slug }}.webp"
               alt="{{ location.title }}"
               itemprop="image">
           </picture>
@@ -103,11 +103,11 @@ permalink: "guides/{{ guide.slug }}/"
       {% endfor %}
 
     {% comment %} <article id="FAQ">
-                                                  <div class="InfoPanel">
-                                                    <h3>{{ guide.title }} Guide</h3>
-                                                    <h2>FAQ</h2>
-                                                  </div>
-                                  </article> {% endcomment %}
+                                                              <div class="InfoPanel">
+                                                                <h3>{{ guide.title }} Guide</h3>
+                                                                <h2>FAQ</h2>
+                                                              </div>
+                                          </article> {% endcomment %}
     </main>
 
     <div class="scroll-indicator"></div>

@@ -37,7 +37,7 @@
 
   {%- if location.slug or guide.slug -%}
     {%- assign page_slug = location.slug | default: guide.slug -%}
-    <meta property="og:image" content="https://exploreyourweekend.com/Images/{{ page_slug | replace: ' ', '_' }}.webp">
+    <meta property="og:image" content="https://exploreyourweekend.com/images/{{ page_slug | replace: ' ', '_' }}.webp">
   {%- else -%}
     <meta property="og:image" content="https://exploreyourweekend.com/ExploreYourWeekendGREEN.svg">
   {%- endif -%}

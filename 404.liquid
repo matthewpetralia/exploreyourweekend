@@ -1,0 +1,33 @@
+---
+permalink: /404.html
+title: 404 Error
+description: Looks like we lost a page...
+canonicalURL: /404/
+og_title: 404 Error
+og_description: Looks like we lost a page...
+og_url: https://exploreyourweekend.com/404/
+robots: noindex
+---
+<!doctype html>
+<html lang="en">
+  {% include 'head.liquid' %}
+  <body id="PageNotFound">
+    {% include 'nav.liquid' %}
+    <main id="horizontal">
+      <article>
+        <img src="/images/m-error.webp" alt="404 Error Page - Explore Your Weekend" />
+        <div class="InfoPanel">
+          <h3>Whoops!</h3>
+          <h1>Looks like we lost a page...</h1>
+          <p>Try exploring some other pages instead.</p>
+          <div class="tags light">
+            <a href="/">Home</a>
+            <a href="/UltimateGuide/">Ultimate Guide</a>
+            <a href="/SpringbrookNationalPark/">Springbrook National Park</a>
+            <a href="/BrokenHeadNatureReserve/">Broken Head Nature Reserve</a>
+          </div>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -303,7 +303,7 @@ function renderResults(results, context) {
         <source
         srcset='${item.imagePath}.webp'
         media='(min-width: 768px), (orientation: landscape)'
-        onerror='this.onerror=null;this.src="/Images/Placeholder.webp";'>
+        onerror='this.onerror=null;this.src="/images/Placeholder.webp";'>
         <img src="${item.imagePath}.webp" alt="${item.title}">
         </picture>
         <div class="InfoPanel">
