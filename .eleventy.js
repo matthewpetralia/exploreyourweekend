@@ -15,14 +15,12 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addPassthroughCopy("code.js");
     eleventyConfig.addPassthroughCopy("search-logic.js");
     eleventyConfig.addPassthroughCopy("images");
-    eleventyConfig.addPassthroughCopy("sitemap.xml");
     eleventyConfig.addPassthroughCopy(".eslintrc.js");
     eleventyConfig.addPassthroughCopy("CNAME");
     eleventyConfig.addPassthroughCopy("ExploreYourWeekendFAVICON.svg");
     eleventyConfig.addPassthroughCopy("ExploreYourWeekendLogo.svg");
     eleventyConfig.addPassthroughCopy("ExploreYourWeekendLogoGREEN.svg");
     eleventyConfig.addPassthroughCopy("normalize.css");
-    eleventyConfig.addPassthroughCopy("robots.txt");
     eleventyConfig.addPassthroughCopy({"./node_modules/lunr/lunr.js": "assets/js/lunr.js"});
 
     eleventyConfig.addCollection("guides", async function(collectionApi) {
