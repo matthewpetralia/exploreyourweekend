@@ -56,7 +56,7 @@ function formatDistance(distanceKm) {
 
 module.exports = async () => {
   try {
-    const allLocationRecords = await base("Locations").select({ view: "Grid view" }).all();
+    const allLocationRecords = await base("Locations").select({ view: "liveLocations" }).all();
     const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
     const guideRecords = await base("Guides").select({ view: "Grid view" }).all();
     

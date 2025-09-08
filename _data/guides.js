@@ -10,7 +10,7 @@ module.exports = async () => {
       view: 'Grid view'
     }).all();
     const locationRecords = await base('Locations').select({
-      view: 'Grid view'
+      view: 'liveLocations'
     }).all();
     const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
 
