@@ -13,6 +13,7 @@ module.exports = function(eleventyConfig) {
 
     eleventyConfig.addPassthroughCopy("main.css");
     eleventyConfig.addPassthroughCopy("code.js");
+    eleventyConfig.addPassthroughCopy("robots.txt");
     eleventyConfig.addPassthroughCopy("search-logic.js");
     eleventyConfig.addPassthroughCopy("images");
     eleventyConfig.addPassthroughCopy(".eslintrc.js");
