@@ -491,8 +491,8 @@ nav > a {
     color: var(--Green);
 }
 
-nav a{
-    /* font-size: 1.3em; */
+nav .InfoPanel a{
+    font-size: 1.1em;
 }
 
 nav > a span {

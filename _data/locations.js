@@ -133,6 +133,18 @@ module.exports = async () => {
         });
       }
 
+      let altTags = fields.altTag.value;
+        if (typeof altTags === 'string') {
+          try {
+            altTags = JSON.parse(altTags);
+          } catch (e) {
+            console.warn(`Warning: altTag for "${fields.title}" is not valid JSON. Falling back to treating as single string.`);
+            altTags = [altTags]; // Wrap the single string in an array
+          }
+        } else if (!Array.isArray(altTags)) {
+          altTags = []; // Default to an empty array if not a string or array
+        }
+
       // Process Formatted Tags
       const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
         .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
@@ -167,6 +179,7 @@ module.exports = async () => {
         description: fields.description,
         detailedDescription: fields.detailedDescription.value,
         imageCount: fields.imageCount || 0,
+        altTag: altTags,
         difficulty: fields.difficulty,
         parking: fields.parking,
         parkingInfo: fields.parkingInfo,

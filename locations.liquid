@@ -29,7 +29,7 @@ permalink: "locations/{{ location.slug }}/index.html"
             <img
               src='{{ location.imagePath }}.webp'
               onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'
-              alt='{{ location.altTag }}'
+              alt='{{ location.altTag[0] }}'
               itemprop='image'>
           </picture>
 
@@ -47,7 +47,7 @@ permalink: "locations/{{ location.slug }}/index.html"
                 <img
                   src='{{ image_url }}'
                   onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'
-                  alt='{{ location.altTag }} - Image {{ i | plus: 1 }}'
+                  alt='{{ location.altTag[i] }}'
                   itemprop='image'>
               </picture>
 
@@ -153,11 +153,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                <h2>Debugging Data</h2>
-                                                                                                                                                <code>
-                                                                                                                                                {{ location.__rawFields | json }}
-                                                                                                                                                </code>
-                                                                                                                        </pre> {% endcomment %}
+                                                                                                                                                                                    <h2>Debugging Data</h2>
+                                                                                                                                                                                    <code>
+                                                                                                                                                                                    {{ location.__rawFields | json }}
+                                                                                                                                                                                    </code>
+                                                                                                                                                      </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>
