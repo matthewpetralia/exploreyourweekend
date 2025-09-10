@@ -12,13 +12,16 @@
   </a>
   <div class="InfoPanel" style="display: none;">
     <div class="tags grid">
-      <a href="{{ nav.header[0].url }}">{{ nav.header[0].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="{{ nav.header[0].url }}">{{ nav.header[0].text }}<span class="material-symbols-outlined">chevron_right</span>
       </a>
-      <a href="{{ nav.header[1].url }}" target="_blank">{{ nav.header[1].text }}<span class="material-symbols-outlined">arrow_outward</span>
+      <a
+        class="button"
+        href="{{ nav.header[1].url }}"
+        target="_blank">{{ nav.header[1].text }}<span class="material-symbols-outlined">arrow_outward</span>
       </a>
-      <a href="{{ nav.header[2].url }}">{{ nav.header[2].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="{{ nav.header[2].url }}">{{ nav.header[2].text }}<span class="material-symbols-outlined">chevron_right</span>
       </a>
-      <a href="{{ nav.header[3].url }}">{{ nav.header[3].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="{{ nav.header[3].url }}">{{ nav.header[3].text }}<span class="material-symbols-outlined">chevron_right</span>
       </a>
     </div>
     <div class="tags grid col">
@@ -30,13 +33,19 @@
       </a>
 
       {% for guide in guides %}
-        <a href="/guides/{{ guide.slug | slugify }}/" onclick="myFunction()">
+        <a
+          class="button"
+          href="/guides/{{ guide.slug | slugify }}/"
+          onclick="myFunction()">
           {{ guide.title }}<span class="material-symbols-outlined">chevron_right</span>
         </a>
       {% endfor %}
 
       {% for location in locations %}
-        <a href="/locations/{{ location.slug | slugify }}/" onclick="myFunction()">
+        <a
+          class="button"
+          href="/locations/{{ location.slug | slugify }}/"
+          onclick="myFunction()">
           {{ location.title }}<span class="material-symbols-outlined">chevron_right</span>
         </a>
       {% endfor %}

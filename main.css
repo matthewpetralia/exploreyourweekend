@@ -488,8 +488,11 @@ nav > a {
     /*place-content: center;*/
     width: 50%;
     /*border-radius: 0 0 3vh 3vh;*/
-    /*font-size: 3vh;*/
     color: var(--Green);
+}
+
+nav a{
+    /* font-size: 1.3em; */
 }
 
 nav > a span {
@@ -513,11 +516,13 @@ nav > a:nth-child(2) {
     margin-bottom: 1em;
 }
 
-.grid a {
+
+
+/* .grid a {
     font-size: 1.3em !important;
     font-weight: 200 !important;
     border-color: var(--Green);
-}
+} */
 
 nav > a > span {
     /*font-size: 2vh !important;*/
@@ -588,11 +593,11 @@ a[title="Search"] span:nth-of-type(2) {
     display: none;
 }
 
-main p + a {
+/* main p + a {
     font-weight: 300 !important;
     background-color: var(--Green);
     border-color: var(--Green);
-}
+} */
 
 .location-page p + a {
     margin-bottom: 2em;;
@@ -607,18 +612,18 @@ main p + a span {
     display: none;
 }
 
-.tags a:hover,
+/* .tags a:hover,
 main p + a:hover {
     background-color: var(--Sand);
     color: var(--Green) !important;
     border-color: var(--Green);
     font-weight: 400;
-}
+} */
 
-main p + a:hover * {
+/* main p + a:hover * {
     color: var(--Green);
     font-weight: bolder;
-}
+} */
 
 .button{
     padding: 0.3em 0.5em;
@@ -636,7 +641,7 @@ main p + a:hover * {
     width: auto;
 }
 
-.button:hover {
+.button:hover, .button:hover span {
     background-color: var(--Sand);
     color: var(--Green) !important;
     border-color: var(--Green);
@@ -828,21 +833,19 @@ main .InfoPanel:not(#Intro .InfoPanel) {
 }
 */
 
-.tags a:hover,
+/* .tags a:hover,
 #tag-database a:hover,
 .tag-database a:hover {
     background-color: var(--Green);
     color: var(--Sand);
     border-color: var(--Sand);
     font-weight: 400;
-}
+} */
 
 #tag-database a,
 .tag-database a {
     font-family: futura-pt, sans-serif;
-    margin-right: 1vw;
     font-size: 2vh;
-    /*padding: 1.5% 2%;*/
     margin: 0;
 }
 
@@ -1127,7 +1130,7 @@ main p + a {
     font-size: 0.9em;
     border-style: solid;
     border-width: 1px;
-    font-family: futura-pt, sans-serif;
+    /* font-family: futura-pt, sans-serif; */
     font-weight: 300;
     display: flex;
     align-items: center;
