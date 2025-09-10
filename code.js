@@ -90,3 +90,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// This function calculates and sets the viewport height to avoid mobile browser UI issues
+function setViewportHeight() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+// Set the height on load
+setViewportHeight();
+
+// Re-calculate the height on window resize
+window.addEventListener('resize', setViewportHeight);
+
+// Now apply this to your elements using CSS variables
+// Add this to the top of your CSS
+// :root {
+//     --vh: 100vh;
+// }
+
+// Then replace the existing height/min-height on your main and article elements
+// main#horizontal, main#vertical {
+//     height: calc(var(--vh, 1vh) * 100 - 7vh);
+//     min-height: calc(var(--vh, 1vh) * 100 - 7vh);
+// }
+// article {
+//     height: calc(var(--vh, 1vh) * 100 - 7vh);
+//     min-height: calc(var(--vh, 1vh) * 100 - 7vh);
+// }
