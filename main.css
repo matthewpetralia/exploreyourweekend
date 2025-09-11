@@ -37,8 +37,8 @@ body {
 /* Update your main#horizontal and main#vertical rules */
 main#horizontal,
 main#vertical {
-    height: calc(var(--vh, 1vh) * 100 - 7vh);
-    min-height: calc(var(--vh, 1vh) * 100 - 7vh);
+    height: calc(var(--vh, 1vh) * 100 - 7vh) !important;
+  min-height: calc(var(--vh, 1vh) * 100 - 7vh) !important;
 }
 
 /* Update your article rule for both horizontal and vertical layouts */
@@ -404,8 +404,8 @@ main#horizontal {
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     scroll-snap-align: start;
-    height: calc(100vh - 7vh);
-    min-height: calc(100vh - 7vh);
+    /* height: calc(100vh - 7vh);
+    min-height: calc(100vh - 7vh); */
     
 }
 
