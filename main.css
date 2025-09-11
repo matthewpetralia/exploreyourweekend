@@ -37,18 +37,12 @@ body {
 /* Update your main#horizontal and main#vertical rules */
 main#horizontal,
 main#vertical {
-    display: flex;
-    flex-direction: column;
-    overflow-y: hidden;
-    overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    scroll-snap-align: start;
     height: calc(var(--vh, 1vh) * 100 - 7vh);
     min-height: calc(var(--vh, 1vh) * 100 - 7vh);
 }
 
 /* Update your article rule for both horizontal and vertical layouts */
-#horizontal article {
+/* #horizontal article {
     height: calc(var(--vh, 1vh) * 100 - 7vh);
     min-height: calc(var(--vh, 1vh) * 100 - 7vh);
     width: 100vw;
@@ -59,12 +53,12 @@ main#vertical {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-}
+} */
 
 /* Ensure the InfoPanel has room for the scroll indicator */
 .InfoPanel {
     /* ... existing styles ... */
-    padding-bottom: 5vh; /* Adjusted to account for fixed scroll indicator */
+    /* padding-bottom: 5vh; Adjusted to account for fixed scroll indicator */
 }
 
 main img {
