@@ -795,7 +795,7 @@ main#horizontal article .InfoPanel {
     width: 100%;
     text-align: left;
     font-size: 1.1em;
-    padding: 0.75em;
+    padding-bottom: 0.5em;
     cursor: pointer;
     border: none;
 }
