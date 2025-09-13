@@ -24,7 +24,7 @@ description: Explore a full list of all locations on Explore Your Weekend.
               itemscope
               itemtype="https://schema.org/CreativeWork">
               <a href="/locations/{{ location.slug }}/" class="location-card">
-                {% include "components/image.liquid", slug: location.slug, location: location %}
+                {% include "components/image.liquid", slug: location.slug, location: location, aspect_ratio: "4:3" %}
                 <div class="card-content InfoPanel">
                   <h2 itemprop="headline">{{ location.title }}</h2>
                   <div class="tags" itemprop="keywords">
