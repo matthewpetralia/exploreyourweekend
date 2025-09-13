@@ -21,38 +21,7 @@ permalink: "locations/{{ location.slug }}/index.html"
         id='{{ location.slug }}'>
 
         <div class="multiImage">
-          <picture>
-            <source
-              srcset='{{ location.imagePath | replace: "/images/", "/images/m-" }}.webp'
-              media='(max-width: 768px), (orientation: portrait)'
-              onerror='this.onerror=null;this.src="/images/m-error.webp";'>
-            <img
-              src='{{ location.imagePath }}.webp'
-              onerror='this.onerror=null;this.src="/images/m-error.webp";'
-              alt='{{ location.altTag }}'
-              itemprop='image'>
-          </picture>
-
-          {% if location.imageCount > 1 %}
-            {% assign additional_images_count = location.imageCount | minus: 1 %}
-            {% for i in (1..additional_images_count) %}
-              {%- assign image_url_base = location.imagePath | append: '-' | append: i -%}
-              {%- assign image_url = image_url_base | append: '.webp' -%}
-
-              <picture>
-                <source
-                  srcset='{{ image_url_base | replace: "/images/", "/images/m-" }}.webp'
-                  media='(max-width: 768px), (orientation: portrait)'
-                  onerror='this.onerror=null;this.src="/images/m-error.webp";'>
-                <img
-                  src='{{ image_url }}'
-                  onerror='this.onerror=null;this.src="/images/m-error.webp";'
-                  alt='{{ location.altTag }} - Image {{ i | plus: 1 }}'
-                  itemprop='image'>
-              </picture>
-
-            {% endfor %}
-          {% endif %}
+          {% include "components/image.liquid", slug: location.slug, location: location %}
         </div>
 
 

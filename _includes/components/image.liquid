@@ -1,0 +1,14 @@
+{%- assign image_path = slug | append: ".webp" -%}
+{%- assign widths_string = "400, 800, 1200" -%}
+{%- assign widths = widths_string | split: ", " -%}
+
+<img
+  src="https://cdn.exploreyourweekend.com/cdn-cgi/image/width=400,format=auto/{{ image_path }}"
+  srcset="
+    {%- for width in widths -%}
+      https://cdn.exploreyourweekend.com/cdn-cgi/image/width={{ width | strip }},format=auto/{{ image_path }} {{ width | strip }}w,
+    {%- endfor -%}
+  "
+  alt="{{ location.altTag }}"
+  itemprop="image"
+>

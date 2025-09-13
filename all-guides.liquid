@@ -23,14 +23,7 @@ description: Explore a full list of all guides on Explore Your Weekend.
             itemscope
             itemtype="https://schema.org/CreativeWork">
             <a href="/guides/{{ guide.url }}" class="location-card">
-              <picture>
-                {% if guide.imagePath %}
-                  <img
-                    src="/images/m-{{ guide.slug }}.webp"
-                    alt="{{ guide.title }}"
-                    itemprop="image" />
-                {% endif %}
-              </picture>
+              {% include "components/image.liquid", slug: guide.slug, location: location %}
               <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ guide.title }}</h2>
                 <p itemprop="description">{{ guide.description }}</p>
