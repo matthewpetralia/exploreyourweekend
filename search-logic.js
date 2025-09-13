@@ -305,7 +305,7 @@ const mobileImagePath = item.imagePath.replace('/images/', '/images/m-');
         <source
         srcset='${mobileImagePath}.webp'
         media='(min-width: 768px), (orientation: landscape)'
-        onerror='this.onerror=null;this.src="/images/Placeholder.webp";'>
+        onerror='this.onerror=null;this.src="/images/m-error.webp";'>
         <img src="${item.imagePath}.webp" alt="${item.title}">
         </picture>
         <div class="InfoPanel">
