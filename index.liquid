@@ -40,7 +40,7 @@ permalink: /
             itemtype="https://schema.org/CreativeWork">
             <a href="/guides/{{ guide.slug }}/" itemprop="url">
               <picture>
-                <source srcset="{{guide.imagePath}}.webp" media="(min-width: 768px), (orientation: landscape)" />
+                <source srcset="/images/m-{{guide.slug}}.webp" media="(min-width: 768px), (orientation: landscape)" />
                 <img
                   src="{{guide.imagePath}}.webp"
                   alt="{{ guide.title }}"

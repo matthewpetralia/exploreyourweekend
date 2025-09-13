@@ -289,6 +289,8 @@ function renderResults(results, context) {
                 combinedTagsHtml += `<div class="tag">${item.formattedDuration}</div>`;
             }
         }
+
+const mobileImagePath = item.imagePath.replace('/images/', '/images/m-');
         
         // Add other tags, excluding the distance and duration group names
         sortedTags.forEach(tag => {
@@ -301,9 +303,9 @@ function renderResults(results, context) {
         <a href="${item.canonicalURL || item.url}">
         <picture>
         <source
-        srcset='${item.imagePath}.webp'
+        srcset='${mobileImagePath}.webp'
         media='(min-width: 768px), (orientation: landscape)'
-        onerror='this.onerror=null;this.src="/images/Placeholder.webp";'>
+        onerror='this.onerror=null;this.src="/images/m-error.webp";'>
         <img src="${item.imagePath}.webp" alt="${item.title}">
         </picture>
         <div class="InfoPanel">
