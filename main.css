@@ -38,6 +38,14 @@ main#vertical {
     min-height: calc(var(--vh, 1vh) * 100 - 7vh) !important;
 }
 
+.icon {
+    display: inline-block;
+    vertical-align: middle;
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
 main img {
     height: 100%;
     object-fit: cover;
@@ -505,8 +513,13 @@ nav .InfoPanel a{
     font-size: 1.1em;
 }
 
-nav > a, nav > button span {
+nav > a {
     font-size: 2em !important;
+}
+
+nav > button .icon {
+    width: 2em;
+    height: 2em;
 }
 
 nav > a {
