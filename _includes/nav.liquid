@@ -2,14 +2,16 @@
   <a title="Home" href="/">
     <img src="/ExploreYourWeekendLogoGREEN.svg" alt="Explore Your Weekend">
   </a>
-  <a
+<button
     title="Menu"
-    href="javascript:void(0);"
-    onclick="myFunction()">
+    class="menu-button"
+    aria-label="Toggle navigation menu"
+    data-menu-toggle
+>
     <span class="material-symbols-outlined">
-      menu
+        menu
     </span>
-  </a>
+</button>
   <div class="InfoPanel" style="display: none;">
     <div class="tags grid">
       <a class="button" href="{{ nav.header[0].url }}">{{ nav.header[0].text }}<span class="material-symbols-outlined">chevron_right</span>

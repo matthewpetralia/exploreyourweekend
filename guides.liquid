@@ -43,7 +43,7 @@ permalink: "guides/{{ guide.slug }}/"
       {% for location in guide.sections %}
         <article id="{{ location.slug }}">
           <picture>
-            <source srcset="/images/{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
+            <source srcset="/images/m-{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
             <img
               src="/images/{{ location.slug }}.webp"
               alt="{{ location.title }}"

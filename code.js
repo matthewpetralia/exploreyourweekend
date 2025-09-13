@@ -28,18 +28,26 @@ document.querySelectorAll(".tab-button").forEach((button) => {
         parent.querySelector(`.tab-content.${button.dataset.tab}`).classList.add("active");
     });
 });
+    
+    
+    document.addEventListener("DOMContentLoaded", function () {
+    // NAV MENU TOGGLE
+    const menuButton = document.querySelector('[data-menu-toggle]');
+
+    const navDiv = document.querySelector('nav div');
+
+    if (menuButton) {
+        menuButton.addEventListener('click', () => {
+            if (navDiv) {
+                navDiv.style.display = navDiv.style.display === "block" ? "none" : "block";
+                
+                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', !isExpanded);
+            }
+        });
+    }
 
 
-
-// NAV MENU TOGGLE
-function myFunction() {
-    const navDiv = document.querySelector("nav div");
-    navDiv.style.display = navDiv.style.display === "block" ? "none" : "block";
-}
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
     // Setup scroll handler for main container
     const mainContainer = document.querySelector("main");
     if (mainContainer) {

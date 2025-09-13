@@ -23,13 +23,13 @@ permalink: "locations/{{ location.slug }}/index.html"
         <div class="multiImage">
           <picture>
             <source
-              srcset='{{ location.imagePath }}.webp'
+              srcset='{{ location.imagePath | replace: "/images/", "/images/m-" }}.webp'
               media='(max-width: 768px), (orientation: portrait)'
-              onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'>
+              onerror='this.onerror=null;this.src="/images/m-error.webp";'>
             <img
               src='{{ location.imagePath }}.webp'
-              onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'
-              alt='{{ location.altTag[0] }}'
+              onerror='this.onerror=null;this.src="/images/m-error.webp";'
+              alt='{{ location.altTag }}'
               itemprop='image'>
           </picture>
 
@@ -41,13 +41,13 @@ permalink: "locations/{{ location.slug }}/index.html"
 
               <picture>
                 <source
-                  srcset='{{ image_url }}'
+                  srcset='{{ image_url_base | replace: "/images/", "/images/m-" }}.webp'
                   media='(max-width: 768px), (orientation: portrait)'
-                  onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'>
+                  onerror='this.onerror=null;this.src="/images/m-error.webp";'>
                 <img
                   src='{{ image_url }}'
-                  onerror='this.onerror=null;this.src="/images/Springbrook_National_Park.webp";'
-                  alt='{{ location.altTag[i] }}'
+                  onerror='this.onerror=null;this.src="/images/m-error.webp";'
+                  alt='{{ location.altTag }} - Image {{ i | plus: 1 }}'
                   itemprop='image'>
               </picture>
 
