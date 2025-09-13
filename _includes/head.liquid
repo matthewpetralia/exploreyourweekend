@@ -1,74 +1,85 @@
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  {%- assign page_data = location | default: guide -%}
-  {%- assign page_title = "Explore Your Weekend | Find amazing hikes and getaways" -%}
-  {%- assign page_description = "Find the best hikes, lookouts, and scenic drives with ease. Explore stunning locations and hidden gems for your next weekend adventure." -%}
-  {%- assign page_url_path = "/" -%}
+  {%- assign page_data = location | default: guide -%}
+  {%- assign page_title = "Explore Your Weekend | Find amazing hikes and getaways" -%}
+  {%- assign page_description = "Find the best hikes, lookouts, and scenic drives with ease. Explore stunning locations and hidden gems for your next weekend adventure." -%}
+  {%- assign page_url_path = "/" -%}
 
-  {%- if title -%}
-    {%- assign page_title = title -%}
-    {%- assign page_description = description -%}
-    {%- assign page_url_path = permalink -%}
-  {%- elsif page_data -%}
-    {%- assign page_title = page_data.title -%}
-    {%- assign page_description = page_data.shortDescription | default: page_data.description -%}
-    {%- assign page_url_path = page_data.url -%}
-  {%- endif -%}
+  {%- if title -%}
+    {%- assign page_title = title -%}
+    {%- assign page_description = description -%}
+    {%- assign page_url_path = permalink -%}
+  {%- elsif page_data -%}
+    {%- assign page_title = page_data.title -%}
+    {%- assign page_description = page_data.shortDescription | default: page_data.description -%}
+    {%- assign page_url_path = page_data.url -%}
+  {%- endif -%}
 
-  {%- if guide.canonicalURL -%}
-    {%- assign canonical_url_path = guide.canonicalURL -%}
-  {%- elsif location.canonicalURL -%}
-    {%- assign canonical_url_path = location.canonicalURL -%}
-  {%- else -%}
-    {%- assign canonical_url_path = page_url_path -%}
-  {%- endif -%}
+  {%- if guide.canonicalURL -%}
+    {%- assign canonical_url_path = guide.canonicalURL -%}
+  {%- elsif location.canonicalURL -%}
+    {%- assign canonical_url_path = location.canonicalURL -%}
+  {%- else -%}
+    {%- assign canonical_url_path = page_url_path -%}
+  {%- endif -%}
 
-  <title>{{ page_title }}</title>
-  <meta name="description" content="{{ page_description }}">
-  <meta name="author" content="Matthew Petralia">
+  <title>{{ page_title }}</title>
+  <meta name="description" content="{{ page_description }}">
+  <meta name="author" content="Matthew Petralia">
 
-  <link rel="canonical" href="https://exploreyourweekend.com{{ canonical_url_path }}" />
-  <meta property="og:title" content="{{ page_title }}">
-  <meta property="og:description" content="{{ page_description }}">
-  <meta property="og:url" content="https://exploreyourweekend.com{{ canonical_url_path }}">
-  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://exploreyourweekend.com{{ canonical_url_path }}" />
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ page_description }}">
+  <meta property="og:url" content="https://exploreyourweekend.com{{ canonical_url_path }}">
+  <meta property="og:type" content="website">
 
-  {%- if location.slug or guide.slug -%}
-    {%- assign page_slug = location.slug | default: guide.slug -%}
-    <meta property="og:image" content="https://exploreyourweekend.com/images/{{ page_slug | replace: ' ', '_' }}.webp">
-  {%- else -%}
-    <meta property="og:image" content="https://exploreyourweekend.com/ExploreYourWeekendGREEN.svg">
-  {%- endif -%}
+  {%- if location.slug or guide.slug -%}
+    {%- assign page_slug = location.slug | default: guide.slug -%}
+    <meta property="og:image" content="https://exploreyourweekend.com/images/{{ page_slug | replace: ' ', '_' }}.webp">
+  {%- else -%}
+    <meta property="og:image" content="https://exploreyourweekend.com/ExploreYourWeekendGREEN.svg">
+  {%- endif -%}
 
-  <link rel="stylesheet" href="/main.css">
-  <link rel="stylesheet" href="/normalize.css" onload="this.onload=null;this.removeAttribute('media');">
-  
-  <!-- Preconnect to font origins to speed up loading -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://use.typekit.net">
-  <link rel="preconnect" href="https://cdn.exploreyourweekend.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="stylesheet" href="/main.css">
+  <link
+    rel="stylesheet"
+    href="/normalize.css"
+    onload="this.onload=null;this.removeAttribute('media');">
 
-  <!-- Defer the Material Symbols stylesheet -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" defer>
+    <!-- Preconnect to font origins to speed up loading -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://use.typekit.net">
+  <link rel="preconnect" href="https://cdn.exploreyourweekend.com">
+  <link rel="preconnect" href="https://www.googletagmanager.com">
 
-  <link rel="icon" type="image/x-icon" href="/ExploreYourWeekendFAVICON.svg">
+    <!-- Defer the Material Symbols stylesheet -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+    defer>
 
-  <script src="/code.js" defer></script>
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="/ExploreYourWeekendFAVICON.svg">
 
-  <!-- Defer the Adobe TypeKit script to prevent it from blocking page load -->
-  <script src='https://use.typekit.net/ade3twf.js' defer></script>
-  <script>try{Typekit.load({ async: true });}catch(e){}</script>
+  <script src="/code.js" defer></script>
 
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3"></script>
-  <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag() {
-                  dataLayer.push(arguments);
-              }
-              gtag("js", new Date());
-              gtag("config", "UA-98383758-3");
-  </script>
+  <!-- Defer the Adobe TypeKit script to prevent it from blocking page load -->
+  <link
+    href="https://use.typekit.net/ade3twf.css"
+    rel="stylesheet"
+    onload="this.onload=null;this.removeAttribute('media');">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3"></script>
+  <script>
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag() {
+                      dataLayer.push(arguments);
+                  }
+                  gtag("js", new Date());
+                  gtag("config", "UA-98383758-3");
+  </script>
 </head>
