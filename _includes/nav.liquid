@@ -7,50 +7,69 @@
     class="menu-button"
     aria-label="Toggle navigation menu"
     data-menu-toggle>
-    {% comment %} <span class="material-symbols-outlined">
-                          menu
-                </span> {% endcomment %}
-    {% include 'components/icon.liquid'
+    {% include 'icon.liquid'
       , name: 'menu'
       , class: 'icon text-gray-600' %}
   </button>
   <div class="InfoPanel" style="display: none;">
     <div class="tags grid">
-      <a class="button" href="{{ nav.header[0].url }}">{{ nav.header[0].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="/about/">About
+        {% include 'icon.liquid'
+          , name: 'chevron_right'
+          , class: 'icon-sm' %}
       </a>
       <a
         class="button"
-        href="{{ nav.header[1].url }}"
-        target="_blank">{{ nav.header[1].text }}<span class="material-symbols-outlined">arrow_outward</span>
+        href="https://www.instagram.com/exploreyourweekend/?hl=en"
+        target="_blank">Instagram
+        {% include 'icon.liquid'
+          , name: 'arrow_outward'
+          , class: 'icon-sm' %}
       </a>
-      <a class="button" href="{{ nav.header[2].url }}">{{ nav.header[2].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="/guides/">All Guides
+        {% include 'icon.liquid'
+          , name: 'chevron_right'
+          , class: 'icon-sm' %}
       </a>
-      <a class="button" href="{{ nav.header[3].url }}">{{ nav.header[3].text }}<span class="material-symbols-outlined">chevron_right</span>
+      <a class="button" href="/locations/">All Locations
+        {% include 'icon.liquid'
+          , name: 'chevron_right'
+          , class: 'icon-sm' %}
       </a>
     </div>
     <div class="tags grid col">
       <a href="/" title="Search">
-        <span class="material-symbols-outlined">
-          search
-        </span>Search your weekend...
-        <span class="material-symbols-outlined">chevron_right</span>
+        {% include 'icon.liquid'
+          , name: 'search'
+          , class: 'icon text-gray-600' %}Search your weekend...
+        {% include 'icon.liquid'
+          , name: 'chevron_right'
+          , class: 'icon-sm' %}
       </a>
 
+      {% comment %} {% for guide in guides limit: 10 %} {% endcomment %}
       {% for guide in guides %}
         <a
           class="button"
-          href="/guides/{{ guide.slug | slugify }}/"
+          href="/guides/{{ guide.url }}"
           onclick="myFunction()">
-          {{ guide.title }}<span class="material-symbols-outlined">chevron_right</span>
+          {{ guide.title }}
+          {% include 'icon.liquid'
+            , name: 'chevron_right'
+            , class: 'icon-sm' %}
         </a>
       {% endfor %}
 
+      {% comment %} {% for location in locations limit: 20 %} {% endcomment %}
       {% for location in locations %}
         <a
           class="button"
-          href="/locations/{{ location.slug | slugify }}/"
+          href="locations/{{ location.url }}"
           onclick="myFunction()">
-          {{ location.title }}<span class="material-symbols-outlined">chevron_right</span>
+          {{ location.title }}
+          {% include 'icon.liquid'
+            , name: 'chevron_right'
+            , class: 'icon-sm' %}
         </a>
       {% endfor %}
     </div>

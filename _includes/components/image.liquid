@@ -17,15 +17,14 @@
 {%- endfor -%}
 
 <img
-  src="https://cdn.exploreyourweekend.com/cdn-cgi/image/width=400,format=auto/{{ image_path }}"
+  src="https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=400,format=auto/{{ image_path }}"
   srcset="{{ srcset_string }}"
   alt="{{ altTag }}"
   width="400"
   height="{{ calculated_height }}"
   itemprop="image"
   {% if forloop.first %}
-    fetchpriority="high"
+  fetchpriority="high"
   {% else %}
-    loading="lazy"
-  {% endif %}
->
+  loading="lazy"
+  {% endif %}>

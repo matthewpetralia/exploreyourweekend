@@ -906,11 +906,14 @@ nav #search-results article picture {
 }
 
 .clear-search-button span,
-#clear-search-button span,
-.remove-tag-button span {
+#clear-search-button span {
     font-size: 1em;
     align-items: center;
     font-weight: 300;
+}
+
+.remove-tag-button {
+  height: 1em;
 }
 
 .tag-group-content {

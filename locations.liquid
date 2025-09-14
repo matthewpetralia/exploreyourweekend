@@ -21,7 +21,10 @@ permalink: "locations/{{ location.slug }}/index.html"
         id='{{ location.slug }}'>
 
         <div class="multiImage">
-          {% include "components/image.liquid", slug: location.slug, location: location, aspect_ratio: "4:3" %}
+          {% include "components/image.liquid"
+            , slug: location.slug
+            , location: location
+            , aspect_ratio: "4:3" %}
         </div>
 
 
@@ -65,14 +68,22 @@ permalink: "locations/{{ location.slug }}/index.html"
 
           {% if location.googleMapsLink %}
 
-            {%- assign link_text = location.title | append: " on Google Maps" -%}
+            <div>
+              <h3>Getting There: View on a Map</h3>
+              <p>Find your way to {{ location.title }} quickly and easily. For detailed directions, click the button below to view the location on Google Maps.</p>
 
-            {% include "components/link.liquid"
-              , href: location.googleMapsLink
-              , text: link_text
-              , button: true
-            %}
+              {%- assign link_text = "View " | append: location.title | append: " on Google Maps" -%}
 
+              {% include "components/link.liquid"
+ 
+                , href: location.googleMapsLink
+ 
+                , text: link_text
+ 
+                , button: true
+              %}
+
+            </div>
           {% endif %}
 
           {% if location.parking %}
@@ -122,11 +133,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                                                    <h2>Debugging Data</h2>
-                                                                                                                                                                                    <code>
-                                                                                                                                                                                    {{ location.__rawFields | json }}
-                                                                                                                                                                                    </code>
-                                                                                                                                                      </pre> {% endcomment %}
+                                                                                                                                                                                                            <h2>Debugging Data</h2>
+                                                                                                                                                                                                            <code>
+                                                                                                                                                                                                            {{ location.__rawFields | json }}
+                                                                                                                                                                                                            </code>
+                                                                                                                                                                          </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>
