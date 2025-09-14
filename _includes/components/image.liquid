@@ -1,10 +1,9 @@
 {%- assign image_path = slug | append: ".webp" -%}
-{%- assign widths_string = "450, 800, 1200" -%}
+{%- assign widths_string = "450, 800, 1200, 1600" -%}
 {%- assign widths = widths_string | split: ", " -%}
 {%- assign aspect_ratio_parts = aspect_ratio | split: ":" -%}
 {%- assign width_ratio = aspect_ratio_parts[0] | plus: 0 -%}
 {%- assign height_ratio = aspect_ratio_parts[1] | plus: 0 -%}
-{%- assign calculated_height = 450.0 | divided_by: width_ratio | times: height_ratio | round | plus: 0 -%}
 
 {%- assign srcset_string = "" -%}
 {%- for width in widths -%}
@@ -16,16 +15,18 @@
   {%- assign srcset_string = srcset_string | append: srcset_part -%}
 {%- endfor -%}
 
-<img
-  src="https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=400,format=auto/{{ image_path }}"
-  srcset="{{ srcset_string }}"
-  sizes="100vw"
-  alt="{{ altTag }}"
-  width="450"
-  height="{{ calculated_height }}"
-  itemprop="image"
-  {% if forloop.first %}
-  fetchpriority="high"
-  {% else %}
-  loading="lazy"
-  {% endif %}>
+<div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
+  <img
+    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=400,format=auto/{{ image_path }}"
+    srcset="{{ srcset_string }}"
+    {% comment %}
+    sizes="(max-width: 450px) 100vw, 450px"
+    {% endcomment %}
+    alt="{{ altTag }}"
+    itemprop="image"
+    {% if forloop.first %}
+    fetchpriority="high"
+    {% else %}
+    loading="lazy"
+    {% endif %}>
+</div>

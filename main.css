@@ -89,6 +89,23 @@ picture {
     object-position: center;
 }
 
+.image-wrapper {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    flex-grow: 1;
+
+}
+
+.image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 #PageNotFound main img {
     overflow: hidden;
     height: auto;
@@ -167,17 +184,17 @@ picture {
     height: 100%;
 }
 
-.fwd span,
-.bwd span {
-    width: 5vh;
-    height: 5vh;
+.fwd svg,
+.bwd svg {
+    width: 1em;
+    height: 1em;
     line-height: 5vh;
-    border-radius: 5vh;
+    border-radius: 1em;
     text-align: center;
     background-color: var(--Sand);
 }
 
-.fwd span {
+.fwd svg {
     position: absolute;
     right: 0;
     padding-left: 0.3vh;
@@ -189,8 +206,8 @@ picture {
     padding-left: 2.5vw;
 }
 
-.fwd:hover span,
-.bwd:hover span {
+.fwd:hover svg,
+.bwd:hover svg {
     font-weight: bolder;
     animation-duration: 0.4s;
     background-color: var(--Green-Op);
@@ -204,9 +221,9 @@ picture {
     display: none;
 }
 
-span {
+/* span {
     align-content: center;
-}
+} */
 
 #Intro .fwd {
     /*margin-right: 0;*/
@@ -214,7 +231,7 @@ span {
     height: 100%;
 }
 
-main #horizontal article:first-of-type .bwd span {
+/* main #horizontal article:first-of-type .bwd span {
     color: var(--Sand);
     background-color: var(--Green);
 }
@@ -222,7 +239,7 @@ main #horizontal article:first-of-type .bwd span {
 main #horizontal article:first-of-type .bwd span:hover {
     color: var(--Green);
     background-color: var(--Sand);
-}
+} */
 
 .locations-grid {
     display: grid;
@@ -788,6 +805,7 @@ main .InfoPanel:not(#Intro .InfoPanel) {
 
 main#horizontal article .InfoPanel {
     padding-bottom: calc(5vh + 5px);
+    /* flex-grow: 1; */
 }
 
 .faq-question {

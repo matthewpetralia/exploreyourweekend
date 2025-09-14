@@ -15,7 +15,8 @@ robots: noindex
     {% include 'nav.liquid' %}
     <main id="horizontal">
       <article>
-        <img src="/images/m-error.webp" alt="404 Error Page - Explore Your Weekend" />
+        {% include "components/image.liquid"
+          , slug: 'error' %}
         <div class="InfoPanel">
           <h3>Whoops!</h3>
           <h1>Looks like we lost a page...</h1>
