@@ -8,7 +8,7 @@
   {%- assign page_url_path = "/" -%}
 
   {%- if title -%}
-    {%- assign page_title = metaTitle -%}
+    {%- assign page_title = title | append: " Explore Your Weekend" -%}
     {%- assign page_description = description -%}
     {%- assign page_url_path = permalink -%}
   {%- elsif page_data -%}
@@ -44,14 +44,16 @@
 
   <link rel="stylesheet" href="/main.css">
   <link
-    rel="stylesheet"
-    href="/normalize.css"
-    onload="this.onload=null;this.removeAttribute('media');">
+    rel="preload"
+    href="/normalize.css.css"
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="/normalize.css.css"></noscript>
 
-    <!-- Preconnect to font origins to speed up loading -->
+  <!-- Preconnect to font origins to speed up loading -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="preconnect" href="https://cdn.exploreyourweekend.com">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
+    {% comment %} <link rel="preconnect" href="https://www.googletagmanager.com"> {% endcomment %}
 
 
   <link
@@ -62,11 +64,17 @@
   <script src="/code.js" defer></script>
 
   <!-- Defer the Adobe TypeKit script to prevent it from blocking page load -->
+  {% comment %} <link
+            href="https://use.typekit.net/ade3twf.css"
+            rel="stylesheet"
+        onload="this.onload=null;this.removeAttribute('media');"> {% endcomment %}
+
   <link
+    rel="preload"
     href="https://use.typekit.net/ade3twf.css"
-    rel="stylesheet"
-    defer
-    onload="this.onload=null;this.removeAttribute('media');">
+    as="style"
+    onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://use.typekit.net/ade3twf.css"></noscript>
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3"></script>
   <script>
@@ -77,4 +85,80 @@
                   gtag("js", new Date());
                   gtag("config", "UA-98383758-3");
   </script>
+
+  <style>
+    nav {
+      position: sticky;
+      height: 7vh;
+      width: 100vw;
+      display: flex;
+      z-index: 1000;
+      background-color: var(--Sand);
+      padding: 1.2vh 2.5%;
+      box-sizing: border-box;
+    }
+
+    nav > a,
+    nav > button {
+      display: flex;
+      box-sizing: border-box;
+      width: 50%;
+      color: var(--Green);
+    }
+
+    nav > button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    nav .InfoPanel a {
+      font-size: 1.1em;
+    }
+
+    nav > a {
+      font-size: 2em !important;
+    }
+
+    nav > button .icon {
+      width: 2em;
+      height: 2em;
+    }
+
+    nav > a {
+      text-align: left;
+      align-items: center;
+      place-content: left;
+    }
+
+    nav > button {
+      align-items: center;
+      place-content: flex-end;
+      text-align: right;
+    }
+
+    nav > a img {
+      min-height: 100%;
+      max-height: 100%;
+    }
+
+    nav > .InfoPanel {
+      position: absolute;
+      top: 7vh;
+      width: 100%;
+      height: calc(var(--vh, 1vh) * 100 - 7vh) !important;
+      min-height: calc(var(--vh, 1vh) * 100 - 7vh) !important;
+      left: 0;
+      background-color: var(--Sand);
+      z-index: 1000;
+      color: var(--Green);
+      overflow: scroll;
+    }
+
+
+    nav > div {
+      display: none;
+    }
+  </style>
+
 </head>
