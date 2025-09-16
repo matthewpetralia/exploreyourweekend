@@ -26,10 +26,14 @@ description: Explore a full list of all locations on Explore Your Weekend.
               itemtype="https://schema.org/CreativeWork">
               <a href="/locations/{{ location.slug }}/" class="location-card">
                 {% include "components/image.liquid"
+ 
                   , slug: location.slug
+ 
                   , altTag: location.altTag
+ 
                   , aspect_ratio: "3:4"
-                  , forloop: forloop %}
+ 
+                  , is_first_image: first_image_rendered %}
                 {% assign first_image_rendered = true %}
                 <div class="card-content InfoPanel">
                   <h2 itemprop="headline">{{ location.title }}</h2>
