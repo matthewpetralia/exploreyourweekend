@@ -8,11 +8,11 @@
   {%- assign page_url_path = "/" -%}
 
   {%- if title -%}
-    {%- assign page_title = title -%}
+    {%- assign page_title = metaTitle -%}
     {%- assign page_description = description -%}
     {%- assign page_url_path = permalink -%}
   {%- elsif page_data -%}
-    {%- assign page_title = page_data.title -%}
+    {%- assign page_title = page_data.metaTitle -%}
     {%- assign page_description = page_data.shortDescription | default: page_data.description -%}
     {%- assign page_url_path = page_data.url -%}
   {%- endif -%}
@@ -48,17 +48,11 @@
     href="/normalize.css"
     onload="this.onload=null;this.removeAttribute('media');">
 
-  <!-- Preconnect to font origins to speed up loading -->
-  {% comment %} <link rel="preconnect" href="https://fonts.googleapis.com"> {% endcomment %}
+    <!-- Preconnect to font origins to speed up loading -->
   <link rel="preconnect" href="https://use.typekit.net">
   <link rel="preconnect" href="https://cdn.exploreyourweekend.com">
   <link rel="preconnect" href="https://www.googletagmanager.com">
 
-  <!-- Defer the Material Symbols stylesheet -->
-  {% comment %} <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
-      defer> {% endcomment %}
 
   <link
     rel="icon"
@@ -71,6 +65,7 @@
   <link
     href="https://use.typekit.net/ade3twf.css"
     rel="stylesheet"
+    defer
     onload="this.onload=null;this.removeAttribute('media');">
 
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3"></script>

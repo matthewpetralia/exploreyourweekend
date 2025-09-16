@@ -86,6 +86,7 @@ module.exports = async () => {
       return {
         id: guideRecord.id,
         title: guideFields.title,
+        metaTitle: guideFields.metaTitle || guideFields.title,
         description: guideFields.description,
         slug: guideFields.slug,
         formattedTags: Array.from(combinedTags.values()),

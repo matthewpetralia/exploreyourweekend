@@ -7,7 +7,8 @@
 
 {%- assign srcset_string = "" -%}
 {%- for width in widths -%}
-  {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=" | append: width | append: ",format=auto/" | append: image_path -%}
+  {%- assign height = width | times: height_ratio | divided_by: width_ratio | round -%}
+  {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=" | append: width | append: ",height=" | append: height | append: ",format=auto/" | append: image_path -%}
   {%- assign srcset_part = current_url | append: " " | append: width | append: "w" -%}
   {%- if forloop.last == false -%}
     {%- assign srcset_part = srcset_part | append: ", " -%}
@@ -17,11 +18,9 @@
 
 <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
   <img
-    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=400,format=auto/{{ image_path }}"
+    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/fit=cover,gravity=auto,width=800,height=1067,format=auto/{{ image_path }}"
     srcset="{{ srcset_string }}"
-    {% comment %}
-    sizes="(max-width: 450px) 100vw, 450px"
-    {% endcomment %}
+    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
     alt="{{ altTag }}"
     itemprop="image"
     {% if forloop.first %}

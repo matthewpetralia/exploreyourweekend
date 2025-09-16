@@ -27,9 +27,9 @@ description: Explore a full list of all locations on Explore Your Weekend.
               <a href="/locations/{{ location.slug }}/" class="location-card">
                 {% include "components/image.liquid"
                   , slug: location.slug
-                  , location: location
+                  , altTag: location.altTag
                   , aspect_ratio: "3:4"
-                  , is_first: first_image_rendered == false %}
+                  , forloop: forloop %}
                 {% assign first_image_rendered = true %}
                 <div class="card-content InfoPanel">
                   <h2 itemprop="headline">{{ location.title }}</h2>
