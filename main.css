@@ -213,6 +213,8 @@ picture {
 .locations-grid article {
     border-radius: 10px;
     background-color: var(--Sand-Op);
+    min-width: 100%;
+    min-height: 100%;
 }
 
 @media (min-width: 480px) {
