@@ -3,9 +3,12 @@
 {%- assign width_ratio = aspect_ratio_parts[0] | plus: 0 -%}
 {%- assign height_ratio = aspect_ratio_parts[1] | plus: 0 -%}
 
-{%- assign srcset_parts = "" -%} {%- assign provided_widths = widths | split: ", " -%}
-{%- for width in provided_widths -%}
-  {%- assign height = width | times: height_ratio | divided_by: width_ratio | round -%} {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=" | append: width | append: ",height=" | append: height | append: ",format=auto/" | append: image_path -%} {%- assign srcset_part = current_url | append: " " | append: width | append: "w" -%}
+{%- assign widths = "362, 480, 592, 640, 768, 800" | split: ", " -%}
+{%- assign srcset_parts = "" -%}
+{%- for width in widths -%}
+  {%- assign height = width | times: height_ratio | divided_by: width_ratio | round -%}
+  {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=" | append: width | append: ",height=" | append: height | append: ",format=auto/" | append: image_path -%}
+  {%- assign srcset_part = current_url | append: " " | append: width | append: "w" -%}
   {%- unless forloop.last == true -%}
     {%- assign srcset_part = srcset_part | append: ", " -%}
   {%- endunless -%}
@@ -13,19 +16,21 @@
 {%- endfor -%}
 
 {%- assign default_height = default_width | times: height_ratio | divided_by: width_ratio | round -%}
+{%- assign default_src = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=" | append: default_width | append: ",height=" | append: default_height | append: ",format=auto/" | append: image_path -%}
 
 <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
   <img
-    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width={{ default_width }},height={{ default_height }},format=auto/{{ image_path }}"
+    src="{{ default_src }}"
     srcset="{{ srcset_parts }}"
     sizes="{{ sizes }}"
     width="{{ default_width }}"
     height="{{ default_height }}"
     alt="{{ altTag }}"
     itemprop="image"
-    {% if fetchpriority == "high" %}
+    decoding="async"
+    {%- if fetchpriority == true -%}
     fetchpriority="high"
-    {% else %}
+    {%- else -%}
     loading="lazy"
-    {% endif %}>
+    {%- endif -%}>
 </div>

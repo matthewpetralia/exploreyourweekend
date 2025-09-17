@@ -90,21 +90,18 @@ picture {
 }
 
 .image-wrapper {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    flex-grow: 1;
-
+  display: block;
+  position: relative;
+  overflow: hidden;
 }
 
 .image-wrapper img {
-  /* position: absolute;
+  position: absolute;
   top: 0;
-  left: 0; */
+  left: 0;
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   object-fit: cover;
-  /* object-position: center; */
 }
 
 #PageNotFound main img {
@@ -254,6 +251,12 @@ main #horizontal article:first-of-type .bwd span:hover {
 .locations-grid article {
     border-radius: 10px;
     background-color: var(--Sand-Op);
+}
+
+@media (min-width: 480px) {
+  .locations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .location-card {

@@ -17,34 +17,34 @@ description: Explore a full list of all locations on Explore Your Weekend.
       </article>
 
       <div class="locations-grid">
-        {%- assign first_image_rendered = false -%}
         {% for location in collections.locations %}
           <article
             id="{{ location.slug }}"
             itemscope
             itemtype="https://schema.org/CreativeWork">
             <a href="/locations/{{ location.slug }}/" class="location-card">
+              {%- comment -%} 
+                ** FIX: Updated the 'sizes' attribute **
+                This provides a much more accurate instruction to the browser, telling it: 
+                - On small screens (up to 480px), the image is 90% of the screen width. 
+                - On medium screens (up to 768px), the image is 45% of the screen width (2 columns). 
+                - On larger screens, the image is 30% of the screen width (3 columns). 
+              {%- endcomment -%}
               {% include "components/image.liquid"
- 
                 , slug: location.slug
- 
                 , altTag: location.altTag
- 
                 , aspect_ratio: "3:4"
- 
-                , widths: "362, 592, 800"
- 
-                , sizes: "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw"
- 
+                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
                 , default_width: 362
- 
                 , fetchpriority: forloop.first
               %}
               <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ location.title }}</h2>
                 <div class="tags" itemprop="keywords">
                   {% for tag in location.formattedTags %}
-                    <div class="tag">{{ tag.name }}</div>
+                    {% unless tag.group == 'Distance' or tag.group == 'Duration' %}
+                      <div class="tag">{{ tag.name }}</div>
+                    {% endunless %}
                   {% endfor %}
                 </div>
               </div>
