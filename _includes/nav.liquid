@@ -51,7 +51,7 @@
       {% for guide in guides %}
         <a
           class="button"
-          href="/guides/{{ guide.slug }}"
+          href="/guides/{{ guide.slug }}/"
           onclick="myFunction()">
           {{ guide.title }}
           {% include 'icon.liquid'
@@ -64,7 +64,7 @@
       {% for location in locations %}
         <a
           class="button"
-          href="/locations/{{ location.slug }}"
+          href="/locations/{{ location.slug }}/"
           onclick="myFunction()">
           {{ location.title }}
           {% include 'icon.liquid'
