@@ -12,6 +12,8 @@
   {%- assign srcset_parts = srcset_parts | append: srcset_part -%}
 {%- endfor -%}
 
+{%- assign default_height = default_width | times: height_ratio | divided_by: width_ratio | round -%}
+
 <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
   <img
     src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width={{ default_width }},height={{ default_height }},format=auto/{{ image_path }}"
