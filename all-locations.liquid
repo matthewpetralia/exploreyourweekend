@@ -17,6 +17,7 @@ description: Explore a full list of all locations on Explore Your Weekend.
       </article>
 
       <div class="locations-grid">
+        {%- assign first_image_rendered = false -%}
         {% for location in collections.locations %}
           <article
             id="{{ location.slug }}"
@@ -24,19 +25,19 @@ description: Explore a full list of all locations on Explore Your Weekend.
             itemtype="https://schema.org/CreativeWork">
             <a href="/locations/{{ location.slug }}/" class="location-card">
               {% include "components/image.liquid"
-
+ 
                 , slug: location.slug
-
+ 
                 , altTag: location.altTag
-
+ 
                 , aspect_ratio: "3:4"
-
+ 
                 , widths: "362, 592, 800"
-
+ 
                 , sizes: "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw"
-
+ 
                 , default_width: 362
-
+ 
                 , fetchpriority: forloop.first
               %}
               <div class="card-content InfoPanel">
