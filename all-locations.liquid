@@ -23,13 +23,6 @@ description: Explore a full list of all locations on Explore Your Weekend.
             itemscope
             itemtype="https://schema.org/CreativeWork">
             <a href="/locations/{{ location.slug }}/" class="location-card">
-              {%- comment -%} 
-                ** FIX: Updated the 'sizes' attribute **
-                This provides a much more accurate instruction to the browser, telling it: 
-                - On small screens (up to 480px), the image is 90% of the screen width. 
-                - On medium screens (up to 768px), the image is 45% of the screen width (2 columns). 
-                - On larger screens, the image is 30% of the screen width (3 columns). 
-              {%- endcomment -%}
               {% include "components/image.liquid"
                 , slug: location.slug
                 , altTag: location.altTag
