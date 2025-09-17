@@ -50,10 +50,15 @@
     onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="/normalize.css"></noscript>
 
-  <!-- Preconnect to font origins to speed up loading -->
-  <link rel="preconnect" href="https://use.typekit.net">
+  <link
+    rel="preconnect"
+    href="https://use.typekit.net"
+    crossorigin>
+  <link
+    rel="preconnect"
+    href="https://p.typekit.net"
+    crossorigin>
   <link rel="preconnect" href="https://cdn.exploreyourweekend.com">
-    {% comment %} <link rel="preconnect" href="https://www.googletagmanager.com"> {% endcomment %}
 
 
   <link
@@ -62,12 +67,6 @@
     href="/ExploreYourWeekendFAVICON.svg">
 
   <script src="/code.js" defer></script>
-
-  <!-- Defer the Adobe TypeKit script to prevent it from blocking page load -->
-  {% comment %} <link
-                            href="https://use.typekit.net/ade3twf.css"
-                            rel="stylesheet"
-                onload="this.onload=null;this.removeAttribute('media');"> {% endcomment %}
 
   <link
     rel="preload"
