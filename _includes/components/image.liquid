@@ -1,29 +1,27 @@
 {%- assign image_path = slug | append: ".webp" -%}
-{%- assign widths_string = "450, 800, 1200, 1600" -%}
-{%- assign widths = widths_string | split: ", " -%}
 {%- assign aspect_ratio_parts = aspect_ratio | split: ":" -%}
 {%- assign width_ratio = aspect_ratio_parts[0] | plus: 0 -%}
 {%- assign height_ratio = aspect_ratio_parts[1] | plus: 0 -%}
 
-{%- assign srcset_string = "" -%}
-{%- for width in widths -%}
-  {%- assign height = width | times: height_ratio | divided_by: width_ratio | round -%}
-  {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=" | append: width | append: ",height=" | append: height | append: ",format=auto/" | append: image_path -%}
-  {%- assign srcset_part = current_url | append: " " | append: width | append: "w" -%}
-  {%- if forloop.last == false -%}
+{%- assign srcset_parts = "" -%} {%- assign provided_widths = widths | split: ", " -%}
+{%- for width in provided_widths -%}
+  {%- assign height = width | times: height_ratio | divided_by: width_ratio | round -%} {%- assign current_url = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=" | append: width | append: ",height=" | append: height | append: ",format=auto/" | append: image_path -%} {%- assign srcset_part = current_url | append: " " | append: width | append: "w" -%}
+  {%- unless forloop.last == true -%}
     {%- assign srcset_part = srcset_part | append: ", " -%}
-  {%- endif -%}
-  {%- assign srcset_string = srcset_string | append: srcset_part -%}
+  {%- endunless -%}
+  {%- assign srcset_parts = srcset_parts | append: srcset_part -%}
 {%- endfor -%}
 
 <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
   <img
-    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=800,height=1067,format=auto/{{ image_path }}"
-    srcset="{{ srcset_string }}"
-    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+    src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width={{ default_width }},height={{ default_height }},format=auto/{{ image_path }}"
+    srcset="{{ srcset_parts }}"
+    sizes="{{ sizes }}"
+    width="{{ default_width }}"
+    height="{{ default_height }}"
     alt="{{ altTag }}"
     itemprop="image"
-    {% if forloop.first %}
+    {% if fetchpriority == "high" %}
     fetchpriority="high"
     {% else %}
     loading="lazy"

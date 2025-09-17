@@ -24,14 +24,15 @@ description: Explore a full list of all locations on Explore Your Weekend.
             itemtype="https://schema.org/CreativeWork">
             <a href="/locations/{{ location.slug }}/" class="location-card">
               {% include "components/image.liquid"
- 
                 , slug: location.slug
- 
                 , altTag: location.altTag
- 
                 , aspect_ratio: "3:4"
- 
-                , forloop: forloop %}
+                , widths: "362, 592, 800"
+                , sizes: "(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw"
+                , default_width: 362
+                , default_height: 530
+                , fetchpriority: "high"
+              %}
               <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ location.title }}</h2>
                 <div class="tags" itemprop="keywords">
