@@ -244,6 +244,7 @@ main #horizontal article:first-of-type .bwd span:hover {
     grid-template-columns: repeat(1, 1fr);
     gap: 16px; /* Adjust as needed */
     padding: 2.5%;
+    min-height: 1000px;
     /* background-color: var(--Sand); */
     /* width: 100%; */
 }
