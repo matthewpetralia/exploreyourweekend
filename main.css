@@ -265,12 +265,12 @@ main #horizontal article:first-of-type .bwd span:hover {
     display: block;
 }
 
-.location-card img {
+/* .location-card img {
     width: 100%;
     height: auto;
     object-fit: cover;
     display: block;
-}
+} */
 
 .card-content {
     padding: 10px 0;
