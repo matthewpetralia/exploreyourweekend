@@ -208,6 +208,7 @@ picture {
     gap: 16px;
     padding: 2.5%;
     min-height: 1000px;
+    width: 100%;
 }
 
 .locations-grid article {
