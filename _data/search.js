@@ -43,7 +43,7 @@ module.exports = async () => {
     store[item.id] = {
       url: item.canonicalURL || item.url,
       canonicalURL: item.canonicalURL || null,
-      imagePath: item.imagePath,
+      slug: item.slug,
       title: item.title,
       description: item.description,
       type: item.type,

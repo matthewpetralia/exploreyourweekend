@@ -17,32 +17,40 @@ description: Explore a full list of all locations on Explore Your Weekend.
       </article>
 
       <div class="locations-grid">
-        {% for guide in collections.guides %}
-          {% for location in guide.sections %}
-            <article
-              id="{{ location.slug }}"
-              itemscope
-              itemtype="https://schema.org/CreativeWork">
-              <a href="/locations/{{ location.slug }}/" class="location-card">
-                <picture>
-                  {% if location.imagePath %}
-                    <img
-                      src="/images/m-{{ location.slug }}.webp"
-                      alt="{{ location.title }}"
-                      itemprop="image" />
+        {% for location in collections.locations %}
+          <article
+            id="{{ location.slug }}"
+            itemscope
+            itemtype="https://schema.org/CreativeWork">
+            <a href="/locations/{{ location.slug }}/" class="location-card">
+              {% include "components/image.liquid"
+                , slug: location.slug
+                , altTag: location.altTag
+                , aspect_ratio: "3:4"
+                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+                , default_width: 362
+                , fetchpriority: forloop.first
+              %}
+              <div class="card-content InfoPanel">
+                <h2 itemprop="headline">{{ location.title }}</h2>
+                <div class="tags" itemprop="keywords">
+                  {% if location.formattedDistance and location.formattedDistance != '0m' %}
+                    <div class="tag">{{ location.formattedDistance }} Distance</div>
                   {% endif %}
-                </picture>
-                <div class="card-content InfoPanel">
-                  <h2 itemprop="headline">{{ location.title }}</h2>
-                  <div class="tags" itemprop="keywords">
-                    {% for tag in location.formattedTags %}
+
+                  {% if location.formattedDuration and location.formattedDuration != '0min' %}
+                    <div class="tag">{{ location.formattedDuration }} Duration</div>
+                  {% endif %}
+
+                  {% for tag in location.formattedTags %}
+                    {% unless tag.group == 'Distance' or tag.group == 'Duration' %}
                       <div class="tag">{{ tag.name }}</div>
-                    {% endfor %}
-                  </div>
+                    {% endunless %}
+                  {% endfor %}
                 </div>
-              </a>
-            </article>
-          {% endfor %}
+              </div>
+            </a>
+          </article>
         {% endfor %}
       </div>
     </main>

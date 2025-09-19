@@ -24,44 +24,48 @@ permalink: "guides/{{ guide.slug }}/"
             <h3>On this Page</h3>
             <div class="tags">
               {% for location in guide.sections %}
-                <a href="#{{ location.slug }}">{{ location.title }}<span class="material-symbols-outlined">chevron_right</span>
-                </a>
+                {%- assign link_href = "#" | append: location.slug -%}
+                {% include "components/link.liquid"
+                  , href: link_href
+                  , text: location.title
+                  , button: true %}
               {% endfor %}
             {% comment %} <a href="#FAQ">Frequently Asked Questions<span class="material-symbols-outlined">chevron_right</span>
-                          </a> {% endcomment %}
+                                                                                                                                                  </a> {% endcomment %}
             </div>
           </div>
         </div>
-        <a class="bwd" href="/">
-          <span class="material-symbols-outlined">chevron_left</span>
-        </a>
         <a class="fwd" href="#{{ guide.sections[0].slug }}">
-          <span class="material-symbols-outlined">chevron_right</span>
+          {% include 'icon.liquid'
+            , name: 'chevron_right' %}
         </a>
       </article>
 
       {% for location in guide.sections %}
         <article id="{{ location.slug }}">
-          <picture>
-            <source srcset="/images/m-{{ location.slug }}.webp" media="(max-width: 768px), (orientation: portrait)">
-            <img
-              src="/images/{{ location.slug }}.webp"
-              alt="{{ location.title }}"
-              itemprop="image">
-          </picture>
+          {% include "components/image.liquid"
+            , slug: location.slug
+            , altTag: location.altTag
+            , aspect_ratio: "3:4"
+            , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+            , default_width: 362
+            , fetchpriority: forloop.first
+          %}
 
           <a
             class="bwd"
             href="#"
             data-nav="bwd">
-            <span class="material-symbols-outlined">chevron_left</span>
+            {% include 'icon.liquid'
+              , name: 'chevron_left' %}
           </a>
 
           <a
             class="fwd"
             href="#"
             data-nav="fwd">
-            <span class="material-symbols-outlined">chevron_right</span>
+            {% include 'icon.liquid'
+              , name: 'chevron_right' %}
           </a>
 
           <div class="InfoPanel">
@@ -103,11 +107,11 @@ permalink: "guides/{{ guide.slug }}/"
       {% endfor %}
 
     {% comment %} <article id="FAQ">
-                                                              <div class="InfoPanel">
-                                                                <h3>{{ guide.title }} Guide</h3>
-                                                                <h2>FAQ</h2>
-                                                              </div>
-                                          </article> {% endcomment %}
+                                                                                                                          <div class="InfoPanel">
+                                                                                                                            <h3>{{ guide.title }} Guide</h3>
+                                                                                                                            <h2>FAQ</h2>
+                                                                                                                          </div>
+                                                                                  </article> {% endcomment %}
     </main>
 
     <div class="scroll-indicator"></div>

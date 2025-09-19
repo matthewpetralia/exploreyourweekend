@@ -28,6 +28,7 @@ document.querySelectorAll(".tab-button").forEach((button) => {
         parent.querySelector(`.tab-content.${button.dataset.tab}`).classList.add("active");
     });
 });
+
     
     
     document.addEventListener("DOMContentLoaded", function () {

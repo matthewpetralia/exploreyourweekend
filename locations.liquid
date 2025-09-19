@@ -21,38 +21,31 @@ permalink: "locations/{{ location.slug }}/index.html"
         id='{{ location.slug }}'>
 
         <div class="multiImage">
-          <picture>
-            <source
-              srcset='{{ location.imagePath | replace: "/images/", "/images/m-" }}.webp'
-              media='(max-width: 768px), (orientation: portrait)'
-              onerror='this.onerror=null;this.src="/images/m-error.webp";'>
-            <img
-              src='{{ location.imagePath }}.webp'
-              onerror='this.onerror=null;this.src="/images/m-error.webp";'
-              alt='{{ location.altTag }}'
-              itemprop='image'>
-          </picture>
+          {% include "components/image.liquid"
+            , slug: location.slug
+            , altTag: location.altTag
+            , aspect_ratio: "3:4"
+            , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+            , default_width: 362
+            , fetchpriority: true
+          %}
 
           {% if location.imageCount > 1 %}
             {% assign additional_images_count = location.imageCount | minus: 1 %}
             {% for i in (1..additional_images_count) %}
-              {%- assign image_url_base = location.imagePath | append: '-' | append: i -%}
+              {%- assign image_url_base = location.slug | append: '-' | append: i -%}
               {%- assign image_url = image_url_base | append: '.webp' -%}
-
-              <picture>
-                <source
-                  srcset='{{ image_url_base | replace: "/images/", "/images/m-" }}.webp'
-                  media='(max-width: 768px), (orientation: portrait)'
-                  onerror='this.onerror=null;this.src="/images/m-error.webp";'>
-                <img
-                  src='{{ image_url }}'
-                  onerror='this.onerror=null;this.src="/images/m-error.webp";'
-                  alt='{{ location.altTag }} - Image {{ i | plus: 1 }}'
-                  itemprop='image'>
-              </picture>
-
+              {% include "components/image.liquid"
+                , slug: image_url_base
+                , altTag: location.altTag
+                , aspect_ratio: "3:4"
+                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+                , default_width: 362
+                , fetchpriority: false
+              %}
             {% endfor %}
           {% endif %}
+
         </div>
 
 
@@ -96,14 +89,22 @@ permalink: "locations/{{ location.slug }}/index.html"
 
           {% if location.googleMapsLink %}
 
-            {%- assign link_text = location.title | append: " on Google Maps" -%}
+            <div>
+              <h3>Getting There</h3>
+              <p>Find your way to {{ location.title }} quickly and easily. For detailed directions, click below to view on Google Maps.</p>
 
-            {% include "components/link.liquid"
-              , href: location.googleMapsLink
-              , text: link_text
-              , button: true
-            %}
+              {%- assign link_text = "View " | append: location.title | append: " on Google Maps" -%}
 
+              {% include "components/link.liquid"
+ 
+                , href: location.googleMapsLink
+ 
+                , text: link_text
+ 
+                , button: true
+              %}
+
+            </div>
           {% endif %}
 
           {% if location.parking %}
@@ -153,11 +154,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                                                    <h2>Debugging Data</h2>
-                                                                                                                                                                                    <code>
-                                                                                                                                                                                    {{ location.__rawFields | json }}
-                                                                                                                                                                                    </code>
-                                                                                                                                                      </pre> {% endcomment %}
+                                                                                                                                                                                                                                                                                    <h2>Debugging Data</h2>
+                                                                                                                                                                                                                                                                                    <code>
+                                                                                                                                                                                                                                                                                    {{ location.__rawFields | json }}
+                                                                                                                                                                                                                                                                                    </code>
+                                                                                                                                                                                                                                      </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>

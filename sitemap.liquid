@@ -2,7 +2,7 @@
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
 ---
-<?xml version="1.0" encoding="UTF-8" ?>
+<? xml version="1.0" encoding="UTF-8" ?>
   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Main Pages -->
   <url>
@@ -30,20 +30,20 @@ eleventyExcludeFromCollections: true
   {%- for guide in collections.guides -%}
     <url>
       <loc>https://exploreyourweekend.com/guides/{{ guide.slug }}/</loc>
+      <lastmod>{{ guide.updated | date: "%Y-%m-%d" }}</lastmod>
       <changefreq>monthly</changefreq>
       <priority>0.8</priority>
     </url>
   {%- endfor -%}
 
   <!-- Locations -->
-  {% for guide in collections.guides %}
-    {% for location in guide.sections %}
-      <url>
-        <loc>https://exploreyourweekend.com/locations/{{ location.slug }}/</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-      </url>
-    {%- endfor -%}
+  {% for location in collections.locations %}
+    <url>
+      <loc>https://exploreyourweekend.com/locations/{{ location.slug }}/</loc>
+      <lastmod>{{ location.updated | date: "%Y-%m-%d" }}</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.7</priority>
+    </url>
   {%- endfor -%}
 
 </urlset>

@@ -1,4 +1,4 @@
-{%- assign tag_type = tag | default: 'span' -%}
+{%- assign tag_type = tag | default: '' -%}
 
 <a
   href="{{ href }}"
@@ -8,13 +8,23 @@
   rel="noopener noreferrer"
   {% endif %}>
 
-  <{{ tag_type }}>
-    {{ text }}
-    </{{ tag_type }}>
-
-    {% if href contains "http" %}
-      <span class="material-symbols-outlined">arrow_outward</span>
-    {% else %}
-      <span class="material-symbols-outlined">chevron_right</span>
+  {% if tag_type != '' %}
+    <{{ tag_type }}>
     {% endif %}
+    {{ text }}
+    {% if href contains "http" %}
+
+      {% include 'icon.liquid'
+        , name: 'arrow_outward' %}
+
+    {% else %}
+
+      {% include 'icon.liquid'
+        , name: 'chevron_right' %}
+    {% endif %}
+
+    {% if tag_type != '' %}
+      </{{ tag_type }}>
+    {% endif %}
+
   </a>

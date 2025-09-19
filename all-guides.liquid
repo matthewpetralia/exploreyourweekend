@@ -22,23 +22,22 @@ description: Explore a full list of all guides on Explore Your Weekend.
             id="{{ guide.slug }}"
             itemscope
             itemtype="https://schema.org/CreativeWork">
-            <a href="/guides/{{ guide.url }}" class="location-card">
-              <picture>
-                {% if guide.imagePath %}
-                  <img
-                    src="/images/m-{{ guide.slug }}.webp"
-                    alt="{{ guide.title }}"
-                    itemprop="image" />
-                {% endif %}
-              </picture>
+            <a href="/guides/{{ guide.slug }}" class="location-card">
+              {% include "components/image.liquid"
+                , slug: guide.slug
+                , location: location
+                , aspect_ratio: "3:4"
+                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+                , default_width: 362
+                , fetchpriority: forloop.first %}
               <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ guide.title }}</h2>
                 <p itemprop="description">{{ guide.description }}</p>
               {% comment %} <div class="tags" itemprop="keywords">
-                                                                                  {% for tag in guide.formattedTags %}
-                                                                                    <div class="tag">{{ tag.name }}</div>
-                                                                                  {% endfor %}
-                                                                        </div> {% endcomment %}
+                                                                                                                                                                                  {% for tag in guide.formattedTags %}
+                                                                                                                                                                                    <div class="tag">{{ tag.name }}</div>
+                                                                                                                                                                                  {% endfor %}
+                                                                                                                                                            </div> {% endcomment %}
               </div>
             </a>
           </article>

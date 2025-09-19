@@ -16,16 +16,8 @@ permalink: /about/
     {% include 'nav.liquid' %}
     <main id="horizontal">
       <article id="About">
-        <picture>
-          <source
-            srcset="/images/m-about.webp"
-            media="(orientation: portrait)"
-            onerror="this.onerror=null;this.src='../images/Springbrook_National_Park.webp';" />
-          <img
-            src="/images/about.webp"
-            onerror="this.onerror=null;this.src='../images/Springbrook_National_Park.webp';"
-            alt="About Explore Your Weekend" />
-        </picture>
+        {% include "components/image.liquid"
+          , slug: 'about' %}
         <div class="InfoPanel">
           <h3>Explore Your Weekend</h3>
           <h1>About</h1>

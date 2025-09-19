@@ -18,9 +18,8 @@ permalink: /
                 class="search-input"
                 placeholder="Search your weekend..." />
               <button class="clear-search-button">
-                <span class="material-symbols-outlined">
-                  close
-                </span>
+                {% include 'icon.liquid'
+                  , name: 'close' %}
               </button>
             </div>
             <div class="tag-database">
@@ -31,39 +30,41 @@ permalink: /
         </div>
       </article>
 
-      <div id="all-content-cards" class="card-grid">
+      <div class="locations-grid">
         {% for guide in collections.guides %}
           <article
-            class="guide-card"
             id="{{ guide.slug }}"
             itemscope
             itemtype="https://schema.org/CreativeWork">
-            <a href="/guides/{{ guide.slug }}/" itemprop="url">
-              <picture>
-                <source srcset="/images/m-{{guide.slug}}.webp" media="(min-width: 768px), (orientation: landscape)" />
-                <img
-                  src="{{guide.imagePath}}.webp"
-                  alt="{{ guide.title }}"
-                  itemprop="image" />
-              </picture>
-              <div class="InfoPanel">
+            <a href="/guides/{{ guide.slug }}" class="location-card">
+              {% include "components/image.liquid"
+                , slug: guide.slug
+                , location: location
+                , aspect_ratio: "3:4"
+                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+                , default_width: 362
+                , fetchpriority: forloop.first %}
+              <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ guide.title }}</h2>
                 <p itemprop="description">{{ guide.description }}</p>
-                <div class="tags" itemprop="keywords">
-                  {% for tag in guide.formattedTags %}
-                    <div class="tag">{{ tag.name }}</div>
-                  {% endfor %}
-                </div>
+              {% comment %} <div class="tags" itemprop="keywords">
+                                                                                                                                                                                                                  {% for tag in guide.formattedTags %}
+                                                                                                                                                                                                                    <div class="tag">{{ tag.name }}</div>
+                                                                                                                                                                                                                  {% endfor %}
+                                                                                                                                                                                        </div> {% endcomment %}
               </div>
             </a>
           </article>
         {% endfor %}
       </div>
 
-      <div id="search-results-container" style="display: none;"></div>
+      <div
+        id="search-results-container"
+        class="locations-grid"
+        style="display: none;"></div>
     </main>
 
-    <script src="/assets/js/lunr.js"></script>
-    <script src="/search-logic.js"></script>
+    <script src="/assets/js/lunr.js" defer></script>
+    <script src="/search-logic.js" defer></script>
   </body>
 </html>
