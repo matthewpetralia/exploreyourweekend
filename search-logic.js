@@ -25,7 +25,7 @@ const SearchHelpers = {
 const contexts = {
     homepage: {
         input: document.querySelector(".search-input"),
-        allContentContainer: document.getElementById('all-content-cards'),
+        allContentContainer: document.querySelector('.locations-grid'),
         searchResultsContainer: document.getElementById('search-results-container'),
         clearSearchButton: document.querySelector(".clear-search-button"),
         tagDatabase: document.querySelector(".tag-database .filters"),
@@ -283,15 +283,13 @@ function renderResults(results, context) {
         // Add the formatted distance and duration tags if they exist and are for locations
         if (item.type === 'section') {
             if (item.formattedDistance && item.formattedDistance !== '0m') {
-                combinedTagsHtml += `<div class="tag">${item.formattedDistance}</div>`;
+                combinedTagsHtml += `<div class="tag">${item.formattedDistance} Distance</div>`;
             }
             if (item.formattedDuration && item.formattedDuration !== '0min') {
-                combinedTagsHtml += `<div class="tag">${item.formattedDuration}</div>`;
+                combinedTagsHtml += `<div class="tag">${item.formattedDuration} Duration</div>`;
             }
         }
 
-const mobileImagePath = item.imagePath.replace('/images/', '/images/m-');
-        
         // Add other tags, excluding the distance and duration group names
         sortedTags.forEach(tag => {
             if (tag.group !== "Distance" && tag.group !== "Duration") {
@@ -299,22 +297,53 @@ const mobileImagePath = item.imagePath.replace('/images/', '/images/m-');
             }
         });
 
-        card.innerHTML = `
-        <a href="${item.canonicalURL || item.url}">
-        <picture>
-        <source
-        srcset='${mobileImagePath}.webp'
-        media='(min-width: 768px), (orientation: landscape)'
-        onerror='this.onerror=null;this.src="/images/m-error.webp";'>
-        <img src="${item.imagePath}.webp" alt="${item.title}">
-        </picture>
-        <div class="InfoPanel">
-        <h2>${item.title}</h2>
-        <p>${item.description}</p>
-        <div class="tags">${combinedTagsHtml}</div>
-        </div>
-        </a>
-        `;
+        function generateResponsiveImageHTML(item, aspect_ratio = "3:4") {
+  const [widthRatio, heightRatio] = aspect_ratio.split(':').map(Number);
+  const image_path = `${item.slug}.webp`;
+
+  const widths = [362, 480, 592, 640, 768, 800];
+  const default_width = widths[0];
+  const default_height = Math.round((default_width / widthRatio) * heightRatio);
+
+  const srcset_parts = widths.map(width => {
+    const height = Math.round((width / widthRatio) * heightRatio);
+    return `https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=${width},height=${height},format=auto/${image_path} ${width}w`;
+  }).join(', ');
+
+  // A reasonable default for a grid layout, similar to your all-locations page.
+  // You may need to adjust this based on your specific CSS media queries.
+  const sizes = '(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw';
+
+  return `
+    <div class="image-wrapper" style="aspect-ratio: ${widthRatio} / ${heightRatio};">
+      <img
+        src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=${default_width},height=${default_height},format=auto/${image_path}"
+        srcset="${srcset_parts}"
+        sizes="${sizes}"
+        width="${default_width}"
+        height="${default_height}"
+        alt="${item.title}"
+        itemprop="image"
+        decoding="async"
+        loading="lazy"
+      >
+    </div>
+  `;
+}
+
+// Your existing search result card loop.
+card.innerHTML = `
+  <a href="${item.canonicalURL || item.url}" class="location-card">
+    ${generateResponsiveImageHTML(item)}
+    <div class="card-content InfoPanel">
+      <h2 itemprop="headline">${item.title}</h2>
+      <p itemprop="description">${item.description}</p>
+      <div class="tags" itemprop="keywords">
+        ${combinedTagsHtml}
+      </div>
+    </div>
+  </a>
+`;
         container.appendChild(card);
     });
 

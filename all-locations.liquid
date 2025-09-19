@@ -34,6 +34,14 @@ description: Explore a full list of all locations on Explore Your Weekend.
               <div class="card-content InfoPanel">
                 <h2 itemprop="headline">{{ location.title }}</h2>
                 <div class="tags" itemprop="keywords">
+                  {% if location.formattedDistance and location.formattedDistance != '0m' %}
+                    <div class="tag">{{ location.formattedDistance }} Distance</div>
+                  {% endif %}
+
+                  {% if location.formattedDuration and location.formattedDuration != '0min' %}
+                    <div class="tag">{{ location.formattedDuration }} Duration</div>
+                  {% endif %}
+
                   {% for tag in location.formattedTags %}
                     {% unless tag.group == 'Distance' or tag.group == 'Duration' %}
                       <div class="tag">{{ tag.name }}</div>

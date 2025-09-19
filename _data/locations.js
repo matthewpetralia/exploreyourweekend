@@ -176,6 +176,7 @@ module.exports = async () => {
         id: record.id,
         title: fields.title,
         metaTitle: fields.metaTitle || fields.title,
+        updated: fields.updated || null,
         guides: linkedGuides,
         description: fields.description,
         detailedDescription: fields.detailedDescription.value,
