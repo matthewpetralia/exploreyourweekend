@@ -154,6 +154,7 @@ function renderTags(tagGroups, context) {
         const groupHeader = document.createElement("button");
         groupHeader.textContent = groupName;
         groupHeader.classList.add("tag-group-header");
+        groupHeader.innerHTML += `<svg class="icon arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="16" height="16"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>`;
         const groupContent = document.createElement("div");
         groupContent.classList.add("tag-group-content", "hidden");
         tags.forEach(tag => {
@@ -195,10 +196,9 @@ function renderActiveTags(context) {
     activeTags.forEach(tag => {
         const tagElement = document.createElement("span");
         tagElement.classList.add("active-tag-item");
-        // Use the helper to format for display
         tagElement.textContent = tag;
         const removeButton = document.createElement("button");
-        removeButton.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960' ><path d='m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z'/></svg>";
+        removeButton.innerHTML = "<svg class='icon close' xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960' ><path d='m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z'/></svg>";
         removeButton.classList.add("remove-tag-button");
         removeButton.addEventListener("click", () => {
             toggleTag(tag);

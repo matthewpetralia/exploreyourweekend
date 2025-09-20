@@ -13,11 +13,14 @@ permalink: /
           <p>Find hikes, lookouts, scenic drives, and breathtaking beaches with ease.</p>
           <div class="search">
             <div class="search-container">
+              {% include 'icon.liquid'
+                , name: 'search' %}
               <input
                 type="text"
                 class="search-input"
                 placeholder="Search your weekend..." />
-              <button class="clear-search-button">
+              <span class="bar"></span>
+              <button class="clear-search-button" title="Clear search and filters">
                 {% include 'icon.liquid'
                   , name: 'close' %}
               </button>
