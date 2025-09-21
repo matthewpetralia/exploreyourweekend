@@ -216,7 +216,7 @@ picture {
     grid-template-columns: repeat(1, 1fr);
     gap: 16px;
     padding: 2.5%;
-    min-height: 100vh;
+    min-height: 80vh;
     width: 100%;
 }
 
@@ -229,9 +229,15 @@ picture {
     aspect-ratio: 3/4;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 768px) {
+    .locations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1060px) {
   .locations-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -969,11 +975,6 @@ main p + a {
         width: 5%;
         height: 100%;
     }
-
-    .locations-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
     .multiImage{
         max-height: 100%;
     }
