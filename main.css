@@ -11,7 +11,7 @@
     scroll-behavior: smooth !important;
     -webkit-tap-highlight-color: transparent;
     cursor: default;
-    font-family: "futura-pt", 'League Spartan', 'Adjusted Arial Fallback';
+    font-family: "futura-pt", 'Adjusted Arial Fallback';
     box-sizing: border-box;
 }
 
@@ -943,6 +943,8 @@ main p + a {
     main#horizontal .InfoPanel:not(#Intro .InfoPanel, #FAQ .InfoPanel) {
         width: 50%;
         z-index: 1;
+    }
+    main#horizontal .InfoPanel:not(.location-page#horizontal .InfoPanel, #FAQ .InfoPanel){
         padding-right: 8%;
     }
     main#horizontal article#Intro {

@@ -20,36 +20,13 @@ permalink: "locations/{{ location.slug }}/index.html"
         itemtype='https://schema.org/CreativeWork'
         id='{{ location.slug }}'>
 
-        <div class="multiImage">
-          {% include "components/image.liquid"
-            , slug: location.slug
-            , altTag: location.altTag
-            , aspect_ratio: "3:4"
-            , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
-            , default_width: 362
-            , fetchpriority: true
-          %}
+        {% include "components/image.liquid"
+          , images: location.imageFiles
+          , altTags: location.altTags
+          , mode: 'gallery'
+        %}
 
-          {% if location.imageCount > 1 %}
-            {% assign additional_images_count = location.imageCount | minus: 1 %}
-            {% for i in (1..additional_images_count) %}
-              {%- assign image_url_base = location.slug | append: '-' | append: i -%}
-              {%- assign image_url = image_url_base | append: '.webp' -%}
-              {% include "components/image.liquid"
-                , slug: image_url_base
-                , altTag: location.altTag
-                , aspect_ratio: "3:4"
-                , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
-                , default_width: 362
-                , fetchpriority: false
-              %}
-            {% endfor %}
-          {% endif %}
-
-        </div>
-
-
-        <div class='InfoPanel'>
+          <div class='InfoPanel'>
 
           {% for guide in location.guides %}
             {%- assign link_href = guide.url | append: "#" | append: location.slug -%}
@@ -145,7 +122,13 @@ permalink: "locations/{{ location.slug }}/index.html"
             <div id="nearby">
               <h3>Nearby</h3>
               <p>
+                {% assign filtered_locations = "" | split: "" %}
                 {% for nearbyLocation in location.nearby %}
+                  {% unless nearbyLocation.title == location.title %}
+                    {% assign filtered_locations = filtered_locations | push: nearbyLocation %}
+                  {% endunless %}
+                {% endfor %}
+                {% for nearbyLocation in filtered_locations %}
                   <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>
                   {%- unless forloop.last -%},{%- endunless -%}
                 {% endfor %}
@@ -154,11 +137,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                                                                                                                                                    <h2>Debugging Data</h2>
-                                                                                                                                                                                                                                                                                    <code>
-                                                                                                                                                                                                                                                                                    {{ location.__rawFields | json }}
-                                                                                                                                                                                                                                                                                    </code>
-                                                                                                                                                                                                                                      </pre> {% endcomment %}
+                                                                                                                                                                                                                                                                                                                                                                        <h2>Debugging Data</h2>
+                                                                                                                                                                                                                                                                                                                                                                        <code>
+                                                                                                                                                                                                                                                                                                                                                                        {{ location.__rawFields | json }}
+                                                                                                                                                                                                                                                                                                                                                                        </code>
+                                                                                                                                                                                                                                                                                                            </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>

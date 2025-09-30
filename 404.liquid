@@ -22,7 +22,6 @@ robots: noindex
           <h1>Looks like we lost a page...</h1>
           <p>Try exploring some other pages instead.</p>
           <div class="tags light">
-            {% comment %} {% include "components/link.liquid" , href: "/" , text: "Home" , button: true %} {% for guide in collections.guides %} {% include "components/link.liquid" , href: guide.canonicalURL , text: guide.title , button: true %} {% endfor %} {% endcomment %}
 
 
             {% assign featured_locations = "Home,Ultimate Guide,Springbrook National Park Guide,Broken Head Nature Reserve Guide" | split: "," %}

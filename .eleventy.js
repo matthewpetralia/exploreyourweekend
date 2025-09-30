@@ -30,7 +30,6 @@ module.exports = function(eleventyConfig) {
         return guidesData;
     });
    
-    // ADDED: New collection for all locations
     eleventyConfig.addCollection("locations", async function(collectionApi) {
         const locationsData = await require("./_data/locations.js")();
         return locationsData;

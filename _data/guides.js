@@ -6,96 +6,77 @@ const base = new Airtable({
 
 module.exports = async () => {
   try {
-    const guideRecords = await base('Guides').select({
-      view: 'Grid view'
-    }).all();
-    const locationRecords = await base('Locations').select({
-      view: 'liveLocations'
-    }).all();
-    const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
+    const [guideRecords, locationRecords, tagRecords, imageRecords] = await Promise.all([
+      base('Guides').select({
+        view: 'Grid view'
+      }).all(),
+      base('Locations').select({
+        view: 'liveLocations'
+      }).all(),
+      base("Tags").select({
+        view: "Grid view"
+      }).all(),
+      base('images').select({
+        view: 'Grid view'
+      }).all()
+    ]);
 
-    const tagMap = new Map();
-    tagRecords.forEach(record => {
-      tagMap.set(record.fields['Tag Name'], record.fields.tagGroup || "Other");
-    });
+    const imageMap = new Map();
+    imageRecords.forEach(record => {
+      const filename = record.fields.fileName || null;
+      if (filename) {
+        imageMap.set(record.id, filename);
+      }
+    });
+
+    const tagMap = new Map();
+    tagRecords.forEach(record => {
+      tagMap.set(record.fields['Tag Name'], record.fields.tagGroup || "Other");
+    });
 
     const locationMap = {};
     locationRecords.forEach(locationRecord => {
+      const fields = locationRecord.fields;
       locationMap[locationRecord.id] = {
-        ...locationRecord.fields,
-        formattedTags: (typeof locationRecord.fields.formattedTags === 'string' ? locationRecord.fields.formattedTags : "")
-          .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-          .map((tagName) => {
-            const trimmedTag = tagName.trim().replace(/^"|"$/g, "");
-            const tagGroup = tagMap.get(trimmedTag) || "Other";
-            return {
-              name: trimmedTag,
-              group: tagGroup
-            };
-          })
-          .filter((tag) => tag.name),
-        distanceGroup: locationRecord.fields.distanceGroup,
-        durationGroup: locationRecord.fields.durationGroup
-      };
+        id: locationRecord.id,
+        title: fields.title,
+        slug: fields.slug,
+        image: fields.image,
+        // Add other relevant location fields here
+      };
     });
 
     return guideRecords.map(guideRecord => {
       const guideFields = guideRecord.fields;
-      
-      const combinedTags = new Map();
 
-      // Add tags from the guide itself
-      const guideTags = (typeof guideFields.formattedTags === 'string' ? guideFields.formattedTags : "")
-        .split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-        .map((tagName) => {
-          const trimmedTag = tagName.trim().replace(/^"|"$/g, "");
-          const tagGroup = tagMap.get(trimmedTag) || "Other";
-          return {
-            name: trimmedTag,
-            group: tagGroup
-          };
-        })
-        .filter((tag) => tag.name);
-        
-      guideTags.forEach(tag => combinedTags.set(tag.name, tag));
+      const imageFiles = Array.isArray(guideFields.images)
+        ? guideFields.images.map(id => imageMap.get(id)).filter(Boolean)
+        : [];
 
-      // Add tags from linked locations, excluding distance and duration groups
-      const linkedLocationIds = guideFields.Locations || [];
-      const sectionsData = linkedLocationIds.map(locationId => {
-        const location = locationMap[locationId];
-        if (location && location.formattedTags) {
-          location.formattedTags.forEach(tag => {
-            // Only add tags that are not from the "Distance" or "Duration" groups
-            if (tag.group !== "Distance" && tag.group !== "Duration") {
-              combinedTags.set(tag.name, tag);
-            }
-          });
-        }
-        return {
-          title: location.title,
-          description: location.description,
-          slug: location.slug,
-          canonicalURL: `/locations/${location.slug}/`,
-          imagePath: `/images/${location.slug}`,
-        formattedTags: location.formattedTags,
-        formattedDistance: location.formattedDistance,
-        formattedDuration: location.formattedDuration,
-        };
-      });
+      const locations = (guideFields.locations || []).map(locationId => {
+        return locationMap[locationId];
+      }).filter(Boolean); // Filter out any undefined locations
+
+      let altTags = guideFields.altTag || [];
+      if (typeof altTags === 'string') {
+        try {
+          altTags = JSON.parse(altTags);
+        } catch (e) {
+          altTags = [altTags];
+        }
+      }
 
       return {
         id: guideRecord.id,
         title: guideFields.title,
-        metaTitle: guideFields.metaTitle || guideFields.title,
-        updated: guideFields.updated || null,
-        description: guideFields.description,
         slug: guideFields.slug,
-        formattedTags: Array.from(combinedTags.values()),
-        sections: sectionsData,
-        url: `/${guideFields.slug}/`,
-        canonicalURL: `/guides/${guideFields.slug}/`,
-        imagePath: `/images/${guideFields.slug}`,
-        type: 'page'
+        metaTitle: guideFields.metaTitle,
+        description: guideFields.description,
+        locations: locations,
+        imageFiles: imageFiles,
+        imagePrimary: imageFiles.length > 0 ? imageFiles[0] : `${guideFields.slug}.webp`,
+        altTag: altTags,
+        // Add any other guide fields you need
       };
     });
   } catch (error) {
