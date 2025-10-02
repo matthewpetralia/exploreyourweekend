@@ -27,7 +27,21 @@ module.exports = function(eleventyConfig) {
 
     eleventyConfig.addCollection("guides", async function(collectionApi) {
         const guidesData = await require("./_data/guides.js")();
-        return guidesData;
+        return guidesData.map(guide => {
+            // Convert image objects to filenames array
+            const imageFiles = guide.imageFiles.map(img => img.filename || img);
+            
+            return {
+                ...guide,
+                imageFiles: imageFiles,
+                altTags: guide.altTag || [], // Use guide.altTag since that's what you're setting in guides.js
+                data: {
+                    layout: "guide",
+                    title: guide.title,
+                    permalink: `/guides/${guide.slug}/`
+                }
+            };
+        });
     });
    
     eleventyConfig.addCollection("locations", async function(collectionApi) {

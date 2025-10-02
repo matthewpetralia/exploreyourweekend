@@ -43,6 +43,8 @@ permalink: /
               {% include "components/image.liquid"
                 , slug: guide.slug
                 , location: location
+                , images: guide.imageFiles
+                , altTags: guide.altTags
                 , aspect_ratio: "3:4"
                 , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
                 , default_width: 362
