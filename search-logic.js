@@ -18,7 +18,8 @@ const SearchHelpers = {
 
     // Helper function to convert the internal tag name to a user-friendly name for display
     formatTagForDisplay(tagName) {
-        return tagName.replace(/-/g, ' ');
+        return tagName;
+//         return tagName.replace(/-/g, ' ');
     }
 };
 
