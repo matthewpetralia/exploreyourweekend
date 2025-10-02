@@ -87,7 +87,9 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% if location.parking %}
             <div id="parking">
               <h3>Parking</h3>
-              <p>{{ location.parking }}</p>
+              <div class='tags' itemprop='keywords'>
+                <div class="tag">{{ location.parking }}</div>
+              </div>
               {% if location.parkingInfo %}
                 <p>{{ location.parkingInfo }}</p>
               {% endif %}
@@ -97,7 +99,12 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% if location.amenities %}
             <div id="amenities">
               <h3>Amenities</h3>
-              <p>{{ location.amenities }}</p>
+              <div class='tags' itemprop='keywords'>
+                {% assign amenities_array = location.amenities | split: ", " %}
+                {% for amenity in amenities_array %}
+                  <div class="tag">{{ amenity }}</div>
+                {% endfor %}
+              </div>
               {% if location.amenitiesInfo %}
                 <p>{{ location.amenitiesInfo }}</p>
               {% endif %}
@@ -107,7 +114,9 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% if location.difficulty %}
             <div id="difficulty">
               <h3>Difficulty</h3>
-              <p>{{ location.difficulty }}</p>
+              <div class='tags' itemprop='keywords'>
+                <div class="tag">{{ location.difficulty }}</div>
+              </div>
             </div>
           {% endif %}
 
@@ -137,11 +146,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                                                                                                                                                                                                                                        <h2>Debugging Data</h2>
-                                                                                                                                                                                                                                                                                                                                                                        <code>
-                                                                                                                                                                                                                                                                                                                                                                        {{ location.__rawFields | json }}
-                                                                                                                                                                                                                                                                                                                                                                        </code>
-                                                                                                                                                                                                                                                                                                            </pre> {% endcomment %}
+                                                                                                                                                                                                                                                                                                                                                                                                                        <h2>Debugging Data</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                        <code>
+                                                                                                                                                                                                                                                                                                                                                                                                                        {{ location.__rawFields | json }}
+                                                                                                                                                                                                                                                                                                                                                                                                                        </code>
+                                                                                                                                                                                                                                                                                                                                                    </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>

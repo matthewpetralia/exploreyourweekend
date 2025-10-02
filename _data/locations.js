@@ -200,7 +200,7 @@ module.exports = async () => {
         difficulty: fields.difficulty,
         parking: fields.parking,
         parkingInfo: fields.parkingInfo,
-        amenities: fields.formattedAmenities,
+        amenities: fields.formattedAmenities ? fields.formattedAmenities.split(", ") : [],
         amenitiesInfo: fields.amenitiesInfo,
         bestTimeToVisit: fields.bestTimeToVisit,
         nearby: nearbyLocations,
