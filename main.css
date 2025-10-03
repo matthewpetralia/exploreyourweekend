@@ -85,7 +85,7 @@ picture {
 
 .multiImage{
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     max-height: 80vh;
     width: 100%;
 }
@@ -99,12 +99,16 @@ picture {
 }
 
 .image-wrapper img {
-  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.multiImage .image-wrapper {
+  flex: 1 1 50%;
+  height: auto;
 }
 
 #PageNotFound main img {
@@ -979,5 +983,8 @@ main p + a {
     }
     .multiImage{
         max-height: 100%;
+    }
+    .multiImage .image-wrapper img {
+        position: absolute;
     }
 }

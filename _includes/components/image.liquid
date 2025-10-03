@@ -18,7 +18,7 @@
     {%- for filename in images -%}
       {%- assign current_alt = altTags[forloop.index0] -%}
       <!-- Debug in loop: Image {{ forloop.index }} alt: {{ current_alt }} -->
-      <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
+      <div class="image-wrapper">
         <img
           src="{{ cdn_prefix }}362/{{ filename }}"
           srcset="
