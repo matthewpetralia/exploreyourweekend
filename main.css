@@ -85,9 +85,14 @@ picture {
 
 .multiImage{
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     max-height: 80vh;
     width: 100%;
+}
+
+.multiImage:has(> .image-wrapper:nth-child(2):last-child) {
+    flex-direction: column;
 }
 
 .image-wrapper {
