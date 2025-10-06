@@ -130,69 +130,69 @@ window.addEventListener('resize', setViewportHeight);
 //     min-height: calc(var(--vh, 1vh) * 100 - 7vh);
 // }
 
-function initializeImageLayout() {
-    const galleries = document.querySelectorAll('.multiImage');
+// function initializeImageLayout() {
+//     const galleries = document.querySelectorAll('.multiImage');
     
-    galleries.forEach(gallery => {
-        const images = gallery.querySelectorAll('.image-wrapper');
-        const count = images.length;
-        const parent = gallery.parentElement;
-        const parentWidth = parent.offsetWidth;
-        const parentHeight = parent.offsetHeight;
+//     galleries.forEach(gallery => {
+//         const images = gallery.querySelectorAll('.image-wrapper');
+//         const count = images.length;
+//         const parent = gallery.parentElement;
+//         const parentWidth = parent.offsetWidth;
+//         const parentHeight = parent.offsetHeight;
 
-        // Reset any existing classes
-        gallery.className = 'multiImage';
+//         // Reset any existing classes
+//         gallery.className = 'multiImage';
         
-        // Add layout class based on image count
-        gallery.classList.add(`layout-${Math.min(count, 6)}`);
+//         // Add layout class based on image count
+//         gallery.classList.add(`layout-${Math.min(count, 6)}`);
 
-        // Calculate minimum image size based on layout
-        let minImageSize;
-        if (count <= 2) {
-            minImageSize = parentHeight / 2;
-        } else if (count <= 4) {
-            minImageSize = Math.min(parentWidth / 2, parentHeight / 2);
-        } else {
-            minImageSize = Math.min(parentWidth / 3, parentHeight / 2);
-        }
+//         // Calculate minimum image size based on layout
+//         let minImageSize;
+//         if (count <= 2) {
+//             minImageSize = parentHeight / 2;
+//         } else if (count <= 4) {
+//             minImageSize = Math.min(parentWidth / 2, parentHeight / 2);
+//         } else {
+//             minImageSize = Math.min(parentWidth / 3, parentHeight / 2);
+//         }
 
-        // Check if images would be too small
-        if (minImageSize < 200) { // minimum acceptable size in pixels
-            gallery.classList.add('overflow-layout');
-            const visibleCount = Math.floor((parentWidth * parentHeight) / (200 * 200));
+//         // Check if images would be too small
+//         if (minImageSize < 200) { // minimum acceptable size in pixels
+//             gallery.classList.add('overflow-layout');
+//             const visibleCount = Math.floor((parentWidth * parentHeight) / (200 * 200));
             
-            // Hide excess images
-            images.forEach((img, index) => {
-                if (index >= visibleCount) {
-                    img.style.display = 'none';
-                }
-            });
+//             // Hide excess images
+//             images.forEach((img, index) => {
+//                 if (index >= visibleCount) {
+//                     img.style.display = 'none';
+//                 }
+//             });
 
-            // Add overlay to last visible image if there are hidden images
-            if (count > visibleCount) {
-                const lastVisible = images[visibleCount - 1];
-                const overlay = document.createElement('div');
-                overlay.className = 'image-overlay';
-                overlay.innerHTML = `+${count - visibleCount + 1} more`;
-                lastVisible.appendChild(overlay);
-            }
-        }
-    });
-}
+//             // Add overlay to last visible image if there are hidden images
+//             if (count > visibleCount) {
+//                 const lastVisible = images[visibleCount - 1];
+//                 const overlay = document.createElement('div');
+//                 overlay.className = 'image-overlay';
+//                 overlay.innerHTML = `+${count - visibleCount + 1} more`;
+//                 lastVisible.appendChild(overlay);
+//             }
+//         }
+//     });
+// }
 
-// Initialize on load and when window resizes
-document.addEventListener('DOMContentLoaded', initializeImageLayout);
-window.addEventListener('resize', debounce(initializeImageLayout, 250));
+// // Initialize on load and when window resizes
+// document.addEventListener('DOMContentLoaded', initializeImageLayout);
+// window.addEventListener('resize', debounce(initializeImageLayout, 250));
 
-// Debounce helper function
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+// // Debounce helper function
+// function debounce(func, wait) {
+//     let timeout;
+//     return function executedFunction(...args) {
+//         const later = () => {
+//             clearTimeout(timeout);
+//             func(...args);
+//         };
+//         clearTimeout(timeout);
+//         timeout = setTimeout(later, wait);
+//     };
+// }
