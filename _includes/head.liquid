@@ -42,7 +42,7 @@
     <meta property="og:image" content="https://exploreyourweekend.com/ExploreYourWeekendGREEN.svg">
   {%- endif -%}
 
-  <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/main.css?v={{ build.version }}">
   <link
     rel="preload"
     href="/normalize.css"
@@ -66,7 +66,7 @@
     type="image/x-icon"
     href="/ExploreYourWeekendFAVICON.svg">
 
-  <script src="/code.js" defer></script>
+  <script src="/code.js?v={{ build.version }}" defer></script>
 
   <link
     rel="preload"
@@ -74,14 +74,6 @@
     as="style"
     onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="https://use.typekit.net/ade3twf.css"></noscript>
-
-  {% comment %} <link rel="preconnect" href="https://fonts.googleapis.com">
-              <link
-                rel="preconnect"
-                href="https://fonts.gstatic.com"
-                crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=League+Spartan:wght@100..900&display=swap" rel="stylesheet"> {% endcomment %}
-
 
   <script defer src="https://www.googletagmanager.com/gtag/js?id=UA-98383758-3"></script>
   <script>
