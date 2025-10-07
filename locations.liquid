@@ -73,11 +73,11 @@ permalink: "locations/{{ location.slug }}/index.html"
               {%- assign link_text = "View " | append: location.title | append: " on Google Maps" -%}
 
               {% include "components/link.liquid"
- 
+
                 , href: location.googleMapsLink
- 
+
                 , text: link_text
- 
+
                 , button: true
               %}
 
@@ -145,11 +145,11 @@ permalink: "locations/{{ location.slug }}/index.html"
           {% endif %}
 
           {% comment %} <pre>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <h2>Debugging Data</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <code>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        {{ location.__rawFields | json }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </code>
-                                                                                                                                                                                                                                                                                                                                                                                            </pre> {% endcomment %}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <h2>Debugging Data</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <code>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    {{ location.__rawFields | json }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </code>
+                                                                                                                                                                                                                                                                                                                                                                                                      </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>

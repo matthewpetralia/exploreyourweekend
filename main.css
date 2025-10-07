@@ -323,6 +323,10 @@ h3 {
     /* margin-bottom: 0.1em; */
 }
 
+h3:has(+ .tags) {
+    margin-bottom: 0.3em;
+}
+
 h1:has(+ p) {
     margin: 0.3rem 0 0 0;
 } 
@@ -989,7 +993,8 @@ main p + a {
     }
 }
 
-/* Layout variations */
+
+
 .layout-1 {
     grid-template-columns: 1fr;
 }
@@ -1028,7 +1033,6 @@ main p + a {
     }
 }
 
-/* Overflow handling */
 .image-overlay {
     position: absolute;
     inset: 0;
