@@ -22,10 +22,33 @@ robots: noindex
           <h1>Looks like we lost a page...</h1>
           <p>Try exploring some other pages instead.</p>
           <div class="tags light">
-            <a href="/">Home</a>
-            <a href="/guides/ultimate-guide/">Ultimate Guide</a>
-            <a href="/guides/springbrook-national-park/">Springbrook National Park</a>
-            <a href="/guides/broken-head-nature-reserve/">Broken Head Nature Reserve</a>
+
+
+            {% assign featured_locations = "Home,Ultimate Guide,Springbrook National Park Guide,Broken Head Nature Reserve Guide" | split: "," %}
+
+            {% for title_to_find in featured_locations %}
+              {% assign found_slug = "" %}
+
+              {% for guide in collections.guides %}
+                {% if guide.title == title_to_find %}
+                  {% assign found_slug = guide.canonicalURL %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+
+              {% if title_to_find == "Home" %}
+                {% include "components/link.liquid"
+                  , href: "/"
+                  , text: "Home"
+                  , button: true %}
+              {% else %}
+                {% include "components/link.liquid"
+                  , href: found_slug
+                  , text: title_to_find
+                  , button: true %}
+              {% endif %}
+
+            {% endfor %}
           </div>
         </div>
       </article>

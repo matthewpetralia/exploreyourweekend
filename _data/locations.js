@@ -56,11 +56,22 @@ function formatDistance(distanceKm) {
 
 module.exports = async () => {
   try {
-    const allLocationRecords = await base("Locations").select({ view: "liveLocations" }).all();
-    const tagRecords = await base("Tags").select({ view: "Grid view" }).all();
-    const guideRecords = await base("Guides").select({ view: "Grid view" }).all();
+    const [allLocationRecords, tagRecords, guideRecords, imageRecords] = await Promise.all([
+        base("Locations").select({ view: "liveLocations" }).all(),
+        base("Tags").select({ view: "Grid view" }).all(),
+        base("Guides").select({ view: "Grid view" }).all(),
+        base('images').select({ view: 'Grid view' }).all()
+    ]);
     
-    // Create a map of all guides for easy lookup by ID
+    const imageMap = new Map();
+    imageRecords.forEach(record => {
+      const filename = record.fields.fileName || null;
+      const alt = record.fields.altTag || null;
+      if (filename) {
+        imageMap.set(record.id, { filename, alt });
+      }
+    });
+    
     const guideMap = new Map();
     guideRecords.forEach(record => {
       guideMap.set(record.id, {
@@ -69,7 +80,6 @@ module.exports = async () => {
       });
     });
 
-    // Create a map of all locations for easy lookup by ID
     const locationMap = new Map();
     allLocationRecords.forEach(record => {
       locationMap.set(record.id, {
@@ -86,7 +96,21 @@ module.exports = async () => {
     return allLocationRecords.map((record) => {
       const fields = record.fields;
       
-      // Process FAQs
+      const imageFiles = [];
+      const altTags = [];
+
+      if (Array.isArray(fields.images)) {
+        fields.images.forEach(id => {
+          const imageData = imageMap.get(id);
+          if (imageData) {
+            imageFiles.push(imageData.filename);
+            if (imageData.alt) {
+              altTags.push(imageData.alt);
+            }
+          }
+        });
+      }
+
       const faqs = [];
       const regex = /,(?=(?:(?:[^"]*"){2})*[^"]*$)/;
       const faqQuestions = (fields.faqQuestion1 || "").split(regex).map(q => q.trim());
@@ -103,7 +127,6 @@ module.exports = async () => {
         }
       }
 
-      // Process Nearby Locations
       const nearbyLocations = [];
       const nearbyIds = Array.isArray(fields.nearby) && fields.nearby.length > 0
         ? fields.nearby
@@ -119,7 +142,6 @@ module.exports = async () => {
         }
       });
       
-      // Process Guide Link
       const linkedGuides = [];
       if (Array.isArray(fields.guide) && fields.guide.length > 0) {
         fields.guide.forEach(guideId => {
@@ -132,18 +154,6 @@ module.exports = async () => {
           }
         });
       }
-
-      let altTags = fields.altTag.value;
-        if (typeof altTags === 'string') {
-          try {
-            altTags = JSON.parse(altTags);
-          } catch (e) {
-            console.warn(`Warning: altTag for "${fields.title}" is not valid JSON. Falling back to treating as single string.`);
-            altTags = [altTags]; // Wrap the single string in an array
-          }
-        } else if (!Array.isArray(altTags)) {
-          altTags = []; // Default to an empty array if not a string or array
-        }
 
       // Process Formatted Tags
       const formattedTags = (typeof fields.formattedTags === 'string' ? fields.formattedTags : "")
@@ -172,6 +182,11 @@ module.exports = async () => {
         });
       }
 
+      // console.log('Debug for location:', fields.title);
+      // console.log('Image files:', imageFiles);
+      // console.log('Alt tags array:', altTags);
+      // console.log('Raw image data:', fields.images?.map(id => imageMap.get(id)));
+
       return {
         id: record.id,
         title: fields.title,
@@ -179,13 +194,13 @@ module.exports = async () => {
         updated: fields.updated || null,
         guides: linkedGuides,
         description: fields.description,
-        detailedDescription: fields.detailedDescription.value,
-        imageCount: fields.imageCount || 0,
-        altTag: altTags,
+        detailedDescription: fields.detailedDescription.value || "",
+        imageCount: imageFiles.length,
+        altTags: altTags,
         difficulty: fields.difficulty,
         parking: fields.parking,
         parkingInfo: fields.parkingInfo,
-        amenities: fields.formattedAmenities,
+        amenities: fields.formattedAmenities ? fields.formattedAmenities.split(", ") : [],
         amenitiesInfo: fields.amenitiesInfo,
         bestTimeToVisit: fields.bestTimeToVisit,
         nearby: nearbyLocations,
@@ -195,13 +210,13 @@ module.exports = async () => {
         formattedTags: formattedTags,
         imagePath: `/images/${fields.slug}`,
         canonicalURL: `/locations/${fields.slug}/`,
-        
+        images: record.images || [],
+        imageFiles: imageFiles,
+        imagePrimary: imageFiles.length > 0 ? imageFiles[0] : `${fields.slug}.webp`,
         distanceKm: fields.distanceKm || null,
         durationHrs: fields.durationHrs || null,
-        
         formattedDuration: fields.formattedDuration,
         formattedDistance: fields.formattedDistance,
-        
         type: "section",
         __rawFields: fields
       };

@@ -23,9 +23,10 @@ description: Explore a full list of all locations on Explore Your Weekend.
             itemscope
             itemtype="https://schema.org/CreativeWork">
             <a href="/locations/{{ location.slug }}/" class="location-card">
+
               {% include "components/image.liquid"
-                , slug: location.slug
-                , altTag: location.altTag
+                , images: location.imageFiles
+                , altTags: location.altTags
                 , aspect_ratio: "3:4"
                 , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
                 , default_width: 362

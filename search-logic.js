@@ -16,9 +16,9 @@ const SearchHelpers = {
         ];
     },
 
-    // Helper function to convert the internal tag name to a user-friendly name for display
     formatTagForDisplay(tagName) {
-        return tagName.replace(/-/g, ' ');
+        return tagName;
+//         return tagName.replace(/-/g, ' ');
     }
 };
 
@@ -94,7 +94,7 @@ function parseTagsFromUrl(tagsString) {
         });
         
         renderTags(groupedTags, contexts.homepage);
-        checkTagGroups(groupedTags);
+//         checkTagGroups(groupedTags);
         
         const initialQuery = new URLSearchParams(window.location.search).get('q');
         const initialTagsString = new URLSearchParams(window.location.search).get('tags');
@@ -154,6 +154,7 @@ function renderTags(tagGroups, context) {
         const groupHeader = document.createElement("button");
         groupHeader.textContent = groupName;
         groupHeader.classList.add("tag-group-header");
+        groupHeader.innerHTML += `<svg class="icon arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="16" height="16"><path d="M480-344 240-584l56-56 184 184 184-184 56 56-240 240Z"/></svg>`;
         const groupContent = document.createElement("div");
         groupContent.classList.add("tag-group-content", "hidden");
         tags.forEach(tag => {
@@ -195,10 +196,9 @@ function renderActiveTags(context) {
     activeTags.forEach(tag => {
         const tagElement = document.createElement("span");
         tagElement.classList.add("active-tag-item");
-        // Use the helper to format for display
         tagElement.textContent = tag;
         const removeButton = document.createElement("button");
-        removeButton.innerHTML = "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960' ><path d='m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z'/></svg>";
+        removeButton.innerHTML = "<svg class='icon close' xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960' ><path d='m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z'/></svg>";
         removeButton.classList.add("remove-tag-button");
         removeButton.addEventListener("click", () => {
             toggleTag(tag);
@@ -299,30 +299,33 @@ function renderResults(results, context) {
 
         function generateResponsiveImageHTML(item, aspect_ratio = "3:4") {
   const [widthRatio, heightRatio] = aspect_ratio.split(':').map(Number);
-  const image_path = `${item.slug}.webp`;
-
+  const cdn_prefix = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto";
   const widths = [362, 480, 592, 640, 768, 800];
   const default_width = widths[0];
   const default_height = Math.round((default_width / widthRatio) * heightRatio);
 
+  // Use imageFiles array if available, otherwise fall back to single image
+  const images = item.imageFiles || [`${item.slug}.webp`];
+  const altTags = item.altTags || [item.title];
+
+  // For search results, we'll only show the first image
+  const filename = images[0];
+  const altText = altTags[0] || item.title;
+
   const srcset_parts = widths.map(width => {
     const height = Math.round((width / widthRatio) * heightRatio);
-    return `https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=${width},height=${height},format=auto/${image_path} ${width}w`;
+    return `${cdn_prefix},width=${width},height=${height},format=auto/${filename} ${width}w`;
   }).join(', ');
-
-  // A reasonable default for a grid layout, similar to your all-locations page.
-  // You may need to adjust this based on your specific CSS media queries.
-  const sizes = '(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw';
 
   return `
     <div class="image-wrapper" style="aspect-ratio: ${widthRatio} / ${heightRatio};">
       <img
-        src="https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,width=${default_width},height=${default_height},format=auto/${image_path}"
+        src="${cdn_prefix},width=${default_width},height=${default_height},format=auto/${filename}"
         srcset="${srcset_parts}"
-        sizes="${sizes}"
+        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
         width="${default_width}"
         height="${default_height}"
-        alt="${item.title}"
+        alt="${altText}"
         itemprop="image"
         decoding="async"
         loading="lazy"
