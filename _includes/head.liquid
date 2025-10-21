@@ -13,7 +13,7 @@
     {%- assign page_url_path = permalink -%}
   {%- elsif page_data -%}
     {%- assign page_title = page_data.metaTitle -%}
-    {%- assign page_description = page_data.shortDescription | default: page_data.description -%}
+    {%- assign page_description = page_data.metaDescription | default: page_data.description -%}
     {%- assign page_url_path = page_data.url -%}
   {%- endif -%}
 
