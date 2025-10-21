@@ -31,7 +31,7 @@ permalink: "guides/{{ guide.slug }}/"
                   , button: true %}
               {% endfor %}
             {% comment %} <a href="#FAQ">Frequently Asked Questions<span class="material-symbols-outlined">chevron_right</span>
-                                                                                                                                                              </a> {% endcomment %}
+                                                                                                                                                                          </a> {% endcomment %}
             </div>
           </div>
         </div>
@@ -44,7 +44,6 @@ permalink: "guides/{{ guide.slug }}/"
       {% for location in guide.sections %}
         <article id="{{ location.slug }}">
           {% include "components/image.liquid"
-            , slug: location.slug
             , altTags: location.altTags
             , images: location.imageFiles
             , aspect_ratio: "3:4"
@@ -108,11 +107,11 @@ permalink: "guides/{{ guide.slug }}/"
       {% endfor %}
 
     {% comment %} <article id="FAQ">
-                                                                                                                                <div class="InfoPanel">
-                                                                                                                                  <h3>{{ guide.title }} Guide</h3>
-                                                                                                                                  <h2>FAQ</h2>
-                                                                                                                                </div>
-                                                                                      </article> {% endcomment %}
+                                                                                                                                      <div class="InfoPanel">
+                                                                                                                                        <h3>{{ guide.title }} Guide</h3>
+                                                                                                                                        <h2>FAQ</h2>
+                                                                                                                                      </div>
+                                                                                          </article> {% endcomment %}
     </main>
 
     <div class="scroll-indicator"></div>

@@ -1,16 +1,16 @@
 {%- assign cdn_prefix = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,format=webp,width=" -%}
-{% comment %} {%- assign images = include.images -%} {% endcomment %}
+{% comment %} {%- assign imagesIncluded = images -%} {% endcomment %}
 {%- assign altTags = include.altTags -%}
-{% comment %} {%- if images == nil and slugName != nil -%}
-                            {%- assign images = slugName | append: ".webp" -%}
-                          {%- else -%}
-                            {%- assign images = include.images -%}
+{% comment %} {%- if imagesIncluded == nil and slugName != nil -%}
+                                {%- assign imagesIncluded = slugName | append: ".webp" -%}
+                              {%- else -%}
+                                {%- assign imagesIncluded = images -%}
 {%- endif -%} {% endcomment %}
 
-{%- if include.images -%}
-  {%- assign images = include.images -%}
+{%- if images -%}
+  {%- assign imagesIncluded = images -%}
 {%- elsif slugName != '' -%}
-  {%- assign images = slugName | append: ".webp" -%}
+  {%- assign imagesIncluded = slugName | append: ".webp" -%}
 {%- endif -%}
 
 
@@ -22,10 +22,10 @@
 {%- assign height_ratio = aspect_ratio_parts[1] | plus: 0 -%}
 {%- assign widths = "362, 480, 592, 640, 768, 800" | split: ", " -%}
 
-<!-- DEBUG: Mode: {{ mode }}, Images count: {{ images | size }} -->
+<!-- DEBUG: Mode: {{ mode }}, ImagesIncluded count: {{ images | size }} -->
 
 {%- if mode == "gallery" -%}
-{%- assign image_count = images | size -%}
+{%- assign image_count = imagesIncluded | size -%}
 
   {%- comment -%} Determine the layout class, capping at 6 since that's the max defined in the CSS {%- endcomment -%}
   {%- assign layout_class_num = image_count -%}
@@ -34,7 +34,7 @@
   {%- endif -%}
 
   <div class="multiImage layout-{{ layout_class_num }}">
-    {%- for filename in images -%}
+    {%- for filename in imagesIncluded -%}
       {%- assign current_alt = altTags[forloop.index0] | default: "Gallery image" -%}
       <div class="image-wrapper">
         <img
@@ -60,10 +60,10 @@
   </div>
 
 {%- else -%}
-  {%- if include.images -%}
-    {%- assign filename = images | first -%}
+  {%- if images -%}
+    {%- assign filename = imagesIncluded | first -%}
   {%- else -%}
-    {%- assign filename = images -%}
+    {%- assign filename = imagesIncluded -%}
   {%- endif -%}
   <!-- DEBUG: Single mode - showing {{ filename }} -->
   <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
