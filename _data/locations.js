@@ -195,6 +195,7 @@ module.exports = async () => {
         guides: linkedGuides,
         description: fields.description,
         detailedDescription: fields.detailedDescription.value || "",
+        metaDescription: fields.metaDescription.value || fields.shortDescription || "",
         imageCount: imageFiles.length,
         altTags: altTags,
         difficulty: fields.difficulty,
