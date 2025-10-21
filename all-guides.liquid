@@ -22,7 +22,7 @@ description: Explore a full list of all guides on Explore Your Weekend.
             id="{{ guide.slug }}"
             itemscope
             itemtype="https://schema.org/CreativeWork">
-            <a href="/guides/{{ guide.slug }}" class="location-card">
+            <a href="/guides/{{ guide.slug }}/" class="location-card">
               {% include "components/image.liquid"
                 , images: guide.imageFiles
                 , altTags: guide.altTags
@@ -35,10 +35,10 @@ description: Explore a full list of all guides on Explore Your Weekend.
                 <h2 itemprop="headline">{{ guide.title }}</h2>
                 <p itemprop="description">{{ guide.description }}</p>
               {% comment %} <div class="tags" itemprop="keywords">
-                                                                                                                                                                                                                                                  {% for tag in guide.formattedTags %}
-                                                                                                                                                                                                                                                    <div class="tag">{{ tag.name }}</div>
-                                                                                                                                                                                                                                                  {% endfor %}
-                                                                                                                                                                                                                    </div> {% endcomment %}
+                                                                                                                                                                                                                                                                                  {% for tag in guide.formattedTags %}
+                                                                                                                                                                                                                                                                                    <div class="tag">{{ tag.name }}</div>
+                                                                                                                                                                                                                                                                                  {% endfor %}
+                                                                                                                                                                                                                                                </div> {% endcomment %}
               </div>
             </a>
           </article>

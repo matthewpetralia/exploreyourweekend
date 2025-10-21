@@ -4,20 +4,20 @@ permalink: /about/
 <!doctype html>
 <html lang="en">
   {% include 'head.liquid'
-    , title: "About | Explore Your Weekend"
+    , title: "About"
     , description: "About Explore Your Weekend."
     , canonicalURL: "/about/"
-    , og_title: "About | Explore Your Weekend"
+    , og_title: "About"
     , og_description: "About Explore Your Weekend."
     , og_url: "https://exploreyourweekend.com/about/"
-    , og_image: "m-about.webp"
+    , og_image: "/images/about.webp"
     , og_type: "website" %}
   <body class="about">
     {% include 'nav.liquid' %}
     <main id="horizontal">
       <article id="About">
         {% include "components/image.liquid"
-          , slug: 'about' %}
+          , slugName: 'about' %}
         <div class="InfoPanel">
           <h3>Explore Your Weekend</h3>
           <h1>About</h1>

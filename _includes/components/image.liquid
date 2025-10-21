@@ -1,6 +1,17 @@
 {%- assign cdn_prefix = "https://cdn.exploreyourweekend.com/cdn-cgi/image/quality=70,fit=cover,gravity=auto,format=webp,width=" -%}
-{%- assign images = include.images -%}
+{% comment %} {%- assign images = include.images -%} {% endcomment %}
 {%- assign altTags = include.altTags -%}
+{% comment %} {%- if images == nil and slugName != nil -%}
+                            {%- assign images = slugName | append: ".webp" -%}
+                          {%- else -%}
+                            {%- assign images = include.images -%}
+{%- endif -%} {% endcomment %}
+
+{%- if include.images -%}
+  {%- assign images = include.images -%}
+{%- elsif slugName != '' -%}
+  {%- assign images = slugName | append: ".webp" -%}
+{%- endif -%}
 
 
 {%- assign mode = include.mode | default: "single" -%}
@@ -49,7 +60,11 @@
   </div>
 
 {%- else -%}
-  {%- assign filename = images | first -%}
+  {%- if include.images -%}
+    {%- assign filename = images | first -%}
+  {%- else -%}
+    {%- assign filename = images -%}
+  {%- endif -%}
   <!-- DEBUG: Single mode - showing {{ filename }} -->
   <div class="image-wrapper" style="aspect-ratio: {{ width_ratio }} / {{ height_ratio }};">
     <img
