@@ -8,7 +8,7 @@
   {%- assign page_url_path = "/" -%}
 
   {%- if title -%}
-    {%- assign page_title = title | append: " Explore Your Weekend" -%}
+    {%- assign page_title = title | append: " | Explore Your Weekend" -%}
     {%- assign page_description = description -%}
     {%- assign page_url_path = permalink -%}
   {%- elsif page_data -%}
@@ -38,6 +38,8 @@
   {%- if location.slug or guide.slug -%}
     {%- assign page_slug = location.slug | default: guide.slug -%}
     <meta property="og:image" content="https://exploreyourweekend.com/images/{{ page_slug | replace: ' ', '_' }}.webp">
+  {% comment %} {%- elseif og_image -%}
+      <meta property="og:image" content="{{ og_image }}"> {% endcomment %}
   {%- else -%}
     <meta property="og:image" content="https://exploreyourweekend.com/ExploreYourWeekendGREEN.svg">
   {%- endif -%}
