@@ -73,11 +73,11 @@ permalink: "locations/{{ location.slug }}/index.html"
               {%- assign link_text = "View " | append: location.title | append: " on Google Maps" -%}
 
               {% include "components/link.liquid"
-
+ 
                 , href: location.googleMapsLink
-
+ 
                 , text: link_text
-
+ 
                 , button: true
               %}
 
@@ -126,30 +126,12 @@ permalink: "locations/{{ location.slug }}/index.html"
             </div>
           {% endif %}
 
-          {% if location.nearby and location.nearby.size > 0 %}
-            <div id="nearby">
-              <h3>Nearby</h3>
-              <p>
-                {% assign filtered_locations = "" | split: "" %}
-                {% for nearbyLocation in location.nearby %}
-                  {% unless nearbyLocation.title == location.title %}
-                    {% assign filtered_locations = filtered_locations | push: nearbyLocation %}
-                  {% endunless %}
-                {% endfor %}
-                {% for nearbyLocation in filtered_locations %}
-                  <a href="{{ nearbyLocation.url }}">{{ nearbyLocation.title }}</a>
-                  {%- unless forloop.last -%},{%- endunless -%}
-                {% endfor %}
-              </p>
-            </div>
-          {% endif %}
-
           {% comment %} <pre>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <h2>Debugging Data</h2>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <code>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                {{ location.__rawFields | json }}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </code>
-                                                                                                                                                                                                                                                                                                                                                                                                                </pre> {% endcomment %}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <h2>Debugging Data</h2>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <code>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {{ location.__rawFields | json }}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </code>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </pre> {% endcomment %}
 
           {% if location.faqs and location.faqs.size > 0 %}
             <h3>FAQs</h3>
@@ -162,6 +144,49 @@ permalink: "locations/{{ location.slug }}/index.html"
                   hidden>{{ faq.answer }}</p>
               </div>
             {% endfor %}
+          {% endif %}
+
+          {% if location.nearby and location.nearby.size > 0 %}
+
+            <div id="nearby">
+              <h3>Nearby</h3>
+              <div id="vertical" class="locations-grid">
+                {% assign filtered_locations = "" | split: "" %}
+                {% for nearbyLocation in location.nearby %}
+                  {% unless nearbyLocation.title == location.title %}
+                    {% assign filtered_locations = filtered_locations | push: nearbyLocation %}
+                  {% endunless %}
+                {% endfor %}
+
+                {% for nearbyLocation in filtered_locations %}
+                  <article
+                    id="{{ nearbyLocation.slug }}"
+                    itemscope
+                    itemtype="https://schema.org/CreativeWork">
+                    <a href="{{ nearbyLocation.url }}" class="location-card">
+                      {% include "components/image.liquid"
+                        , images: nearbyLocation.imageFiles
+                        , altTags: nearbyLocation.altTags
+                        , slug: nearbyLocation.slug
+                        , aspect_ratio: "3:4"
+                        , sizes: "(max-width: 480px) 90vw, (max-width: 768px) 45vw, 30vw"
+                        , default_width: 362
+                      %}
+                      <div class="card-content InfoPanel">
+                        <h2 itemprop="headline">{{ nearbyLocation.title }}</h2>
+                        {% if nearbyLocation.formattedTags.size > 0 %}
+                          <div class="tags" itemprop="keywords">
+                            {% for tag in nearbyLocation.formattedTags %}
+                              <div class="tag">{{ tag.name }}</div>
+                            {% endfor %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </a>
+                  </article>
+                {% endfor %}
+              </div>
+            </div>
           {% endif %}
 
         </div>
