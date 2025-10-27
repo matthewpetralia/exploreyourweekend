@@ -129,39 +129,17 @@ module.exports = async () => {
 
       const nearbyLocations = [];
       const nearbyIds = Array.isArray(fields.nearby) && fields.nearby.length > 0
-          ? fields.nearby
-          : (Array.isArray(fields.nearbyByGuide) ? fields.nearbyByGuide : []);
+        ? fields.nearby
+        : (Array.isArray(fields.nearbyByGuide) ? fields.nearbyByGuide : []);
 
       nearbyIds.forEach(id => {
-          const linkedLocation = locationMap.get(id);
-          if (linkedLocation) {
-              // Get the full record for this nearby location
-              const nearbyRecord = allLocationRecords.find(record => record.id === id);
-              const nearbyImages = [];
-              const nearbyAltTags = [];
-
-              // Process images if they exist
-              if (nearbyRecord && Array.isArray(nearbyRecord.fields.images)) {
-                  nearbyRecord.fields.images.forEach(imageId => {
-                      const imageData = imageMap.get(imageId);
-                      if (imageData) {
-                          nearbyImages.push(imageData.filename);
-                          if (imageData.alt) {
-                              nearbyAltTags.push(imageData.alt);
-                          }
-                      }
-                  });
-              }
-
-              nearbyLocations.push({
-                  title: linkedLocation.title,
-                  url: `/locations/${linkedLocation.slug}/`,
-                  // Add image support while maintaining existing structure
-                  imageFiles: nearbyImages,
-                  altTags: nearbyAltTags,
-                  slug: linkedLocation.slug
-              });
-          }
+        const linkedLocation = locationMap.get(id);
+        if (linkedLocation) {
+          nearbyLocations.push({
+            title: linkedLocation.title,
+            url: `/locations/${linkedLocation.slug}/`
+          });
+        }
       });
       
       const linkedGuides = [];
